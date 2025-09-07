@@ -1,0 +1,17 @@
+# environment variables
+dotenv
+
+# data handling 
+numpy
+pandas
+
+# API handling
+requests
+
+# embedding & language models
+huggingface
+
+# vector database
+faiss
+
+
