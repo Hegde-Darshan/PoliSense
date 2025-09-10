@@ -1,2 +1,5 @@
 vectorstore/
 .idea/
+archive/
+models/
+.env

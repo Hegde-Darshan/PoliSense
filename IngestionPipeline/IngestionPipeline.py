@@ -4,9 +4,21 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 
+from pathlib import Path
+from dotenv import load_dotenv
+
+
+ROOT_PATH = Path(__file__).parent.parent
+print(f"Root path: {ROOT_PATH}")
+
+try:
+    load_dotenv(ROOT_PATH / Path('.env'))
+except FileNotFoundError:
+    print("No .env file found. Proceeding without loading environment variables.")
+
 
 # Step 1: Load all PDF documents from a given folder
-def load_pdfs_from_folder(folder_path: str):
+def load_pdfs_from_folder(folder_path: Path):
     documents = []
     for file_name in os.listdir(folder_path):
         if file_name.endswith(".pdf"):
@@ -22,7 +34,7 @@ def load_pdfs_from_folder(folder_path: str):
 
 
 # Step 2: Chunk the text with metadata
-def chunk_documents(documents):
+def chunk_documents(document):
     text_splitter = CharacterTextSplitter(
         separator="\n",
         chunk_size=1000,
@@ -30,7 +42,7 @@ def chunk_documents(documents):
         length_function=len
     )
 
-    chunks = text_splitter.split_documents(documents)
+    chunks = text_splitter.split_documents(document)
 
     # Add chunk_id for traceability
     for i, chunk in enumerate(chunks):
@@ -38,6 +50,20 @@ def chunk_documents(documents):
 
     return chunks
 
+# initialize FAISS vector store
+def initialize_faiss(persist_path: str = str(ROOT_PATH / Path("vectorstore") / Path("faiss_index"))):
+    """
+    Initialize or load FAISS vector store from the given path.
+    args:
+        persist_path: Path to the directory where FAISS index is stored."""
+    
+    if os.path.exists(persist_path):
+        print(f"Loading existing FAISS index from '{persist_path}'")
+        db = FAISS.load_local(persist_path, HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5"), allow_dangerous_deserialization=True)
+    else:
+        print(f"No existing FAISS index found at '{persist_path}'. A new index will be created after ingestion.")
+        db = None
+    return db
 
 # Step 3: Create FAISS vector store
 def create_vectorstore(chunks, persist_path="faiss_index"):
@@ -52,7 +78,7 @@ def create_vectorstore(chunks, persist_path="faiss_index"):
 
 
 # Step 4: Full ingestion pipeline
-def ingest_pdfs(folder_path: str, persist_path="faiss_index"):
+def ingest_pdfs(folder_path: Path, persist_path="faiss_index"):
     documents = load_pdfs_from_folder(folder_path)
     chunks = chunk_documents(documents)
     vectorstore = create_vectorstore(chunks, persist_path)
@@ -62,5 +88,5 @@ def ingest_pdfs(folder_path: str, persist_path="faiss_index"):
 
 # Example usage:
 if __name__ == "__main__":
-    pdf_folder = "data"  # your folder with PDFs
+    pdf_folder = ROOT_PATH/Path("IngestionPipeline.py")/Path("Data") # your folder with PDFs
     ingest_pdfs(pdf_folder, persist_path="vectorstore/faiss_index")
