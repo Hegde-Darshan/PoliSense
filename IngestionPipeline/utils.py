@@ -1,9 +1,17 @@
 import os
 import json
-
 from pathlib import Path
+from typing import List
 
-def get_new_filenames(folder_path: Path, processed_files:Path):
+import logging
+import logging.config
+from logger import LOGGING_CONFIG
+
+logging.config.dictConfig(LOGGING_CONFIG)
+logger = logging.getLogger("utils")
+
+
+def get_new_filenames(folder_path: Path, processed_files:Path) -> List[str]:
     """
     Get new PDF filenames from the folder that have not been processed yet.
     
@@ -14,7 +22,7 @@ def get_new_filenames(folder_path: Path, processed_files:Path):
         files_read = json.load(open(processed_files, 'r'))
         files_to_read = []
     except FileNotFoundError:
-        files_read, files_to_read = [], []
+        return []
 
     for file_name in os.listdir(folder_path):
         if file_name.endswith(".pdf") and file_name not in files_read:
@@ -23,5 +31,3 @@ def get_new_filenames(folder_path: Path, processed_files:Path):
         
     json.dump(files_read, open(processed_files, 'w'))
     return files_to_read
-
-
