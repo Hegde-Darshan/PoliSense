@@ -5,7 +5,7 @@ from typing import List
 
 import logging
 import logging.config
-from logger import LOGGING_CONFIG
+from IngestionPipeline.logger import LOGGING_CONFIG
 
 logging.config.dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger("utils")
@@ -19,9 +19,11 @@ def get_new_filenames(folder_path: Path, processed_files:Path) -> List[str]:
         folder_path: Path object of the folder containing PDF files.
         processed_files (optional): Path object of the JSON file tracking processed files. if not provided, assumes no files are read in the folder"""
     try:
-        files_read = json.load(open(processed_files, 'r'))
+        files_read = list(json.load(open(processed_files, 'r')))
+        print(f"Files already processed: {files_read}")
         files_to_read = []
     except FileNotFoundError:
+        print(f"No processed files record found at '{processed_files}'. Assuming no files have been read yet.")
         return []
 
     for file_name in os.listdir(folder_path):

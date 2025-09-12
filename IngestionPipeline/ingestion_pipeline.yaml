@@ -1,0 +1,11 @@
+data_loader:
+  - type: ChosenFilesDirectoryLoader
+    params:
+      directory_path: ../Data
+      chosen_files: ["LLM Notes.pdf"]
+      loader_cls: PyPDFLoader
+vectorizer:
+  - type: FAISS
+    params:
+      embedding: OpenAIEmbeddings
+      persist_directory: faiss_index

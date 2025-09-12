@@ -3,3 +3,4 @@ vectorstore/
 archive/
 models/
 .env
+test.py
