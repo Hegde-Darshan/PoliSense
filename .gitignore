@@ -1,0 +1,6 @@
+vectorstore/
+.idea/
+archive/
+models/
+.env
+test.py

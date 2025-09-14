@@ -1,0 +1,15 @@
+# Requirements for the PoliSense project
+
+# langchain and related libraries
+langchain-community
+langchain-huggingface
+langchain
+
+# Hugging Face embeddings and transformers
+sentence-transformers
+faiss-cpu
+
+# PDF processing
+pypdf
+
+# Other dependencies
