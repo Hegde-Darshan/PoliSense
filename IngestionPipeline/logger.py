@@ -23,7 +23,7 @@ LOGGING_CONFIG = {
         },
     },
     'loggers': {
-        'my_app': {
+        'ingestion_pipeline': {
             'handlers': ['console', 'file_handler'],
             'level': 'DEBUG',
             'propagate': False,
