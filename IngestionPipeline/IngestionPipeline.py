@@ -64,7 +64,7 @@ def chunk_documents(document):
     return chunks
 
 # initialize FAISS vector store
-def initialize_faiss(persist_path: str = str(ROOT_PATH / Path("vectorstore") / Path("faiss_index"))):
+def initialize_faiss(persist_path: str = str(ROOT_PATH / Path("../vectorstore") / Path("faiss_index"))):
     """
     Initialize or load FAISS vector store from the given path.
     args:
@@ -115,6 +115,6 @@ if __name__ == "__main__":
         
         for file_name in new_files:
             file_path = pdf_folder / Path(file_name)
-            ingest_pdfs(file_path, persist_path="vectorstore/faiss_index")
+            ingest_pdfs(file_path, persist_path="../vectorstore/faiss_index")
     
-    ingest_pdfs(pdf_folder, persist_path="vectorstore/faiss_index")
+    ingest_pdfs(pdf_folder, persist_path="../vectorstore/faiss_index")
