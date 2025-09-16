@@ -5,3 +5,4 @@ models/
 .env
 test.py
 venv/
+logs.log
