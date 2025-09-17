@@ -11,8 +11,8 @@ import logging.config
 from IngestionPipeline.logger import LOGGING_CONFIG
 
 logging.config.dictConfig(LOGGING_CONFIG)
-logger = logging.getLogger("vectorizer")
-
+root_logger = logging.getLogger("ingestion_pipeline")
+logger = root_logger.getChild("vectorizer")
 
 
 def initialize_embeddings(model_name, **kwargs) -> HuggingFaceEmbeddings:
@@ -37,15 +37,17 @@ def initialize_chromadb(persist_path: str) -> Chroma:
     try:
         # Load existing Chroma index
         vector_index = Chroma(
+            collection_name='Polisense',
             persist_directory=persist_path,
             embedding_function=embedding_model
         )
-        print(f"Loading existing Chroma index from '{persist_path}'")
+        logger.warning(f"Loading existing Chroma index from '{persist_path}'")
     except FileNotFoundError:
         # Create empty Chroma index (will be populated during ingestion)
-        print(f"No existing Chroma index found at '{persist_path}'. "
+        logger.warning(f"No existing Chroma index found at '{persist_path}'. "
               f"A new index will be created after ingestion.")
         vector_index = Chroma(
+            collection_name='Polisense',
             persist_directory=persist_path,
             embedding_function=embedding_model
         )

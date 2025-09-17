@@ -1,111 +1,399 @@
-2025-09-15 21:44:33,312 - ingestion_pipeline - DEBUG - List of new files to ingest: ['LLM Notes.pdf', 'MLOPS Interview Questions.pdf']
-2025-09-15 21:44:38,308 - ingestion_pipeline - DEBUG - Initial vectorstore document count: 2174
-2025-09-15 21:44:38,308 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000117352669B0>
-2025-09-15 21:44:38,527 - ingestion_pipeline - DEBUG - number of documents collected: 4
-2025-09-15 21:44:38,527 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001173528E500>
-2025-09-15 21:44:38,528 - ingestion_pipeline - DEBUG - number of chunks collected: 10
-2025-09-15 21:44:39,383 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2184
-2025-09-15 21:44:39,385 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001173528E500>
-2025-09-15 21:44:39,385 - ingestion_pipeline - DEBUG - number of chunks collected: 1
-2025-09-15 21:44:39,467 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2185
-2025-09-15 21:44:39,468 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001173528E500>
-2025-09-15 21:44:39,469 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000117352669B0>
-2025-09-15 21:44:39,625 - ingestion_pipeline - DEBUG - number of documents collected: 4
-2025-09-15 21:44:39,626 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000117356D8580>
-2025-09-15 21:44:39,627 - ingestion_pipeline - DEBUG - number of chunks collected: 10
-2025-09-15 21:44:40,553 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2195
-2025-09-15 21:44:40,554 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000117356D8580>
-2025-09-15 21:44:40,555 - ingestion_pipeline - DEBUG - number of chunks collected: 3
-2025-09-15 21:44:40,815 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2198
-2025-09-15 21:44:40,816 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000117356D8580>
-2025-09-15 21:44:40,816 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000117352669B0>
-2025-09-15 21:44:40,975 - ingestion_pipeline - DEBUG - number of documents collected: 4
-2025-09-15 21:44:40,975 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001173528E500>
-2025-09-15 21:44:40,976 - ingestion_pipeline - DEBUG - number of chunks collected: 10
-2025-09-15 21:44:41,763 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2208
-2025-09-15 21:44:41,764 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001173528E500>
-2025-09-15 21:44:41,764 - ingestion_pipeline - DEBUG - number of chunks collected: 7
-2025-09-15 21:44:42,322 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2215
-2025-09-15 21:44:42,324 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001173528E500>
-2025-09-15 21:44:42,324 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000117352669B0>
-2025-09-15 21:44:42,458 - ingestion_pipeline - DEBUG - number of documents collected: 4
-2025-09-15 21:44:42,458 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000117356D9540>
-2025-09-15 21:44:42,458 - ingestion_pipeline - DEBUG - number of chunks collected: 10
-2025-09-15 21:44:43,287 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2225
-2025-09-15 21:44:43,290 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000117356D9540>
-2025-09-15 21:44:43,290 - ingestion_pipeline - DEBUG - number of chunks collected: 2
-2025-09-15 21:44:43,449 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2227
-2025-09-15 21:44:43,450 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000117356D9540>
-2025-09-15 21:44:43,451 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000117352669B0>
-2025-09-15 21:44:43,605 - ingestion_pipeline - DEBUG - number of documents collected: 4
-2025-09-15 21:44:43,606 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001173528E500>
-2025-09-15 21:44:43,606 - ingestion_pipeline - DEBUG - number of chunks collected: 10
-2025-09-15 21:44:44,463 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2237
-2025-09-15 21:44:44,464 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001173528E500>
-2025-09-15 21:44:44,464 - ingestion_pipeline - DEBUG - number of chunks collected: 2
-2025-09-15 21:44:44,659 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2239
-2025-09-15 21:44:44,661 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001173528E500>
-2025-09-15 21:44:44,661 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000117352669B0>
-2025-09-15 21:44:44,670 - ingestion_pipeline - DEBUG - number of documents collected: 1
-2025-09-15 21:44:44,670 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001173528DC40>
-2025-09-15 21:44:44,670 - ingestion_pipeline - DEBUG - number of chunks collected: 1
-2025-09-15 21:44:44,746 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2240
-2025-09-15 21:44:44,747 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001173528DC40>
-2025-09-15 21:44:44,747 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000117352669B0>
-2025-09-15 21:56:39,615 - ingestion_pipeline - DEBUG - List of new files to ingest: ['LLM Notes.pdf', 'MLOPS Interview Questions.pdf']
-2025-09-15 21:56:44,429 - ingestion_pipeline - DEBUG - Initial vectorstore document count: 2240
-2025-09-15 21:56:44,429 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000002C014CC6DF0>
-2025-09-15 21:56:44,643 - ingestion_pipeline - DEBUG - number of documents collected: 4
-2025-09-15 21:56:44,643 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C014CEF5A0>
-2025-09-15 21:56:44,644 - ingestion_pipeline - DEBUG - number of chunks collected: 10
-2025-09-15 21:56:45,468 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2250
-2025-09-15 21:56:45,471 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C014CEF5A0>
-2025-09-15 21:56:45,471 - ingestion_pipeline - DEBUG - number of chunks collected: 1
-2025-09-15 21:56:45,581 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2251
-2025-09-15 21:56:45,582 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C014CEF5A0>
-2025-09-15 21:56:45,583 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000002C014CC6DF0>
-2025-09-15 21:56:45,727 - ingestion_pipeline - DEBUG - number of documents collected: 4
-2025-09-15 21:56:45,728 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C015138580>
-2025-09-15 21:56:45,729 - ingestion_pipeline - DEBUG - number of chunks collected: 10
-2025-09-15 21:56:46,619 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2261
-2025-09-15 21:56:46,620 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C015138580>
-2025-09-15 21:56:46,620 - ingestion_pipeline - DEBUG - number of chunks collected: 3
-2025-09-15 21:56:46,844 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2264
-2025-09-15 21:56:46,845 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C015138580>
-2025-09-15 21:56:46,846 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000002C014CC6DF0>
-2025-09-15 21:56:46,990 - ingestion_pipeline - DEBUG - number of documents collected: 4
-2025-09-15 21:56:46,990 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C014CEF5A0>
-2025-09-15 21:56:46,991 - ingestion_pipeline - DEBUG - number of chunks collected: 10
-2025-09-15 21:56:47,792 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2274
-2025-09-15 21:56:47,793 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C014CEF5A0>
-2025-09-15 21:56:47,793 - ingestion_pipeline - DEBUG - number of chunks collected: 7
-2025-09-15 21:56:48,398 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2281
-2025-09-15 21:56:48,400 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C014CEF5A0>
-2025-09-15 21:56:48,400 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000002C014CC6DF0>
-2025-09-15 21:56:48,532 - ingestion_pipeline - DEBUG - number of documents collected: 4
-2025-09-15 21:56:48,533 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C015139540>
-2025-09-15 21:56:48,534 - ingestion_pipeline - DEBUG - number of chunks collected: 10
-2025-09-15 21:56:49,390 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2291
-2025-09-15 21:56:49,392 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C015139540>
-2025-09-15 21:56:49,392 - ingestion_pipeline - DEBUG - number of chunks collected: 2
-2025-09-15 21:56:49,563 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2293
-2025-09-15 21:56:49,564 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C015139540>
-2025-09-15 21:56:49,564 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000002C014CC6DF0>
-2025-09-15 21:56:49,690 - ingestion_pipeline - DEBUG - number of documents collected: 4
-2025-09-15 21:56:49,691 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C014CEF5A0>
-2025-09-15 21:56:49,691 - ingestion_pipeline - DEBUG - number of chunks collected: 10
-2025-09-15 21:56:50,558 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2303
-2025-09-15 21:56:50,560 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C014CEF5A0>
-2025-09-15 21:56:50,560 - ingestion_pipeline - DEBUG - number of chunks collected: 2
-2025-09-15 21:56:50,733 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2305
-2025-09-15 21:56:50,734 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C014CEF5A0>
-2025-09-15 21:56:50,734 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000002C014CC6DF0>
-2025-09-15 21:56:50,879 - ingestion_pipeline - DEBUG - number of documents collected: 1
-2025-09-15 21:56:50,879 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C014CEF140>
-2025-09-15 21:56:50,880 - ingestion_pipeline - DEBUG - number of chunks collected: 1
-2025-09-15 21:56:50,964 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 2306
-2025-09-15 21:56:50,966 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002C014CEF140>
-2025-09-15 21:56:50,966 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000002C014CC6DF0>
-2025-09-15 21:59:34,926 - ingestion_pipeline - DEBUG - List of new files to ingest: []
-2025-09-15 21:59:40,046 - ingestion_pipeline - DEBUG - Initial vectorstore document count: 2306
-2025-09-15 21:59:40,047 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x0000020F2200E680>
+2025-09-17 17:07:04,140 - ingestion_pipeline - DEBUG - List of new files to ingest: []
+2025-09-17 17:07:07,137 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2025-09-17 17:07:07,138 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: BAAI/bge-small-en-v1.5
+2025-09-17 17:07:07,141 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-09-17 17:07:07,484 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:07:07,516 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:07:07,801 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:07:07,821 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:07:08,108 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:07:08,140 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:07:08,433 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/README.md HTTP/1.1" 307 0
+2025-09-17 17:07:08,467 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/README.md HTTP/1.1" 200 0
+2025-09-17 17:07:08,759 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:07:08,780 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:07:09,064 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/sentence_bert_config.json HTTP/1.1" 307 0
+2025-09-17 17:07:09,097 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/sentence_bert_config.json HTTP/1.1" 200 0
+2025-09-17 17:07:09,393 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-09-17 17:07:09,700 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config.json HTTP/1.1" 307 0
+2025-09-17 17:07:09,734 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config.json HTTP/1.1" 200 0
+2025-09-17 17:07:10,153 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-09-17 17:07:10,176 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/tokenizer_config.json HTTP/1.1" 200 0
+2025-09-17 17:07:10,483 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-09-17 17:07:10,838 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/1_Pooling/config.json HTTP/1.1" 307 0
+2025-09-17 17:07:10,866 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/1_Pooling%2Fconfig.json HTTP/1.1" 200 0
+2025-09-17 17:07:11,161 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5 HTTP/1.1" 200 148933
+2025-09-17 17:07:11,641 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-09-17 17:07:11,685 - chromadb.config - DEBUG - Starting component System
+2025-09-17 17:07:11,685 - chromadb.config - DEBUG - Starting component Posthog
+2025-09-17 17:07:11,727 - ingestion_pipeline.vectorizer - WARNING - Loading existing Chroma index from 'c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\vectorstore\chroma_index'
+2025-09-17 17:12:03,969 - ingestion_pipeline - DEBUG - List of new files to ingest: []
+2025-09-17 17:12:06,809 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2025-09-17 17:12:06,809 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: BAAI/bge-small-en-v1.5
+2025-09-17 17:12:06,813 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-09-17 17:12:07,146 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:12:07,163 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:12:07,453 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:12:07,468 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:12:07,754 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:12:07,778 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:12:08,065 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/README.md HTTP/1.1" 307 0
+2025-09-17 17:12:08,096 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/README.md HTTP/1.1" 200 0
+2025-09-17 17:12:08,391 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:12:08,413 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:12:08,742 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/sentence_bert_config.json HTTP/1.1" 307 0
+2025-09-17 17:12:08,764 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/sentence_bert_config.json HTTP/1.1" 200 0
+2025-09-17 17:12:09,054 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-09-17 17:12:09,462 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config.json HTTP/1.1" 307 0
+2025-09-17 17:12:09,479 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config.json HTTP/1.1" 200 0
+2025-09-17 17:12:09,900 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-09-17 17:12:09,920 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/tokenizer_config.json HTTP/1.1" 200 0
+2025-09-17 17:12:10,224 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-09-17 17:12:10,559 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/1_Pooling/config.json HTTP/1.1" 307 0
+2025-09-17 17:12:10,578 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/1_Pooling%2Fconfig.json HTTP/1.1" 200 0
+2025-09-17 17:12:10,886 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5 HTTP/1.1" 200 148933
+2025-09-17 17:12:11,656 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-09-17 17:12:11,702 - chromadb.config - DEBUG - Starting component System
+2025-09-17 17:12:11,703 - chromadb.config - DEBUG - Starting component Posthog
+2025-09-17 17:12:11,742 - ingestion_pipeline.vectorizer - WARNING - Loading existing Chroma index from 'c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\vectorstore\chroma_index'
+2025-09-17 17:12:54,215 - ingestion_pipeline - DEBUG - List of new files to ingest: ['LLM Notes.pdf', 'MLOPS Interview Questions.pdf']
+2025-09-17 17:12:56,846 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2025-09-17 17:12:56,847 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: BAAI/bge-small-en-v1.5
+2025-09-17 17:12:56,850 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-09-17 17:12:57,201 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:12:57,220 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:12:57,509 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:12:57,535 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:12:57,822 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:12:57,840 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:12:58,126 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/README.md HTTP/1.1" 307 0
+2025-09-17 17:12:58,159 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/README.md HTTP/1.1" 200 0
+2025-09-17 17:12:58,449 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:12:58,475 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:12:58,765 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/sentence_bert_config.json HTTP/1.1" 307 0
+2025-09-17 17:12:58,800 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/sentence_bert_config.json HTTP/1.1" 200 0
+2025-09-17 17:12:59,098 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-09-17 17:12:59,394 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config.json HTTP/1.1" 307 0
+2025-09-17 17:12:59,414 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config.json HTTP/1.1" 200 0
+2025-09-17 17:12:59,841 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-09-17 17:12:59,861 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/tokenizer_config.json HTTP/1.1" 200 0
+2025-09-17 17:13:00,358 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-09-17 17:13:00,708 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/1_Pooling/config.json HTTP/1.1" 307 0
+2025-09-17 17:13:00,737 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/1_Pooling%2Fconfig.json HTTP/1.1" 200 0
+2025-09-17 17:13:01,046 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5 HTTP/1.1" 200 148941
+2025-09-17 17:13:01,766 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-09-17 17:13:01,809 - chromadb.config - DEBUG - Starting component System
+2025-09-17 17:13:01,810 - chromadb.config - DEBUG - Starting component Posthog
+2025-09-17 17:13:01,850 - ingestion_pipeline.vectorizer - WARNING - Loading existing Chroma index from 'c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\vectorstore\chroma_index'
+2025-09-17 17:14:28,815 - ingestion_pipeline - DEBUG - List of new files to ingest: ['LLM Notes.pdf', 'MLOPS Interview Questions.pdf']
+2025-09-17 17:14:31,781 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2025-09-17 17:14:31,781 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: BAAI/bge-small-en-v1.5
+2025-09-17 17:14:31,785 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-09-17 17:14:32,134 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:14:32,174 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:14:32,465 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:14:32,486 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:14:32,766 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:14:32,783 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:14:33,071 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/README.md HTTP/1.1" 307 0
+2025-09-17 17:14:33,098 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/README.md HTTP/1.1" 200 0
+2025-09-17 17:14:33,416 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:14:33,450 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:14:33,733 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/sentence_bert_config.json HTTP/1.1" 307 0
+2025-09-17 17:14:33,760 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/sentence_bert_config.json HTTP/1.1" 200 0
+2025-09-17 17:14:34,405 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-09-17 17:14:34,701 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config.json HTTP/1.1" 307 0
+2025-09-17 17:14:34,721 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config.json HTTP/1.1" 200 0
+2025-09-17 17:14:35,166 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-09-17 17:14:35,186 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/tokenizer_config.json HTTP/1.1" 200 0
+2025-09-17 17:14:35,492 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-09-17 17:14:35,839 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/1_Pooling/config.json HTTP/1.1" 307 0
+2025-09-17 17:14:35,858 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/1_Pooling%2Fconfig.json HTTP/1.1" 200 0
+2025-09-17 17:14:36,151 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5 HTTP/1.1" 200 148933
+2025-09-17 17:14:36,649 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-09-17 17:14:36,694 - chromadb.config - DEBUG - Starting component System
+2025-09-17 17:14:36,695 - chromadb.config - DEBUG - Starting component Posthog
+2025-09-17 17:14:36,738 - ingestion_pipeline.vectorizer - WARNING - Loading existing Chroma index from 'c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\vectorstore\chroma_index'
+2025-09-17 17:14:36,738 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x0000028400C09930>
+2025-09-17 17:14:36,739 - ingestion_pipeline.data_loader - DEBUG - Loading file: c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\Data\LLM Notes.pdf
+2025-09-17 17:14:37,060 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-17 17:14:37,060 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x0000028401E10120>
+2025-09-17 17:14:37,061 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-17 17:14:37,216 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): us.i.posthog.com:443
+2025-09-17 17:14:37,923 - urllib3.connectionpool - DEBUG - https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-09-17 17:18:35,443 - ingestion_pipeline - DEBUG - List of new files to ingest: ['LLM Notes.pdf', 'MLOPS Interview Questions.pdf']
+2025-09-17 17:18:38,296 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2025-09-17 17:18:38,297 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: BAAI/bge-small-en-v1.5
+2025-09-17 17:18:38,300 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-09-17 17:18:39,006 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:18:39,037 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:18:39,329 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:18:39,353 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:18:39,651 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:18:39,677 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:18:39,970 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/README.md HTTP/1.1" 307 0
+2025-09-17 17:18:39,995 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/README.md HTTP/1.1" 200 0
+2025-09-17 17:18:40,284 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:18:40,310 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:18:40,614 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/sentence_bert_config.json HTTP/1.1" 307 0
+2025-09-17 17:18:40,634 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/sentence_bert_config.json HTTP/1.1" 200 0
+2025-09-17 17:18:40,922 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-09-17 17:18:41,217 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config.json HTTP/1.1" 307 0
+2025-09-17 17:18:41,243 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config.json HTTP/1.1" 200 0
+2025-09-17 17:18:41,664 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-09-17 17:18:41,691 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/tokenizer_config.json HTTP/1.1" 200 0
+2025-09-17 17:18:41,994 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-09-17 17:18:42,351 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/1_Pooling/config.json HTTP/1.1" 307 0
+2025-09-17 17:18:42,377 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/1_Pooling%2Fconfig.json HTTP/1.1" 200 0
+2025-09-17 17:18:42,680 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5 HTTP/1.1" 200 148933
+2025-09-17 17:18:43,178 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-09-17 17:18:43,221 - chromadb.config - DEBUG - Starting component System
+2025-09-17 17:18:43,222 - chromadb.config - DEBUG - Starting component Posthog
+2025-09-17 17:18:43,304 - ingestion_pipeline.vectorizer - WARNING - Loading existing Chroma index from 'c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\vectorstore\chroma_index'
+2025-09-17 17:18:43,305 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000001ECE62898C0>
+2025-09-17 17:18:43,306 - ingestion_pipeline.data_loader - DEBUG - Loading file: c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\Data\LLM Notes.pdf
+2025-09-17 17:18:43,588 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-17 17:18:43,589 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001ECE747BED0>
+2025-09-17 17:18:43,589 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-17 17:18:43,786 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): us.i.posthog.com:443
+2025-09-17 17:18:44,523 - urllib3.connectionpool - DEBUG - https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+2025-09-17 17:23:58,945 - ingestion_pipeline - DEBUG - List of new files to ingest: ['LLM Notes.pdf', 'MLOPS Interview Questions.pdf']
+2025-09-17 17:24:03,434 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2025-09-17 17:24:03,435 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: BAAI/bge-small-en-v1.5
+2025-09-17 17:24:03,441 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-09-17 17:24:04,256 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:24:04,281 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:24:04,563 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:24:04,579 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:24:04,866 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:24:04,882 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:24:05,163 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/README.md HTTP/1.1" 307 0
+2025-09-17 17:24:05,179 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/README.md HTTP/1.1" 200 0
+2025-09-17 17:24:05,469 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:24:05,485 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:24:05,772 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/sentence_bert_config.json HTTP/1.1" 307 0
+2025-09-17 17:24:05,789 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/sentence_bert_config.json HTTP/1.1" 200 0
+2025-09-17 17:24:06,077 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-09-17 17:24:06,362 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config.json HTTP/1.1" 307 0
+2025-09-17 17:24:06,380 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config.json HTTP/1.1" 200 0
+2025-09-17 17:24:07,709 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-09-17 17:24:07,726 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/tokenizer_config.json HTTP/1.1" 200 0
+2025-09-17 17:24:08,029 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-09-17 17:24:08,374 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/1_Pooling/config.json HTTP/1.1" 307 0
+2025-09-17 17:24:08,400 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/1_Pooling%2Fconfig.json HTTP/1.1" 200 0
+2025-09-17 17:24:08,744 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5 HTTP/1.1" 200 148941
+2025-09-17 17:24:09,514 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-09-17 17:24:09,578 - chromadb.config - DEBUG - Starting component System
+2025-09-17 17:24:09,578 - chromadb.config - DEBUG - Starting component Posthog
+2025-09-17 17:24:09,643 - ingestion_pipeline.vectorizer - WARNING - Loading existing Chroma index from 'c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\vectorstore\chroma_index'
+2025-09-17 17:24:09,644 - ingestion_pipeline - DEBUG - Collecting 2 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000262D96398C0>
+2025-09-17 17:24:09,645 - ingestion_pipeline.data_loader - DEBUG - Loading file: c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\Data\LLM Notes.pdf
+2025-09-17 17:24:09,975 - ingestion_pipeline - DEBUG - number of documents collected: 2
+2025-09-17 17:24:09,976 - ingestion_pipeline - DEBUG - Collecting 2 items from <generator object lazy_chunker at 0x00000262DA82BCA0>
+2025-09-17 17:24:09,977 - ingestion_pipeline - DEBUG - number of chunks collected: 2
+2025-09-17 17:24:10,117 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): us.i.posthog.com:443
+2025-09-17 17:24:52,374 - ingestion_pipeline - DEBUG - List of new files to ingest: ['LLM Notes.pdf', 'MLOPS Interview Questions.pdf']
+2025-09-17 17:24:56,781 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2025-09-17 17:24:56,782 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: BAAI/bge-small-en-v1.5
+2025-09-17 17:24:56,798 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-09-17 17:24:57,173 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:24:57,197 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:24:57,485 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:24:57,503 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:24:57,785 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:24:57,819 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:24:58,566 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/README.md HTTP/1.1" 307 0
+2025-09-17 17:24:58,581 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/README.md HTTP/1.1" 200 0
+2025-09-17 17:24:58,867 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:24:58,887 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:24:59,175 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/sentence_bert_config.json HTTP/1.1" 307 0
+2025-09-17 17:24:59,194 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/sentence_bert_config.json HTTP/1.1" 200 0
+2025-09-17 17:24:59,505 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-09-17 17:24:59,787 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config.json HTTP/1.1" 307 0
+2025-09-17 17:24:59,810 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config.json HTTP/1.1" 200 0
+2025-09-17 17:25:00,325 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-09-17 17:25:00,358 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/tokenizer_config.json HTTP/1.1" 200 0
+2025-09-17 17:25:00,676 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-09-17 17:25:01,394 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/1_Pooling/config.json HTTP/1.1" 307 0
+2025-09-17 17:25:01,411 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/1_Pooling%2Fconfig.json HTTP/1.1" 200 0
+2025-09-17 17:25:01,712 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5 HTTP/1.1" 200 148941
+2025-09-17 17:25:02,650 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-09-17 17:25:02,724 - chromadb.config - DEBUG - Starting component System
+2025-09-17 17:25:02,724 - chromadb.config - DEBUG - Starting component Posthog
+2025-09-17 17:25:02,822 - ingestion_pipeline.vectorizer - WARNING - Loading existing Chroma index from 'c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\vectorstore\chroma_index'
+2025-09-17 17:25:02,824 - ingestion_pipeline - DEBUG - Collecting 2 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000263310D98C0>
+2025-09-17 17:25:02,824 - ingestion_pipeline.data_loader - DEBUG - Loading file: c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\Data\LLM Notes.pdf
+2025-09-17 17:25:03,166 - ingestion_pipeline - DEBUG - number of documents collected: 2
+2025-09-17 17:25:03,167 - ingestion_pipeline - DEBUG - Collecting 2 items from <generator object lazy_chunker at 0x00000263322CBCA0>
+2025-09-17 17:25:03,168 - ingestion_pipeline - DEBUG - number of chunks collected: 2
+2025-09-17 17:25:03,305 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): us.i.posthog.com:443
+2025-09-17 17:26:00,514 - ingestion_pipeline - DEBUG - List of new files to ingest: ['LLM Notes.pdf', 'MLOPS Interview Questions.pdf']
+2025-09-17 17:26:04,741 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2025-09-17 17:26:04,741 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: BAAI/bge-small-en-v1.5
+2025-09-17 17:26:04,747 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-09-17 17:26:05,100 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:26:05,117 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:26:05,405 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:26:05,426 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:26:05,759 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:26:05,790 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:26:06,095 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/README.md HTTP/1.1" 307 0
+2025-09-17 17:26:06,110 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/README.md HTTP/1.1" 200 0
+2025-09-17 17:26:06,417 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:26:06,435 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:26:06,723 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/sentence_bert_config.json HTTP/1.1" 307 0
+2025-09-17 17:26:06,755 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/sentence_bert_config.json HTTP/1.1" 200 0
+2025-09-17 17:26:07,049 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-09-17 17:26:07,910 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config.json HTTP/1.1" 307 0
+2025-09-17 17:26:07,927 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config.json HTTP/1.1" 200 0
+2025-09-17 17:26:08,425 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-09-17 17:26:08,441 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/tokenizer_config.json HTTP/1.1" 200 0
+2025-09-17 17:26:08,741 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-09-17 17:26:09,091 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/1_Pooling/config.json HTTP/1.1" 307 0
+2025-09-17 17:26:09,108 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/1_Pooling%2Fconfig.json HTTP/1.1" 200 0
+2025-09-17 17:26:09,401 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5 HTTP/1.1" 200 148941
+2025-09-17 17:26:10,388 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-09-17 17:26:10,447 - chromadb.config - DEBUG - Starting component System
+2025-09-17 17:26:10,447 - chromadb.config - DEBUG - Starting component Posthog
+2025-09-17 17:26:10,506 - ingestion_pipeline.vectorizer - WARNING - Loading existing Chroma index from 'c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\vectorstore\chroma_index'
+2025-09-17 17:26:10,507 - ingestion_pipeline - DEBUG - Collecting 2 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000157EF5A98C0>
+2025-09-17 17:26:10,508 - ingestion_pipeline.data_loader - DEBUG - Loading file: c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\Data\LLM Notes.pdf
+2025-09-17 17:26:10,832 - ingestion_pipeline - DEBUG - number of documents collected: 2
+2025-09-17 17:26:10,832 - ingestion_pipeline - DEBUG - Collecting 2 items from <generator object lazy_chunker at 0x00000157F079BCA0>
+2025-09-17 17:26:10,833 - ingestion_pipeline - DEBUG - number of chunks collected: 2
+2025-09-17 17:26:10,974 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): us.i.posthog.com:443
+2025-09-17 17:26:51,324 - ingestion_pipeline - DEBUG - List of new files to ingest: ['LLM Notes.pdf', 'MLOPS Interview Questions.pdf']
+2025-09-17 17:26:55,453 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2025-09-17 17:26:55,453 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: BAAI/bge-small-en-v1.5
+2025-09-17 17:26:55,459 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-09-17 17:26:55,862 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:26:55,885 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:26:56,184 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:26:56,202 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:26:56,485 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:26:56,504 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:26:56,796 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/README.md HTTP/1.1" 307 0
+2025-09-17 17:26:56,811 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/README.md HTTP/1.1" 200 0
+2025-09-17 17:26:57,102 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:26:57,117 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:26:57,421 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/sentence_bert_config.json HTTP/1.1" 307 0
+2025-09-17 17:26:57,437 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/sentence_bert_config.json HTTP/1.1" 200 0
+2025-09-17 17:26:57,725 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-09-17 17:26:58,010 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config.json HTTP/1.1" 307 0
+2025-09-17 17:26:58,032 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config.json HTTP/1.1" 200 0
+2025-09-17 17:26:58,563 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-09-17 17:26:58,587 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/tokenizer_config.json HTTP/1.1" 200 0
+2025-09-17 17:26:58,887 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-09-17 17:26:59,232 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/1_Pooling/config.json HTTP/1.1" 307 0
+2025-09-17 17:26:59,248 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/1_Pooling%2Fconfig.json HTTP/1.1" 200 0
+2025-09-17 17:26:59,554 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5 HTTP/1.1" 200 148933
+2025-09-17 17:27:00,311 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-09-17 17:27:00,375 - chromadb.config - DEBUG - Starting component System
+2025-09-17 17:27:00,376 - chromadb.config - DEBUG - Starting component Posthog
+2025-09-17 17:27:00,432 - ingestion_pipeline.vectorizer - WARNING - Loading existing Chroma index from 'c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\vectorstore\chroma_index'
+2025-09-17 17:27:00,433 - ingestion_pipeline - DEBUG - Collecting 2 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000001F3D69F98C0>
+2025-09-17 17:27:00,434 - ingestion_pipeline.data_loader - DEBUG - Loading file: c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\Data\LLM Notes.pdf
+2025-09-17 17:27:00,749 - ingestion_pipeline - DEBUG - number of documents collected: 2
+2025-09-17 17:27:00,750 - ingestion_pipeline - DEBUG - Collecting 2 items from <generator object lazy_chunker at 0x000001F3D7BEBCA0>
+2025-09-17 17:27:00,751 - ingestion_pipeline - DEBUG - number of chunks collected: 2
+2025-09-17 17:27:00,910 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): us.i.posthog.com:443
+2025-09-17 17:29:59,111 - ingestion_pipeline - DEBUG - List of new files to ingest: ['LLM Notes.pdf', 'MLOPS Interview Questions.pdf']
+2025-09-17 17:30:03,441 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2025-09-17 17:30:03,441 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: BAAI/bge-small-en-v1.5
+2025-09-17 17:30:03,447 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-09-17 17:30:03,790 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:30:03,811 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:30:03,817 - filelock - DEBUG - Attempting to acquire lock 2693951018064 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\952a9b81c0bfd99800fabf352f69c7ccd46c5e43.lock
+2025-09-17 17:30:03,818 - filelock - DEBUG - Lock 2693951018064 acquired on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\952a9b81c0bfd99800fabf352f69c7ccd46c5e43.lock
+2025-09-17 17:30:03,841 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 349
+2025-09-17 17:30:03,887 - filelock - DEBUG - Attempting to release lock 2693951018064 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\952a9b81c0bfd99800fabf352f69c7ccd46c5e43.lock
+2025-09-17 17:30:03,888 - filelock - DEBUG - Lock 2693951018064 released on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\952a9b81c0bfd99800fabf352f69c7ccd46c5e43.lock
+2025-09-17 17:30:04,191 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:30:04,206 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:30:04,210 - filelock - DEBUG - Attempting to acquire lock 2693951024784 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\dcb0c0d97d09b930d13600b1a773ddb27e441aab.lock
+2025-09-17 17:30:04,211 - filelock - DEBUG - Lock 2693951024784 acquired on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\dcb0c0d97d09b930d13600b1a773ddb27e441aab.lock
+2025-09-17 17:30:04,231 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 124
+2025-09-17 17:30:04,239 - filelock - DEBUG - Attempting to release lock 2693951024784 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\dcb0c0d97d09b930d13600b1a773ddb27e441aab.lock
+2025-09-17 17:30:04,243 - filelock - DEBUG - Lock 2693951024784 released on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\dcb0c0d97d09b930d13600b1a773ddb27e441aab.lock
+2025-09-17 17:30:04,537 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-09-17 17:30:04,553 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-09-17 17:30:04,844 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/README.md HTTP/1.1" 307 0
+2025-09-17 17:30:04,858 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/README.md HTTP/1.1" 200 0
+2025-09-17 17:30:04,861 - filelock - DEBUG - Attempting to acquire lock 2693951235760 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\8b8567d75ffa619486d9590cb0eb76d66ad46c49.lock
+2025-09-17 17:30:04,862 - filelock - DEBUG - Lock 2693951235760 acquired on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\8b8567d75ffa619486d9590cb0eb76d66ad46c49.lock
+2025-09-17 17:30:04,880 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/README.md HTTP/1.1" 200 None
+2025-09-17 17:30:04,887 - filelock - DEBUG - Attempting to release lock 2693951235760 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\8b8567d75ffa619486d9590cb0eb76d66ad46c49.lock
+2025-09-17 17:30:04,890 - filelock - DEBUG - Lock 2693951235760 released on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\8b8567d75ffa619486d9590cb0eb76d66ad46c49.lock
+2025-09-17 17:30:05,200 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/modules.json HTTP/1.1" 307 0
+2025-09-17 17:30:05,231 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/modules.json HTTP/1.1" 200 0
+2025-09-17 17:30:05,890 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/sentence_bert_config.json HTTP/1.1" 307 0
+2025-09-17 17:30:05,909 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/sentence_bert_config.json HTTP/1.1" 200 0
+2025-09-17 17:30:05,912 - filelock - DEBUG - Attempting to acquire lock 2693951238496 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\ea85692bff64b0d1917833c31ddbca8ab10f5455.lock
+2025-09-17 17:30:05,913 - filelock - DEBUG - Lock 2693951238496 acquired on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\ea85692bff64b0d1917833c31ddbca8ab10f5455.lock
+2025-09-17 17:30:05,934 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/sentence_bert_config.json HTTP/1.1" 200 52
+2025-09-17 17:30:05,941 - filelock - DEBUG - Attempting to release lock 2693951238496 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\ea85692bff64b0d1917833c31ddbca8ab10f5455.lock
+2025-09-17 17:30:05,943 - filelock - DEBUG - Lock 2693951238496 released on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\ea85692bff64b0d1917833c31ddbca8ab10f5455.lock
+2025-09-17 17:30:06,231 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-09-17 17:30:06,747 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/config.json HTTP/1.1" 307 0
+2025-09-17 17:30:06,767 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config.json HTTP/1.1" 200 0
+2025-09-17 17:30:06,770 - filelock - DEBUG - Attempting to acquire lock 2693951237392 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\3992bf890728a92476c700e6e657fd696eb94160.lock
+2025-09-17 17:30:06,773 - filelock - DEBUG - Lock 2693951237392 acquired on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\3992bf890728a92476c700e6e657fd696eb94160.lock
+2025-09-17 17:30:06,793 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/config.json HTTP/1.1" 200 743
+2025-09-17 17:30:06,799 - filelock - DEBUG - Attempting to release lock 2693951237392 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\3992bf890728a92476c700e6e657fd696eb94160.lock
+2025-09-17 17:30:06,800 - filelock - DEBUG - Lock 2693951237392 released on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\3992bf890728a92476c700e6e657fd696eb94160.lock
+2025-09-17 17:30:07,230 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/model.safetensors HTTP/1.1" 302 0
+2025-09-17 17:30:07,235 - filelock - DEBUG - Attempting to acquire lock 2693951239792 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\3c9f31665447c8911517620762200d2245a2518d6e7208acc78cd9db317e21ad.lock
+2025-09-17 17:30:07,236 - filelock - DEBUG - Lock 2693951239792 acquired on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\3c9f31665447c8911517620762200d2245a2518d6e7208acc78cd9db317e21ad.lock
+2025-09-17 17:30:07,244 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): cdn-lfs.hf.co:443
+2025-09-17 17:30:07,349 - urllib3.connectionpool - DEBUG - https://cdn-lfs.hf.co:443 "GET /repos/65/7a/657aa25dcd01b516ff64ac04ad0411983498b446edae5e07a99d03bffc6faeca/3c9f31665447c8911517620762200d2245a2518d6e7208acc78cd9db317e21ad?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27model.safetensors%3B+filename%3D%22model.safetensors%22%3B&Expires=1758114004&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc1ODExNDAwNH19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2RuLWxmcy5oZi5jby9yZXBvcy82NS83YS82NTdhYTI1ZGNkMDFiNTE2ZmY2NGFjMDRhZDA0MTE5ODM0OThiNDQ2ZWRhZTVlMDdhOTlkMDNiZmZjNmZhZWNhLzNjOWYzMTY2NTQ0N2M4OTExNTE3NjIwNzYyMjAwZDIyNDVhMjUxOGQ2ZTcyMDhhY2M3OGNkOWRiMzE3ZTIxYWQ~cmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qIn1dfQ__&Signature=L2vM-fXQLvLgKpPr1ECeFUk0Lcouyyub0h~RmQo2xtPrWNdCeag4UVaq6PofoPffPbWq3IH9sCHpeX2FJ-mdigcYUa5cJReLIEFUktbKtwz845UgOUfuDPQpdoadu~uOYZ1K4~no8G3~dFMGbdKu98VbcasYW5wGYYo7vC7Qa8OcMD-KzMFWjFt9xQk0p9b2AZ0srNEf3g~SDRMQAqvRorzdSrc7pgLAvBp1M-80-G0LpjgzceJana6ptn6JamGPfBmbQKMN3kTFf8mj2V8vCYLsK8E7~TpaxPwCt5t6-ZdBfR0GuhcgImc-AznR9j8FCgVh2NiKoYDYzt0j7QggDA__&Key-Pair-Id=K3RPWS32NSSJCE HTTP/1.1" 200 133466304
+2025-09-17 17:30:21,335 - filelock - DEBUG - Attempting to release lock 2693951239792 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\3c9f31665447c8911517620762200d2245a2518d6e7208acc78cd9db317e21ad.lock
+2025-09-17 17:30:21,337 - filelock - DEBUG - Lock 2693951239792 released on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\3c9f31665447c8911517620762200d2245a2518d6e7208acc78cd9db317e21ad.lock
+2025-09-17 17:30:21,834 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-09-17 17:30:21,855 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/tokenizer_config.json HTTP/1.1" 200 0
+2025-09-17 17:30:21,858 - filelock - DEBUG - Attempting to acquire lock 2693951239792 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\37fca74771bc76a8e01178ce3a6055a0995f8093.lock
+2025-09-17 17:30:21,859 - filelock - DEBUG - Lock 2693951239792 acquired on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\37fca74771bc76a8e01178ce3a6055a0995f8093.lock
+2025-09-17 17:30:21,876 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/tokenizer_config.json HTTP/1.1" 200 366
+2025-09-17 17:30:21,883 - filelock - DEBUG - Attempting to release lock 2693951239792 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\37fca74771bc76a8e01178ce3a6055a0995f8093.lock
+2025-09-17 17:30:21,886 - filelock - DEBUG - Lock 2693951239792 released on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\37fca74771bc76a8e01178ce3a6055a0995f8093.lock
+2025-09-17 17:30:22,187 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-09-17 17:30:22,469 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/vocab.txt HTTP/1.1" 307 0
+2025-09-17 17:30:22,502 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/vocab.txt HTTP/1.1" 200 0
+2025-09-17 17:30:22,504 - filelock - DEBUG - Attempting to acquire lock 2693952579008 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\fb140275c155a9c7c5a3b3e0e77a9e839594a938.lock
+2025-09-17 17:30:22,505 - filelock - DEBUG - Lock 2693952579008 acquired on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\fb140275c155a9c7c5a3b3e0e77a9e839594a938.lock
+2025-09-17 17:30:22,524 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/vocab.txt HTTP/1.1" 200 None
+2025-09-17 17:30:22,541 - filelock - DEBUG - Attempting to release lock 2693952579008 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\fb140275c155a9c7c5a3b3e0e77a9e839594a938.lock
+2025-09-17 17:30:22,545 - filelock - DEBUG - Lock 2693952579008 released on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\fb140275c155a9c7c5a3b3e0e77a9e839594a938.lock
+2025-09-17 17:30:22,828 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/tokenizer.json HTTP/1.1" 307 0
+2025-09-17 17:30:22,848 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/tokenizer.json HTTP/1.1" 200 0
+2025-09-17 17:30:22,851 - filelock - DEBUG - Attempting to acquire lock 2693952581984 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\688882a79f44442ddc1f60d70334a7ff5df0fb47.lock
+2025-09-17 17:30:22,853 - filelock - DEBUG - Lock 2693952581984 acquired on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\688882a79f44442ddc1f60d70334a7ff5df0fb47.lock
+2025-09-17 17:30:22,869 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/tokenizer.json HTTP/1.1" 200 None
+2025-09-17 17:30:22,910 - filelock - DEBUG - Attempting to release lock 2693952581984 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\688882a79f44442ddc1f60d70334a7ff5df0fb47.lock
+2025-09-17 17:30:22,911 - filelock - DEBUG - Lock 2693952581984 released on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\688882a79f44442ddc1f60d70334a7ff5df0fb47.lock
+2025-09-17 17:30:23,203 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/added_tokens.json HTTP/1.1" 404 0
+2025-09-17 17:30:23,491 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/special_tokens_map.json HTTP/1.1" 307 0
+2025-09-17 17:30:23,506 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/special_tokens_map.json HTTP/1.1" 200 0
+2025-09-17 17:30:23,508 - filelock - DEBUG - Attempting to acquire lock 2693952582368 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\a8b3208c2884c4efb86e49300fdd3dc877220cdf.lock
+2025-09-17 17:30:23,509 - filelock - DEBUG - Lock 2693952582368 acquired on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\a8b3208c2884c4efb86e49300fdd3dc877220cdf.lock
+2025-09-17 17:30:24,061 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/special_tokens_map.json HTTP/1.1" 200 125
+2025-09-17 17:30:24,132 - filelock - DEBUG - Attempting to release lock 2693952582368 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\a8b3208c2884c4efb86e49300fdd3dc877220cdf.lock
+2025-09-17 17:30:24,133 - filelock - DEBUG - Lock 2693952582368 released on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\a8b3208c2884c4efb86e49300fdd3dc877220cdf.lock
+2025-09-17 17:30:24,419 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/chat_template.jinja HTTP/1.1" 404 0
+2025-09-17 17:30:24,773 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /BAAI/bge-small-en-v1.5/resolve/main/1_Pooling/config.json HTTP/1.1" 307 0
+2025-09-17 17:30:24,795 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/1_Pooling%2Fconfig.json HTTP/1.1" 200 0
+2025-09-17 17:30:24,799 - filelock - DEBUG - Attempting to acquire lock 2693951238640 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\1da070f0993788c8851a652170ff013aa54dd519.lock
+2025-09-17 17:30:24,800 - filelock - DEBUG - Lock 2693951238640 acquired on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\1da070f0993788c8851a652170ff013aa54dd519.lock
+2025-09-17 17:30:24,825 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/resolve-cache/models/BAAI/bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/1_Pooling%2Fconfig.json HTTP/1.1" 200 190
+2025-09-17 17:30:24,832 - filelock - DEBUG - Attempting to release lock 2693951238640 on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\1da070f0993788c8851a652170ff013aa54dd519.lock
+2025-09-17 17:30:24,836 - filelock - DEBUG - Lock 2693951238640 released on ./models/sentence_transformers\.locks\models--BAAI--bge-small-en-v1.5\1da070f0993788c8851a652170ff013aa54dd519.lock
+2025-09-17 17:30:25,132 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "GET /api/models/BAAI/bge-small-en-v1.5 HTTP/1.1" 200 148941
+2025-09-17 17:30:25,837 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-09-17 17:30:25,896 - chromadb.config - DEBUG - Starting component System
+2025-09-17 17:30:25,897 - chromadb.config - DEBUG - Starting component Posthog
+2025-09-17 17:30:25,984 - ingestion_pipeline.vectorizer - WARNING - Loading existing Chroma index from 'c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\vectorstore\chroma_index'
+2025-09-17 17:30:25,984 - ingestion_pipeline - DEBUG - Collecting 2 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000002733CC1EC00>
+2025-09-17 17:30:25,985 - ingestion_pipeline.data_loader - DEBUG - Loading file: c:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense\Data\LLM Notes.pdf
+2025-09-17 17:30:26,325 - ingestion_pipeline - DEBUG - number of documents collected: 2
+2025-09-17 17:30:26,325 - ingestion_pipeline - DEBUG - Collecting 2 items from <generator object lazy_chunker at 0x000002733E125070>
+2025-09-17 17:30:26,326 - ingestion_pipeline - DEBUG - number of chunks collected: 2
+2025-09-17 17:30:26,459 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): us.i.posthog.com:443

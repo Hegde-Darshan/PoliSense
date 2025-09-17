@@ -8,11 +8,9 @@ from langchain.text_splitter import CharacterTextSplitter, RecursiveCharacterTex
 from typing import Iterator, List
 
 import logging
-import logging.config
-from IngestionPipeline.logger import LOGGING_CONFIG
 
-logging.config.dictConfig(LOGGING_CONFIG)
-logger = logging.getLogger("data_loader")
+root_logger = logging.getLogger("ingestion_pipeline")
+logger = root_logger.getChild("data_loader")
 
 
 # Step 2: Chunk the text with metadata

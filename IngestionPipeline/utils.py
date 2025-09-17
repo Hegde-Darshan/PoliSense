@@ -4,11 +4,9 @@ from pathlib import Path
 from typing import List
 
 import logging
-import logging.config
-from IngestionPipeline.logger import LOGGING_CONFIG
 
-logging.config.dictConfig(LOGGING_CONFIG)
-logger = logging.getLogger("utils")
+root_logger = logging.getLogger("ingestion_pipeline")
+logger = root_logger.getChild("utils")
 
 
 def get_new_filenames(folder_path: Path, processed_files:Path) -> List[str]:
@@ -31,5 +29,5 @@ def get_new_filenames(folder_path: Path, processed_files:Path) -> List[str]:
             files_to_read.append(file_name)
             files_read.append(file_name)
         
-    json.dump(files_read, open(processed_files, 'w'))
+    #json.dump(files_read, open(processed_files, 'w'))
     return files_to_read
