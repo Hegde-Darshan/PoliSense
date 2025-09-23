@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 from typing import Callable, Iterator
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_community.vectorstores import Chroma
+# from langchain_community.vectorstores import Chroma
 
 from langchain_text_splitters import CharacterTextSplitter, RecursiveCharacterTextSplitter
 from langchain.schema import Document
@@ -84,12 +84,8 @@ if __name__ == "__main__":
         #getting the next batch of documents
         doc_collection = collector(iterator=doc_iterator, collect=4)
 
-    vectorstore.persist()
+    # vectorstore.persist()
 
-    db = Chroma(
-        persist_directory="vectorstore/chroma_index",
-        embedding_function=HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
-    )
-    count = db._collection.count()
+
 
 

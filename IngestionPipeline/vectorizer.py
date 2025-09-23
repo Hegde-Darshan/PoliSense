@@ -3,6 +3,7 @@ from pathlib import Path
 
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain_community.docstore.in_memory import InMemoryDocstore
 from langchain.schema import Document
 
@@ -37,6 +38,7 @@ def initialize_chromadb(persist_path: str) -> Chroma:
     try:
         # Load existing Chroma index
         vector_index = Chroma(
+            collection_name="Polisense",
             persist_directory=persist_path,
             embedding_function=embedding_model
         )
@@ -46,6 +48,7 @@ def initialize_chromadb(persist_path: str) -> Chroma:
         print(f"No existing Chroma index found at '{persist_path}'. "
               f"A new index will be created after ingestion.")
         vector_index = Chroma(
+            collection_name="Polisense",
             persist_directory=persist_path,
             embedding_function=embedding_model
         )

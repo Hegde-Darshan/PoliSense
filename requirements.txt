@@ -4,6 +4,7 @@
 langchain-community
 langchain-huggingface
 langchain
+langchain-chroma
 
 # Hugging Face embeddings and transformers
 sentence-transformers

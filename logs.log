@@ -109,3 +109,201 @@
 2025-09-15 21:59:34,926 - ingestion_pipeline - DEBUG - List of new files to ingest: []
 2025-09-15 21:59:40,046 - ingestion_pipeline - DEBUG - Initial vectorstore document count: 2306
 2025-09-15 21:59:40,047 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x0000020F2200E680>
+2025-09-16 12:54:27,098 - ingestion_pipeline - DEBUG - List of new files to ingest: ['LLM Notes.pdf', 'MLOPS Interview Questions.pdf']
+2025-09-16 12:54:46,687 - ingestion_pipeline - DEBUG - Initial vectorstore document count: 0
+2025-09-16 12:54:46,687 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000001A000077CD0>
+2025-09-16 12:54:47,115 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 12:54:47,115 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0000A3140>
+2025-09-16 12:54:47,119 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 12:54:48,756 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 10
+2025-09-16 12:54:48,757 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0000A3140>
+2025-09-16 12:54:48,757 - ingestion_pipeline - DEBUG - number of chunks collected: 1
+2025-09-16 12:54:48,870 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 11
+2025-09-16 12:54:48,872 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0000A3140>
+2025-09-16 12:54:48,872 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000001A000077CD0>
+2025-09-16 12:54:49,163 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 12:54:49,163 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0003D3CA0>
+2025-09-16 12:54:49,163 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 12:54:50,122 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 21
+2025-09-16 12:54:50,124 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0003D3CA0>
+2025-09-16 12:54:50,125 - ingestion_pipeline - DEBUG - number of chunks collected: 3
+2025-09-16 12:54:50,403 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 24
+2025-09-16 12:54:50,403 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0003D3CA0>
+2025-09-16 12:54:50,403 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000001A000077CD0>
+2025-09-16 12:54:50,653 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 12:54:50,657 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0000A3140>
+2025-09-16 12:54:50,657 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 12:54:51,643 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 34
+2025-09-16 12:54:51,647 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0000A3140>
+2025-09-16 12:54:51,647 - ingestion_pipeline - DEBUG - number of chunks collected: 7
+2025-09-16 12:54:52,355 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 41
+2025-09-16 12:54:52,355 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0000A3140>
+2025-09-16 12:54:52,355 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000001A000077CD0>
+2025-09-16 12:54:52,464 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 12:54:52,464 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0003D3E60>
+2025-09-16 12:54:52,466 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 12:54:53,376 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 51
+2025-09-16 12:54:53,376 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0003D3E60>
+2025-09-16 12:54:53,376 - ingestion_pipeline - DEBUG - number of chunks collected: 2
+2025-09-16 12:54:53,596 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 53
+2025-09-16 12:54:53,599 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0003D3E60>
+2025-09-16 12:54:53,601 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000001A000077CD0>
+2025-09-16 12:54:53,707 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 12:54:53,707 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0000A3140>
+2025-09-16 12:54:53,707 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 12:54:54,744 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 63
+2025-09-16 12:54:54,745 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0000A3140>
+2025-09-16 12:54:54,745 - ingestion_pipeline - DEBUG - number of chunks collected: 2
+2025-09-16 12:54:54,962 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 65
+2025-09-16 12:54:54,962 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0000A3140>
+2025-09-16 12:54:54,964 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000001A000077CD0>
+2025-09-16 12:54:54,972 - ingestion_pipeline - DEBUG - number of documents collected: 1
+2025-09-16 12:54:54,972 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0003D3BC0>
+2025-09-16 12:54:54,974 - ingestion_pipeline - DEBUG - number of chunks collected: 1
+2025-09-16 12:54:55,042 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 66
+2025-09-16 12:54:55,043 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000001A0003D3BC0>
+2025-09-16 12:54:55,043 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000001A000077CD0>
+2025-09-16 12:55:33,271 - ingestion_pipeline - DEBUG - List of new files to ingest: ['LLM Notes.pdf', 'MLOPS Interview Questions.pdf']
+2025-09-16 12:55:53,989 - ingestion_pipeline - DEBUG - Initial vectorstore document count: 66
+2025-09-16 12:55:53,989 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000002A580077CD0>
+2025-09-16 12:55:54,300 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 12:55:54,300 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5800A3680>
+2025-09-16 12:55:54,300 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 12:55:55,352 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 76
+2025-09-16 12:55:55,352 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5800A3680>
+2025-09-16 12:55:55,352 - ingestion_pipeline - DEBUG - number of chunks collected: 1
+2025-09-16 12:55:55,452 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 77
+2025-09-16 12:55:55,453 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5800A3680>
+2025-09-16 12:55:55,453 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000002A580077CD0>
+2025-09-16 12:55:55,565 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 12:55:55,566 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5803E3BC0>
+2025-09-16 12:55:55,567 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 12:55:56,535 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 87
+2025-09-16 12:55:56,535 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5803E3BC0>
+2025-09-16 12:55:56,535 - ingestion_pipeline - DEBUG - number of chunks collected: 3
+2025-09-16 12:55:56,866 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 90
+2025-09-16 12:55:56,867 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5803E3BC0>
+2025-09-16 12:55:56,867 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000002A580077CD0>
+2025-09-16 12:55:57,077 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 12:55:57,077 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5800A3680>
+2025-09-16 12:55:57,079 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 12:55:58,031 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 100
+2025-09-16 12:55:58,033 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5800A3680>
+2025-09-16 12:55:58,033 - ingestion_pipeline - DEBUG - number of chunks collected: 7
+2025-09-16 12:55:58,659 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 107
+2025-09-16 12:55:58,659 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5800A3680>
+2025-09-16 12:55:58,659 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000002A580077CD0>
+2025-09-16 12:55:58,795 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 12:55:58,795 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5803E3AE0>
+2025-09-16 12:55:58,795 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 12:55:59,633 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 117
+2025-09-16 12:55:59,633 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5803E3AE0>
+2025-09-16 12:55:59,633 - ingestion_pipeline - DEBUG - number of chunks collected: 2
+2025-09-16 12:55:59,853 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 119
+2025-09-16 12:55:59,858 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5803E3AE0>
+2025-09-16 12:55:59,858 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000002A580077CD0>
+2025-09-16 12:56:00,130 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 12:56:00,130 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5800A3680>
+2025-09-16 12:56:00,134 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 12:56:01,173 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 129
+2025-09-16 12:56:01,174 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5800A3680>
+2025-09-16 12:56:01,174 - ingestion_pipeline - DEBUG - number of chunks collected: 2
+2025-09-16 12:56:01,417 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 131
+2025-09-16 12:56:01,418 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5800A3680>
+2025-09-16 12:56:01,418 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000002A580077CD0>
+2025-09-16 12:56:01,425 - ingestion_pipeline - DEBUG - number of documents collected: 1
+2025-09-16 12:56:01,425 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5803E3CA0>
+2025-09-16 12:56:01,425 - ingestion_pipeline - DEBUG - number of chunks collected: 1
+2025-09-16 12:56:01,502 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 132
+2025-09-16 12:56:01,503 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x000002A5803E3CA0>
+2025-09-16 12:56:01,503 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x000002A580077CD0>
+2025-09-16 13:10:29,010 - ingestion_pipeline - DEBUG - List of new files to ingest: ['LLM Notes.pdf', 'MLOPS Interview Questions.pdf']
+2025-09-16 13:10:38,762 - ingestion_pipeline - DEBUG - Initial vectorstore document count: 132
+2025-09-16 13:10:38,763 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000255A6853CD0>
+2025-09-16 13:10:39,305 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 13:10:39,305 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6867060>
+2025-09-16 13:10:39,308 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 13:10:41,209 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 142
+2025-09-16 13:10:41,211 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6867060>
+2025-09-16 13:10:41,212 - ingestion_pipeline - DEBUG - number of chunks collected: 1
+2025-09-16 13:10:41,417 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 143
+2025-09-16 13:10:41,417 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6867060>
+2025-09-16 13:10:41,417 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000255A6853CD0>
+2025-09-16 13:10:41,742 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 13:10:41,742 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6BA7BC0>
+2025-09-16 13:10:41,747 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 13:10:43,222 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 153
+2025-09-16 13:10:43,225 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6BA7BC0>
+2025-09-16 13:10:43,225 - ingestion_pipeline - DEBUG - number of chunks collected: 3
+2025-09-16 13:10:43,805 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 156
+2025-09-16 13:10:43,806 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6BA7BC0>
+2025-09-16 13:10:43,806 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000255A6853CD0>
+2025-09-16 13:10:44,202 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 13:10:44,228 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6867060>
+2025-09-16 13:10:44,232 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 13:10:45,927 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 166
+2025-09-16 13:10:45,927 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6867060>
+2025-09-16 13:10:45,931 - ingestion_pipeline - DEBUG - number of chunks collected: 7
+2025-09-16 13:10:47,025 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 173
+2025-09-16 13:10:47,029 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6867060>
+2025-09-16 13:10:47,029 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000255A6853CD0>
+2025-09-16 13:10:47,312 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 13:10:47,312 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6BA7CA0>
+2025-09-16 13:10:47,312 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 13:10:48,712 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 183
+2025-09-16 13:10:48,716 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6BA7CA0>
+2025-09-16 13:10:48,716 - ingestion_pipeline - DEBUG - number of chunks collected: 2
+2025-09-16 13:10:49,075 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 185
+2025-09-16 13:10:49,075 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6BA7CA0>
+2025-09-16 13:10:49,075 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000255A6853CD0>
+2025-09-16 13:10:49,600 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 13:10:49,601 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6867060>
+2025-09-16 13:10:49,602 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 13:10:51,043 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 195
+2025-09-16 13:10:51,045 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6867060>
+2025-09-16 13:10:51,045 - ingestion_pipeline - DEBUG - number of chunks collected: 2
+2025-09-16 13:10:51,364 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 197
+2025-09-16 13:10:51,366 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6867060>
+2025-09-16 13:10:51,366 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000255A6853CD0>
+2025-09-16 13:10:51,387 - ingestion_pipeline - DEBUG - number of documents collected: 1
+2025-09-16 13:10:51,389 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6BA7D80>
+2025-09-16 13:10:51,389 - ingestion_pipeline - DEBUG - number of chunks collected: 1
+2025-09-16 13:10:51,515 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 198
+2025-09-16 13:10:51,515 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x00000255A6BA7D80>
+2025-09-16 13:10:51,515 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x00000255A6853CD0>
+2025-09-16 13:12:00,573 - ingestion_pipeline - DEBUG - List of new files to ingest: ['MLOPS Interview Questions.pdf']
+2025-09-16 13:12:08,671 - ingestion_pipeline - DEBUG - Initial vectorstore document count: 198
+2025-09-16 13:12:08,673 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x0000026433E57CD0>
+2025-09-16 13:12:09,160 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 13:12:09,160 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x0000026433E6A880>
+2025-09-16 13:12:09,162 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 13:12:10,584 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 208
+2025-09-16 13:12:10,586 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x0000026433E6A880>
+2025-09-16 13:12:10,587 - ingestion_pipeline - DEBUG - number of chunks collected: 6
+2025-09-16 13:12:11,366 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 214
+2025-09-16 13:12:11,369 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x0000026433E6A880>
+2025-09-16 13:12:11,369 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x0000026433E57CD0>
+2025-09-16 13:12:11,518 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 13:12:11,518 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x0000026434B93A00>
+2025-09-16 13:12:11,518 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 13:12:12,704 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 224
+2025-09-16 13:12:12,706 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x0000026434B93A00>
+2025-09-16 13:12:12,706 - ingestion_pipeline - DEBUG - number of chunks collected: 3
+2025-09-16 13:12:13,156 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 227
+2025-09-16 13:12:13,161 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x0000026434B93A00>
+2025-09-16 13:12:13,161 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x0000026433E57CD0>
+2025-09-16 13:12:13,437 - ingestion_pipeline - DEBUG - number of documents collected: 4
+2025-09-16 13:12:13,437 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x0000026433E6A880>
+2025-09-16 13:12:13,441 - ingestion_pipeline - DEBUG - number of chunks collected: 10
+2025-09-16 13:12:14,651 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 237
+2025-09-16 13:12:14,652 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x0000026433E6A880>
+2025-09-16 13:12:14,652 - ingestion_pipeline - DEBUG - number of chunks collected: 2
+2025-09-16 13:12:14,936 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 239
+2025-09-16 13:12:14,941 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x0000026433E6A880>
+2025-09-16 13:12:14,941 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x0000026433E57CD0>
+2025-09-16 13:12:15,012 - ingestion_pipeline - DEBUG - number of documents collected: 2
+2025-09-16 13:12:15,012 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x0000026433E6A6C0>
+2025-09-16 13:12:15,012 - ingestion_pipeline - DEBUG - number of chunks collected: 4
+2025-09-16 13:12:15,500 - ingestion_pipeline - DEBUG - Chunks added to vectorstore. Current total documents: 243
+2025-09-16 13:12:15,503 - ingestion_pipeline - DEBUG - Collecting 10 items from <generator object lazy_chunker at 0x0000026433E6A6C0>
+2025-09-16 13:12:15,503 - ingestion_pipeline - DEBUG - Collecting 4 items from <generator object ChosenFilesDirectoryLoader.lazy_load at 0x0000026433E57CD0>
