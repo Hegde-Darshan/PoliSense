@@ -19,7 +19,7 @@ def lazy_chunker(documents: list[Document]) -> Iterator[Document]:
     Chunk a document into smaller pieces using RecursiveCharacterTextSplitter.
     Args:
         document: The langchain Document object to be chunked
-        Yields: Chunks of the document as langchain Document objects
+    Yields: Chunks of the document as langchain Document objects
     """
     text_chunker = RecursiveCharacterTextSplitter(
         chunk_size=1000,
@@ -41,8 +41,10 @@ class ChosenFilesDirectoryLoader(DirectoryLoader):
             directory: Path to directory
             list_of_files: List of filenames to load from the directory
         """
-        self.list_of_files = list_of_files
         self.path = directory
+        self.list_of_files = list_of_files
+        self.skipped = list()
+        
 
 
     def load(self) -> List[Document]:
@@ -67,17 +69,16 @@ class ChosenFilesDirectoryLoader(DirectoryLoader):
             raise ValueError("No filenames specified for loading.")
         
 
-        for files in os.listdir(self.path):
-            if files not in self.list_of_files:
-                continue
-
+        for files in self.list_of_files:
             file_path = p / Path(files)
 
             if os.path.isfile(file_path) and file_path.suffix == ".pdf":
                 logger.debug(f"Loading file: {file_path}")
                 loader = PyPDFLoader(str(file_path))
                 for doc in loader.lazy_load():
+                    #need to add other metadata here if required
                     doc.metadata["source"] = files
                     yield doc
             else:
-                logger.warning(f"Skipping unsupported file or not a file: {file_path}")
+                self.skipped.append(file_path)
+                logger.debug(f"Skipping unsupported file or not a file: {file_path}")

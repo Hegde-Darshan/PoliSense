@@ -24,11 +24,19 @@ try:
 except Exception as e:
     logger.error(f"Error loading .env file: {e}")
 
-# Import packages with environment variable dependencies
-from IngestionPipeline.data_loader import ChosenFilesDirectoryLoader, lazy_chunker
-from IngestionPipeline.utils import get_new_filenames
-from IngestionPipeline.vectorizer import chroma_server_connect, load_chromadb_collection
+#load config file
+import yaml
+try:
+    with open(ROOT_PATH / "config.yml", 'r') as config_file:
+        config = yaml.safe_load(config_file)
+except FileNotFoundError:
+    logger.error("config.yml file not found.")
+    raise
 
+# Import packages with environment variable dependencies
+import IngestionPipeline.data_loader as loader
+import IngestionPipeline.utils as utils
+import IngestionPipeline.vectorizer as vectorizer
 import faulthandler; faulthandler.enable() #optional: imported to debug system level errors
 
 
@@ -51,37 +59,50 @@ def collector(iterator: Iterator, collect: int) -> list[Document] | None:
 
 
 if __name__ == "__main__":
-    
+      
     #get list of new files to ingest
-    list_of_files = get_new_filenames(ROOT_PATH/Path("Data"), 
-                        ROOT_PATH/Path("documents")/Path("files_read.json")
-                    )
+    list_of_files = utils.get_new_filenames(ROOT_PATH/Path(config['DATA_PATH']), 
+                        ROOT_PATH/Path(config['READ_PATH']))
     logger.debug(f"List of new files to ingest: {list_of_files}")
 
     #local chromadb server run by docker
     #check connection to chroma_server
-    chroma_client = chroma_server_connect(host=os.getenv("CHROMA_SERVER"), port=int(os.getenv("CHROMA_PORT")))
+    chroma_host = os.getenv("CHROMA_SERVER")
+    chroma_port_str = os.getenv("CHROMA_PORT")
+    if chroma_host is None or chroma_port_str is None:
+        raise EnvironmentError("CHROMA_SERVER and CHROMA_PORT environment variables must be set")
+    try:
+        chroma_port = int(chroma_port_str)
+    except ValueError:
+        raise ValueError("CHROMA_PORT environment variable must be an integer")
+    
+    chroma_client = vectorizer.chroma_server_connect(host=chroma_host, port=int(chroma_port))
+    print(chroma_client)
+    print(type(chroma_client))
     if not chroma_client:
         raise Exception("Chroma server not available. Cannot ingest data")
 
     #initialize loader and vectorstore
-    loader = ChosenFilesDirectoryLoader(ROOT_PATH/Path("Data"), list_of_files)
-    vectorstore = load_chromadb_collection(client=chroma_client) #persist path declared in docker file
+    file_loader = loader.ChosenFilesDirectoryLoader(ROOT_PATH/Path(config['DATA_PATH']), list_of_files)
+    vectorstore = vectorizer.load_chromadb_collection(client=chroma_client, collection=config['CHROMA_COLLECTION']) #persist path declared in docker file
     print(f"Vectorstore initialized as follows:\n{vectorstore}\n{type(vectorstore)}")
+
+    if vectorstore is None:
+        raise Exception("Vectorstore could not be initialized. Cannot ingest data")
 
     #ingest documents in batches, defined by collector function
     #initialize document iterator and collect first batch of documents
-    doc_iterator = loader.lazy_load()
+    doc_iterator = file_loader.lazy_load()
     doc_collection = collector(doc_iterator, 4)
 
     #ingestion loop
     while doc_collection:
         logger.debug(f"number of documents collected: {len(doc_collection)}")
         #initialize chunk iterator and collect first batch of chunks
-        chunk_iterator = lazy_chunker(doc_collection)
+        chunk_iterator = loader.lazy_chunker(doc_collection)
         chunk_collection = collector(chunk_iterator, 10)
 
-        while chunk_collection:
+        while chunk_collection: 
             logger.debug(f"number of chunks collected: {len(chunk_collection)}")
             # print(chunk_collection)
             try:
@@ -97,7 +118,12 @@ if __name__ == "__main__":
         doc_collection = collector(iterator=doc_iterator, collect=4)
 
     #save files read
-    curr_files = json.load(open(Path("documents")/Path("files_read.json"), 'r')) if os.path.exists(Path("documents")/Path("files_read.json")) else []
+    curr_files = json.load(open(Path(config['READ_PATH']), 'r')) if os.path.exists(Path(config['READ_PATH'])) else []
     list_of_files = list_of_files + curr_files
     logger.debug(f"Files processed so far: {list_of_files}")
-    json.dump(list_of_files, open(Path("documents")/Path("files_read.json"), 'w'))
+    json.dump(list_of_files, open(ROOT_PATH/Path(config['READ_PATH']), 'w'))
+
+    skipped_files = file_loader.skipped
+    json.dump(skipped_files, open(ROOT_PATH/Path(config['SKIPPED_PATH']), 'w'))
+    
+    logger.info("Ingestion process completed.")

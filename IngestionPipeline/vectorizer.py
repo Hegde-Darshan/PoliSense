@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 import chromadb
+from chromadb.api import ClientAPI
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 
@@ -28,34 +29,29 @@ def init_embeddings(model_name, **kwargs) -> HuggingFaceEmbeddings:
 
 # Initialize chroma vector database locally
 def init_chromadb(persist_path: str | None, collection: str = "PolisenseTest",
-                  embedding_model_name:str = "BAAI/bge-small-en-v1.5") -> Chroma:
+                  embedding_model_name: str = "BAAI/bge-small-en-v1.5") -> Chroma:
     """
     Initialize or load ChromaDB vector store from the given path.
     args:
-        persist_path: Path to the directory where ChromaDB index is stored."""
+        persist_path: Path to the directory where ChromaDB index is stored.
+    """
+    if persist_path and Path(persist_path).exists():
+        logger.info(f"Loading existing Chroma index from '{persist_path}'")
+    else:
+        logger.info(f"Creating new Chroma index at '{persist_path}'")
+        
     embedding_model = HuggingFaceEmbeddings(model_name=embedding_model_name)
-    try:
-        # Load existing Chroma index
-        vector_index = Chroma(
-            collection_name=collection,
-            persist_directory=persist_path,
-            embedding_function=embedding_model
-        )
-        logger.warning(f"Loading existing Chroma index from '{persist_path}'")
-    except FileNotFoundError:
-        # Create empty Chroma index (will be populated during ingestion)
-        logger.warning(f"No existing Chroma index found at '{persist_path}'. "
-              f"A new index will be created after ingestion.")
-        vector_index = Chroma(
-            collection_name='Polisense',
-            persist_directory=persist_path,
-            embedding_function=embedding_model
-        )
+    vector_index = Chroma(
+        collection_name=collection,
+        persist_directory=persist_path,
+        embedding_function=embedding_model
+    )
+    logger.info(f"Chroma index initialized with collection '{collection}'")
     return vector_index
 
 
 # load a chromadb collection given a chromadb client
-def load_chromadb_collection(client:chromadb.ClientAPI, collection: str = "PolisenseTest",
+def load_chromadb_collection(client, collection: str = "PolisenseTest",
                              embedding_model_name:str = "BAAI/bge-small-en-v1.5") -> Chroma | None:
     """
     Initialize or load ChromaDB vector store from the given path.
@@ -75,7 +71,7 @@ def load_chromadb_collection(client:chromadb.ClientAPI, collection: str = "Polis
 
 
 # establish a https connection to the server
-def chroma_server_connect(host:str= "localhost", port:int=8000) -> chromadb.ClientAPI | None:
+def chroma_server_connect(host:str= "localhost", port:int=8000) -> ClientAPI | None:
     """
     Initialize a HTTP connection to the ChromaDB server
 
