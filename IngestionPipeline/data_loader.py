@@ -46,7 +46,6 @@ class ChosenFilesDirectoryLoader(DirectoryLoader):
         self.skipped = list()
         
 
-
     def load(self) -> List[Document]:
         """
         Greedy loader wrapper around lazy load
@@ -64,20 +63,21 @@ class ChosenFilesDirectoryLoader(DirectoryLoader):
         if not p.is_dir():
             raise ValueError(f"Expected directory, got file: '{self.path}'")
         
-
         if self.list_of_files is None or len(self.list_of_files) == 0:
             raise ValueError("No filenames specified for loading.")
         
-
         for files in self.list_of_files:
             file_path = p / Path(files)
+            file_name = Path(files).name
+            parent_dir = Path(files).parent.name
 
             if os.path.isfile(file_path) and file_path.suffix == ".pdf":
                 logger.debug(f"Loading file: {file_path}")
                 loader = PyPDFLoader(str(file_path))
                 for doc in loader.lazy_load():
                     #need to add other metadata here if required
-                    doc.metadata["source"] = files
+                    doc.metadata["filename"] = str(file_name)
+                    doc.metadata["source"] = str(parent_dir)
                     yield doc
             else:
                 self.skipped.append(file_path)
