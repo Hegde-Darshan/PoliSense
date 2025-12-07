@@ -1,10 +1,11 @@
-env
-archive
-.env
+vectorstore/
+.idea/
+archive/
+models/
+test.py
+venv/
+logs.log
+chroma
+Subsidies Schemes Grants and Incentives/
 logs.log.1
 logs.log.2
-Subsidies Schemes Grants and Incentives/
-models/
-chroma/
-.idea/
-test.py

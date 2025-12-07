@@ -1,17 +1,17 @@
-# environment variables
+# Requirements for the PoliSense project
+
+# langchain and related libraries
+langchain-community
+langchain-huggingface
+langchain
+
+# Hugging Face embeddings and transformers
+sentence-transformers
+faiss-cpu
+chromadb
+
+# PDF processing
+pypdf
+
+# Other dependencies
 dotenv
-
-# data handling 
-numpy
-pandas
-
-# API handling
-requests
-
-# embedding & language models
-huggingface
-
-# vector database
-faiss
-
-
