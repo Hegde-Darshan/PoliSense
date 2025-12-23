@@ -1,31 +1,34 @@
-from typing import List, Dict, Any
-import json
-from math import sqrt
-
-from langchain.retrievers import BaseRetriever, ParentDocumentRetriever
-from langchain_community.vectorstores import Chroma
+from typing import Dict
 
 
-def get_query():
-    return "sample query"
+def preprocess_query(query: str) -> str:
+    """
+    Normalize query text for retrieval.
+    """
+    query = query.lower().strip()
+    query = " ".join(query.split())
+    return query
 
 
-def load_documents(file_path: str) -> List[Dict[str, Any]]:
-    """Load documents from a JSON file."""
-    with open(file_path, 'r', encoding='utf-8') as f:
-        return json.load(f)
-    
+def build_metadata_filter(client_profile: Dict | None = None) -> Dict:
+    """
+    Optional metadata filter for Chroma queries.
+    Example:
+    {
+        "industry": "logistics",
+        "country": "india",
+        "scale": "small"
+    }
+    """
+    if not client_profile:
+        return {}
 
-def split_into_chunks(text: str, chunk_size: int = 512, overlap: int = 50) -> List[str]:
-    """Split text into overlapping chunks."""
-    chunks = []
-    for i in range(0, len(text), chunk_size - overlap):
-        chunks.append(text[i:i + chunk_size])
-    return chunks
+    filters = {}
 
+    if "industry" in client_profile:
+        filters["industry"] = client_profile["industry"]
 
-def preprocess_text(text: str) -> str:
-    """Preprocess text: lowercase, remove extra whitespace."""
-    text = text.lower().strip()
-    text = ' '.join(text.split())
-    return text
+    if "country" in client_profile:
+        filters["country"] = client_profile["country"]
+
+    return filters

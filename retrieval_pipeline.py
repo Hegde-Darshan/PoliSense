@@ -1,42 +1,54 @@
-
-from langchain.retrievers import BaseRetriever, ParentDocumentRetriever
-from langchain_community.vectorstores import Chroma
 from typing import List, Dict, Any
-import json
 
-from RetrievalPipeline import retriever as ret
-from RetrievalPipeline import preprocessor as prep
+from RetrievalPipeline.preprocessor import preprocess_query, build_metadata_filter
+from RetrievalPipeline.retriever import retrieve_documents
 
-def retrieval_pipeline(file_path: str, query: str, top_k: int = 5) -> List[Dict[str, Any]]:
-    # Load and preprocess documents
-    documents = prep.load_documents(file_path)
-    for doc in documents:
-        doc['content'] = prep.preprocess_text(doc.get('content', ''))
-    
-    # Retrieve by keyword
-    keyword_results = ret.retrieve_by_keyword(documents, query, top_k)
-    
-    # Assuming embeddings are precomputed and available
-    embeddings = [doc.get('embedding', []) for doc in documents]
-    query_embedding = [0.1] * 768  # Placeholder for actual query embedding
-    
-    # Retrieve by semantic similarity
-    semantic_indices = ret.retrieve_by_semantic_similarity(embeddings, query_embedding, top_k)
-    semantic_results = [documents[i] for i in semantic_indices]
-    
-    # Combine and rerank results
-    combined_results = list({doc['id']: doc for doc in (keyword_results + semantic_results)}.values())
-    reranked_results = ret.rerank_results(combined_results, query)
-    
-    return reranked_results[:top_k]
+
+def retrieval_pipeline(
+    query: str,
+    client_profile: Dict | None = None,
+    top_k: int = 5
+) -> List[Dict[str, Any]]:
+
+    clean_query = preprocess_query(query)
+    metadata_filter = build_metadata_filter(client_profile)
+
+    docs = retrieve_documents(
+        query=clean_query,
+        k=top_k,
+        metadata_filter=metadata_filter,
+        use_mmr=True
+    )
+
+    results = []
+    for doc in docs:
+        results.append({
+            "content": doc.page_content,
+            "metadata": doc.metadata
+        })
+
+    return results
+
 
 
 if __name__ == "__main__":
 
-    # get active chroma db session
-    # get query
-    # get retriever documents and rerank if needed
-    # return all documents in proper format for downstream LLM generation task
+    query = "government schemes for warehouse automation and SMEs"
 
-    # CALL THE PIPELINE FUNCTION HERE WITH APPROPRIATE ARGUMENTS
-    pass
+    client_profile = {
+        "industry": "logistics",
+        "country": "india",
+        "scale": "small"
+    }
+
+    results = retrieval_pipeline(
+        query=query,
+        # client_profile=client_profile,
+        top_k=5
+    )
+
+    for i, r in enumerate(results, 1):
+        print(f"\nResult {i}")
+        print("-" * 40)
+        print(r["content"][:500])
+        print("Metadata:", r["metadata"])
