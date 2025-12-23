@@ -10,7 +10,7 @@ db = Chroma(
 # db = initialize_chromadb(persist_path=str(ROOT_PATH / Path("vectorstore") / Path("chroma_index")))
 count = db._collection.count()
 print(f"Chroma DB has {count} documents")
-results = db.similarity_search("what is markov chains", k=5)
+results = db.similarity_search("Tell me about msme schemes", k=5)
 print(results)
 for r in results:
     print("Retrieved Text:", r.page_content[:200], "...")
