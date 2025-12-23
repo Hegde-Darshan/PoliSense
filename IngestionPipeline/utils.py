@@ -4,11 +4,9 @@ from pathlib import Path
 from typing import List
 
 import logging
-import logging.config
-from IngestionPipeline.logger import LOGGING_CONFIG
 
-logging.config.dictConfig(LOGGING_CONFIG)
-logger = logging.getLogger("utils")
+root_logger = logging.getLogger("ingestion_pipeline")
+logger = root_logger.getChild("utils")
 
 
 def get_new_filenames(folder_path: Path, processed_files:Path) -> List[str]:
@@ -26,10 +24,12 @@ def get_new_filenames(folder_path: Path, processed_files:Path) -> List[str]:
         print(f"No processed files record found at '{processed_files}'. Assuming no files have been read yet.")
         return []
 
-    for file_name in os.listdir(folder_path):
-        if file_name.endswith(".pdf") and file_name not in files_read:
-            files_to_read.append(file_name)
-            files_read.append(file_name)
+    for root, dirs, files in os.walk(folder_path):
+        for file_name in files:
+            if file_name.endswith(".pdf") and file_name not in files_read:
+                relative_path = os.path.relpath(os.path.join(root, file_name), folder_path)
+                files_to_read.append(relative_path)
+                files_read.append(relative_path)
         
-    json.dump(files_read, open(processed_files, 'w'))
+    #json.dump(files_read, open(processed_files, 'w'))
     return files_to_read

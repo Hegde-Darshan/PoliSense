@@ -9,7 +9,7 @@ LOGGING_CONFIG = {
     },
     'handlers': {
         'console': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'standard'
         },
@@ -22,15 +22,8 @@ LOGGING_CONFIG = {
             'formatter': 'standard',
         },
     },
-    'loggers': {
-        'my_app': {
-            'handlers': ['console', 'file_handler'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-    },
     'root': {
-        'handlers': ['console'],
-        'level': 'WARNING',
+        'handlers': ['console', 'file_handler'],
+        'level': 'DEBUG',
     }
 }

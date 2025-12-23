@@ -8,8 +8,10 @@ langchain
 # Hugging Face embeddings and transformers
 sentence-transformers
 faiss-cpu
+chromadb
 
 # PDF processing
 pypdf
 
 # Other dependencies
+dotenv
