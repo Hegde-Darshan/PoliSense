@@ -16,18 +16,18 @@ def retrieval_pipeline(
     docs = retrieve_documents(
         query=clean_query,
         k=top_k,
-        metadata_filter=metadata_filter,
+        # metadata_filter=metadata_filter,
         use_mmr=True
     )
 
-    results = []
-    for doc in docs:
-        results.append({
+    return [
+        {
             "content": doc.page_content,
             "metadata": doc.metadata
-        })
+        }
+        for doc in docs
+    ]
 
-    return results
 
 
 
