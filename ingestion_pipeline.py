@@ -7,6 +7,13 @@ from langchain.schema import Document
 from dotenv import load_dotenv
 from IngestionPipeline.logger import LOGGING_CONFIG
 
+# Import packages with environment variable dependencies
+import IngestionPipeline.data_loader as loader
+import IngestionPipeline.utils as utils
+import IngestionPipeline.vectorizer as vectorizer
+from IngestionPipeline.metadata_extractor import extract_metadata_from_path
+import faulthandler; faulthandler.enable() #optional: imported to debug system level errors
+
 # Configure loggers
 import logging.config
 logging.config.dictConfig(LOGGING_CONFIG)
@@ -32,12 +39,6 @@ try:
 except FileNotFoundError:
     logger.error("config.yml file not found.")
     raise
-
-# Import packages with environment variable dependencies
-import IngestionPipeline.data_loader as loader
-import IngestionPipeline.utils as utils
-import IngestionPipeline.vectorizer as vectorizer
-import faulthandler; faulthandler.enable() #optional: imported to debug system level errors
 
 
 def collector(iterator: Iterator, collect: int) -> list[Document] | None:
@@ -98,7 +99,18 @@ if __name__ == "__main__":
     #ingestion loop
     while doc_collection:
         logger.debug(f"number of documents collected: {len(doc_collection)}")
+        # enriched_docs = []
+
+        # for doc in doc_collection:
+        #     source_path = Path(doc.metadata.get("source", ""))
+        #     extracted_meta = extract_metadata_from_path(source_path)
+        #     print("METAAAAA",extracted_meta)
+
+            # merge metadata (never overwrite existing loader metadata)
+            # doc.metadata = {**extracted_meta, **doc.metadata}
+            # enriched_docs.append(doc)
         #initialize chunk iterator and collect first batch of chunks
+        # chunk_iterator = loader.lazy_chunker(enriched_docs)
         chunk_iterator = loader.lazy_chunker(doc_collection)
         chunk_collection = collector(chunk_iterator, 10)
 
@@ -116,6 +128,7 @@ if __name__ == "__main__":
         logger.debug(f" {vectorstore._collection.count()}  vectors indexed")
         #getting the next batch of documents
         doc_collection = collector(iterator=doc_iterator, collect=4)
+        
 
     #save files read
     curr_files = json.load(open(Path(config['READ_PATH']), 'r')) if os.path.exists(Path(config['READ_PATH'])) else []
