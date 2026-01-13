@@ -69,7 +69,7 @@ if __name__ == "__main__":
     #local chromadb server run by docker
     #check connection to chroma_server
     chroma_host = os.getenv("CHROMA_SERVER")
-    chroma_port_str = os.getenv("CHROMA_PORT")
+    chroma_port_str = os.getenv("CHROMA_PORT") 
     if chroma_host is None or chroma_port_str is None:
         raise EnvironmentError("CHROMA_SERVER and CHROMA_PORT environment variables must be set")
     try:
