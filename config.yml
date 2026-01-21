@@ -1,4 +1,4 @@
 DATA_PATH: "Subsidies Schemes Grants and Incentives"
 SKIPPED_PATH: "documents/files_skipped.json"
 READ_PATH: "documents/files_read.json"
-CHROMA_COLLECTION: "PoliSenseDev"
+CHROMA_COLLECTION: "PoliSenseDev_v2"

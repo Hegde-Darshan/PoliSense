@@ -63,6 +63,12 @@ def infer_category(text_blob: str) -> str:
     return "Scheme"
 
 def extract_metadata_from_path(file_path: Path) -> dict:
+
+    import nltk
+    nltk.download('stopwords')
+    nltk.download('punkt_tab')
+    from rake_nltk import Rake
+
     parts = [p.lower() for p in file_path.parts]
     file_name = file_path.name.lower()
 
@@ -113,16 +119,16 @@ def extract_metadata_from_path(file_path: Path) -> dict:
             metadata["document_type"] = dtype
             break
 
-    # 7️⃣ Keywords (flatten everything) (TO BE IMPROVED - remove stop words and use little bit of NLP to pick up only necessary keywords)
-    keywords = set()
-    for v in metadata.values():
-        if isinstance(v, list):
-            keywords.update(v)
-        elif isinstance(v, str):
-            keywords.update(v.lower().split())
-
-    metadata["keywords"] = sorted(set(k for k in keywords if len(k) > 2))
-
+    # Extract other keywords that don't match with the above from the file name and folder names
+    keywords = []
+    r= Rake()
+    
+    for part in parts:
+        part = re.sub(r"[^a-z0-9\s]", " ", part)
+        r.extract_keywords_from_text(part)
+        keywords.extend(r.get_ranked_phrases())
+    
+    metadata["keywords"] = keywords
     # Category 
     metadata["category"] = infer_category(text_blob)
 
