@@ -1,6 +1,10 @@
 # metadata_extractor.py
 import re
 from pathlib import Path
+import nltk
+nltk.download('stopwords')
+nltk.download('punkt_tab')
+from rake_nltk import Rake
 
 METADATA_SCHEMA = {
     "scheme_name": str,
@@ -63,12 +67,6 @@ def infer_category(text_blob: str) -> str:
     return "Scheme"
 
 def extract_metadata_from_path(file_path: Path) -> dict:
-
-    import nltk
-    nltk.download('stopwords')
-    nltk.download('punkt_tab')
-    from rake_nltk import Rake
-
     parts = [p.lower() for p in file_path.parts]
     file_name = file_path.name.lower()
 

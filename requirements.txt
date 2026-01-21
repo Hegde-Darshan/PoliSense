@@ -16,3 +16,4 @@ pypdf
 
 # Other dependencies
 dotenv
+nltk
