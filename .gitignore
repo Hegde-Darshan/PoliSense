@@ -1,13 +1,15 @@
-vectorstore/
-.idea/
+vectorstore
+.idea
 archive/
 models/
 test.py
 venv/
 logs.log
 chroma
-Subsidies Schemes Grants and Incentives/
+Subsidies Schemes Grants and Incentives
 logs.log.1
 logs.log.2
-IngestionPipeline/__pycache__/
-RetrievalPipeline/__pycache__/
+IngestionPipeline/__pycache__
+RetrievalPipeline/__pycache__
+.env
+logs.log
