@@ -1,3 +1,10 @@
+
+Subsidies Schemes Grants and Incentives
+
+
+#Environment files
+.env
+.env.secrets
 vectorstore
 .idea
 archive/
@@ -5,11 +12,14 @@ models/
 test.py
 venv/
 logs.log
-chroma
-Subsidies Schemes Grants and Incentives
-logs.log.1
-logs.log.2
-IngestionPipeline/__pycache__
-RetrievalPipeline/__pycache__
-.env
-logs.log
+chroma/
+chroma_data/
+Data/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+#log files
+*.log
