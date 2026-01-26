@@ -78,6 +78,7 @@ class ChosenFilesDirectoryLoader(DirectoryLoader):
                     #need to add other metadata here if required
                     doc.metadata["filename"] = str(file_name)
                     doc.metadata["source"] = str(parent_dir)
+                    doc.metadata["source_path"] = str(files)  # Full relative path for metadata extraction
                     yield doc
             else:
                 self.skipped.append(file_path)

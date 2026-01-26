@@ -13,3 +13,4 @@ IngestionPipeline/__pycache__
 RetrievalPipeline/__pycache__
 .env
 logs.log
+TestDOcuments

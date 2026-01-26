@@ -99,19 +99,31 @@ if __name__ == "__main__":
     #ingestion loop
     while doc_collection:
         logger.debug(f"number of documents collected: {len(doc_collection)}")
-        # enriched_docs = []
+        enriched_docs = []
 
-        # for doc in doc_collection:
-        #     source_path = Path(doc.metadata.get("source", ""))
-        #     extracted_meta = extract_metadata_from_path(source_path)
-        #     print("METAAAAA",extracted_meta)
-
-            # merge metadata (never overwrite existing loader metadata)
-            # doc.metadata = {**extracted_meta, **doc.metadata}
-            # enriched_docs.append(doc)
+        for doc in doc_collection:
+            # Get the full relative path from metadata, or construct it from source
+            source_path_str = doc.metadata.get("source_path", "")
+            if not source_path_str:
+                # Fallback: construct path from source and filename if source_path not available
+                source_dir = doc.metadata.get("source", "")
+                filename = doc.metadata.get("filename", "")
+                if source_dir and filename:
+                    source_path_str = str(Path(source_dir) / filename)
+            
+            if source_path_str:
+                # Construct full path relative to DATA_PATH
+                full_path = ROOT_PATH / Path(config['DATA_PATH']) / source_path_str
+                extracted_meta = extract_metadata_from_path(full_path)
+                logger.debug(f"Extracted metadata for {source_path_str}: {extracted_meta}")
+                
+                # merge metadata (never overwrite existing loader metadata)
+                doc.metadata = {**extracted_meta, **doc.metadata}
+            
+            enriched_docs.append(doc)
+        
         #initialize chunk iterator and collect first batch of chunks
-        # chunk_iterator = loader.lazy_chunker(enriched_docs)
-        chunk_iterator = loader.lazy_chunker(doc_collection)
+        chunk_iterator = loader.lazy_chunker(enriched_docs)
         chunk_collection = collector(chunk_iterator, 10)
 
         while chunk_collection: 

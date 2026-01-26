@@ -119,7 +119,7 @@ def extract_metadata_from_path(file_path: Path) -> dict:
 
     # Extract other keywords that don't match with the above from the file name and folder names
     keywords = []
-    r= Rake()
+    r = Rake()
     
     for part in parts:
         part = re.sub(r"[^a-z0-9\s]", " ", part)
