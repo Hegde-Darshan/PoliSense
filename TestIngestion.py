@@ -24,7 +24,7 @@ def get_chroma_client():
     )
 
 def get_chroma_vectorstore() -> Chroma:
-    config = "PoliSenseDev"
+    config = "PoliSenseDev_v2"
     client = get_chroma_client()
     embedding_fn = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 
@@ -43,6 +43,7 @@ def get_chroma_vectorstore() -> Chroma:
 business = "Sakhi Handloom Collective,Textiles, Handloom, small, Karnataka,Women-Owned,Rural, SHG-based"
 
 vectorstore = get_chroma_vectorstore()
+print(f"Vectorstore has {vectorstore._collection.count()} vectors")
 
 result = vectorstore.similarity_search(
         query=business,

@@ -1,12 +1,14 @@
 services:
   chromadb:
     image: ghcr.io/chroma-core/chroma:latest
-    container_name: chromadb
+    container_name: "${CHROMA_CONTAINER_NAME}"
     restart: unless-stopped
     ports:
-      - "8000:8000"
+      - "${CHROMA_PORT}:8000"
     volumes:
-      - ./chroma_data:/chroma/chroma  # persists DB to local folder
+      - ${CHROMA_DATA_DIR}:${CHROMA_PERSIST_DIR}  # persists DB to local folder
     environment:
       - IS_PERSISTENT=TRUE
       - ANONYMIZED_TELEMETRY=FALSE
+      - LOG_LEVEL=INFO
+      - PERSIST_DIRECTORY=${CHROMA_PERSIST_DIR}
