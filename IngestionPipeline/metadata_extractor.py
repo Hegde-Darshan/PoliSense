@@ -132,9 +132,9 @@ def extract_metadata_from_path(file_path: Path) -> dict:
 
     return metadata
 
-if __name__ == "__main__":
-    path = Path("Subsidies Schemes Grants and Incentives\(BAIPR)_Building awareness on IPR for msme\IPR-Guidelines-CLCS-TUS-2019-2020.pdf")
-    metadata = extract_metadata_from_path(path)
-    print(metadata)
+# if __name__ == "__main__":
+#     path = Path("Subsidies Schemes Grants and Incentives\(BAIPR)_Building awareness on IPR for msme\IPR-Guidelines-CLCS-TUS-2019-2020.pdf")
+#     metadata = extract_metadata_from_path(path)
+#     print(metadata)
 
 

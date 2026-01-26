@@ -15,5 +15,7 @@ chromadb
 pypdf
 
 # Other dependencies
-dotenv
+python-dotenv
 nltk
+rake-nltk
+pyyaml

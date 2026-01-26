@@ -59,10 +59,41 @@ def collector(iterator: Iterator, collect: int) -> list[Document] | None:
     return collection if collection else None
 
 
+def convert_metadata_for_chromadb(metadata: dict) -> dict:
+    """
+    Convert metadata to ChromaDB-compatible format.
+    ChromaDB only accepts str, int, float, bool, or None - not lists or dicts.
+    Converts lists to comma-separated strings and removes dicts.
+    """
+    chromadb_metadata = {}
+    for key, value in metadata.items():
+        if value is None:
+            chromadb_metadata[key] = None
+        elif isinstance(value, bool):
+            chromadb_metadata[key] = value
+        elif isinstance(value, (int, float)):
+            chromadb_metadata[key] = value
+        elif isinstance(value, str):
+            chromadb_metadata[key] = value
+        elif isinstance(value, list):
+            # Convert list to comma-separated string, or empty string if list is empty
+            if value:
+                chromadb_metadata[key] = ", ".join(str(item) for item in value)
+            else:
+                chromadb_metadata[key] = ""  # Empty string for empty lists
+        elif isinstance(value, dict):
+            # Convert dict to JSON string
+            chromadb_metadata[key] = json.dumps(value)
+        else:
+            # Convert any other type to string
+            chromadb_metadata[key] = str(value)
+    return chromadb_metadata
+
+
 if __name__ == "__main__":
       
     #get list of new files to ingest
-    list_of_files = utils.get_new_filenames(ROOT_PATH/Path(config['DATA_PATH']), 
+    list_of_files = utils.get_new_filenames(ROOT_PATH/Path(config['TEST_DATA_PATH']), 
                         ROOT_PATH/Path(config['READ_PATH']))
     logger.debug(f"List of new files to ingest: {list_of_files}")
 
@@ -84,8 +115,8 @@ if __name__ == "__main__":
         raise Exception("Chroma server not available. Cannot ingest data")
 
     #initialize loader and vectorstore
-    file_loader = loader.ChosenFilesDirectoryLoader(ROOT_PATH/Path(config['DATA_PATH']), list_of_files)
-    vectorstore = vectorizer.load_chromadb_collection(client=chroma_client, collection=config['CHROMA_COLLECTION']) #persist path declared in docker file
+    file_loader = loader.ChosenFilesDirectoryLoader(ROOT_PATH/Path(config['TEST_DATA_PATH']), list_of_files)
+    vectorstore = vectorizer.load_chromadb_collection(client=chroma_client, collection=config['TEST_CHROMA_COLLECTION']) #persist path declared in docker file
     print(f"Vectorstore initialized as follows:\n{vectorstore}\n{type(vectorstore)}")
 
     if vectorstore is None:
@@ -113,7 +144,7 @@ if __name__ == "__main__":
             
             if source_path_str:
                 # Construct full path relative to DATA_PATH
-                full_path = ROOT_PATH / Path(config['DATA_PATH']) / source_path_str
+                full_path = ROOT_PATH / Path(config['TEST_DATA_PATH']) / source_path_str
                 extracted_meta = extract_metadata_from_path(full_path)
                 logger.debug(f"Extracted metadata for {source_path_str}: {extracted_meta}")
                 
@@ -128,7 +159,10 @@ if __name__ == "__main__":
 
         while chunk_collection: 
             logger.debug(f"number of chunks collected: {len(chunk_collection)}")
-            # print(chunk_collection)
+            # Convert metadata to ChromaDB-compatible format (no lists/dicts)
+            for chunk in chunk_collection:
+                chunk.metadata = convert_metadata_for_chromadb(chunk.metadata)
+            
             try:
                 vectorstore.add_documents(chunk_collection)
             except Exception as e:

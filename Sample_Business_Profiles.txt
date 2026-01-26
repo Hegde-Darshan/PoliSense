@@ -1,4 +1,49 @@
 {
+  "business_name": "IdeaSpark Innovations Pvt Ltd",
+  "legal_entity_type": "Private Limited",
+  "industry": "Technology",
+  "sub_industry": "AI & Machine Learning",
+  "employee_count": 18,
+  "turnover_range": "INR 1–2 Cr",
+  "year_of_establishment": 2022,
+  "geography": {
+    "country": "India",
+    "state": "Telangana",
+    "district": "Hyderabad"
+  },
+  "ownership_type": "Private",
+  "registration": {
+    "msme": true,
+    "udyam_number": "TS2022AI1234"
+  },
+  "growth_stage": "Early Stage",
+  "special_attributes": ["Startup", "Tech-enabled", "Youth-led"]
+}
+
+{
+  "business_name": "InnoHer Solutions Pvt Ltd",
+  "legal_entity_type": "Private Limited",
+  "industry": "Technology",
+  "sub_industry": "HealthTech",
+  "employee_count": 15,
+  "turnover_range": "INR 1–2 Cr",
+  "year_of_establishment": 2022,
+  "geography": {
+    "country": "India",
+    "state": "Karnataka",
+    "district": "Bangalore"
+  },
+  "ownership_type": "Women-Owned",
+  "registration": {
+    "msme": true,
+    "udyam_number": "KA2022HT1234"
+  },
+  "growth_stage": "Startup",
+  "special_attributes": ["Startup", "Women-led", "Innovative"]
+}
+
+
+{
   "business_name": "Shree Ganesh Engineering Works",
   "industry": "Manufacturing",
   "sub_industry": "Auto Components",
