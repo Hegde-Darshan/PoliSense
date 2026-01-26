@@ -27,7 +27,7 @@ ps: ## Show running containers
 	docker compose ps
 
 health: ## Check ChromaDB health
-	curl -s http://$(CHROMA_HOST):$(CHROMA_PORT)/api/v1/heartbeat || echo "Chroma not reachable"
+	curl -s http://$(CHROMA_SERVER):$(CHROMA_PORT)/api/v2/heartbeat || echo "Chroma not reachable"
 
 clean: ## Stop and delete all data (DANGEROUS)
 	docker compose down -v

@@ -13,3 +13,7 @@ All you have to do is give this a priliminary details about your company and wha
 - [ ] To restart service, run - <docker compose down>
 - [ ] To start service, run - <docker compose up -d>
 
+## Using Makefile to run services
+- [ ] Ensure Makefile exists and WSL is installed, and has <make> installed in it
+- [ ] Docker Desktop is enabled with WSL2 engine
+- [ ] Run <make help> to view available commands

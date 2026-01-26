@@ -23,3 +23,5 @@ __pycache__/
 
 #log files
 *.log
+logs.log.1
+logs.log.2
