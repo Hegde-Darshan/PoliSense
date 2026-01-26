@@ -1,35 +1,42 @@
-
-Subsidies Schemes Grants and Incentives
-
-
-#Environment files
+# Environment files
 .env
 .env.secrets
-vectorstore
-.idea
-archive/
-models/
-test.py
-venv/
-logs.log
-chroma/
-chroma_data/
-Data/
 
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+.Python
 .venv/
+venv/
+ENV/
+env/
 
-#log files
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
 *.log
-logs.log.1
-logs.log.2
-<<<<<<< HEAD
-IngestionPipeline/__pycache__
-RetrievalPipeline/__pycache__
-.env
 logs.log
-TestDOcuments
-=======
->>>>>>> 037ac53760ec15401a1e9c7e04c6267f41a755a0
+logs.log.*
+logs/
+
+# Data directories
+Data/
+TestDocuments/
+archive/
+models/
+Subsidies Schemes Grants and Incentives/
+
+# Vector stores and databases
+vectorstore/
+chroma/
+chroma_data/
+
+# Test files (if you want to ignore them)
+test.py
