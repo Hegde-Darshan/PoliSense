@@ -68,6 +68,16 @@ business1 = """{
   "special_attributes": ["Startup", "Women-led", "Innovative"]
 }"""
 
+filter1 = {
+        "industry": ["Technology","IT"],
+        "business_size": ["startup"],
+        "year": ["2022"],
+        "geography": ["Karnataka","India"],
+        "keywords": ["Women-Owned","msme"],
+        "special_attribute":["Women","Innovative"]
+    }
+
+
 business2 = """{
   "business_name": "IdeaSpark Innovations Pvt Ltd",
   "legal_entity_type": "Private Limited",
@@ -75,7 +85,7 @@ business2 = """{
   "sub_industry": "AI & Machine Learning",
   "employee_count": 18,
   "turnover_range": "INR 1–2 Cr",
-  "year_of_establishment": 2022,
+  "year_of_establishment": 2024,
   "geography": {
     "country": "India",
     "state": "Telangana",
@@ -89,6 +99,55 @@ business2 = """{
   "growth_stage": "Early Stage",
   "special_attributes": ["Startup", "Tech-enabled", "Youth-led"]
 }"""
+
+filter2 = {
+        "industry": ["Technology","IT"],
+        "business_size": ["startup"],
+        "year": ["2024"],
+        "geography": ["Telangana","India"],
+        "keywords": ["msme", "AI & Machine Learning"],
+        "special_attribute":["youth","Innovative"]
+    }
+
+def build_chroma_where_filter(filters: dict) -> dict:
+    """
+    Convert flat metadata filters into a Chroma-compatible where clause.
+    """
+    clauses = []
+
+    for key, values in filters.items():
+        if not values:
+            continue
+
+        # Normalize single value → list
+        if not isinstance(values, list):
+            values = [values]
+
+        clauses.append({
+            key: {"$in": values}
+        })
+
+    if not clauses:
+        return {}
+
+    if len(clauses) == 1:
+        return clauses[0]
+
+    return {"$and": clauses}
+
+where1 = build_chroma_where_filter(filter1)
+where1 = {"$contains":[{
+        "industry": ["Technology","IT"],
+        "business_size": ["startup"],
+        "year": ["2022"],
+        "geography": ["Karnataka","India"],
+        "keywords": ["Women-Owned","msme"],
+        "special_attribute":["Women","Innovative"]
+        }]
+    }
+print("-----",where1)
+where2 = build_chroma_where_filter(filter2)
+print("*****",where2)
 
 # Test the ChromaDB collection
 vectorstore = get_chroma_vectorstore()
@@ -119,7 +178,7 @@ for i, doc in enumerate(sample_docs, 1):
 print("\n" + "=" * 70)
 print("SIMILARITY SEARCH TEST 1: Women-Owned Startup in Karnataka")
 print("=" * 70)
-result1 = vectorstore.similarity_search(query="Women-Owned Startup in Karnataka", k=5, filter={"keyword"})
+result1 = vectorstore.similarity_search(query="Women owned startup in karnataka", k=5)
 print(f"Found {len(result1)} results\n")
 for i, r in enumerate(result1, 1):
     print(f"Result {i}:")
@@ -132,7 +191,7 @@ for i, r in enumerate(result1, 1):
 print("\n" + "=" * 70)
 print("SIMILARITY SEARCH TEST 2: Tech Startup")
 print("=" * 70)
-result2 = vectorstore.similarity_search(query=business2, k=5)
+result2 = vectorstore.similarity_search(query="Tech Startup in Telangana, India, youth led", k=5)
 print(f"Found {len(result2)} results\n")
 for i, r in enumerate(result2, 1):
     print(f"Result {i}:")

@@ -247,6 +247,7 @@ def get_relevant_schemes(business_profile: Dict[str, Any], vectorstore: Chroma, 
     
     # Build metadata filters
     filter_dict = build_metadata_filters(business_profile)
+    print(filter_dict)
     where_filters = filter_dict.get("where", {})
     contains_conditions = filter_dict.get("contains", {})
     

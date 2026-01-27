@@ -113,7 +113,8 @@ if __name__ == "__main__":
     print(type(chroma_client))
     if not chroma_client:
         raise Exception("Chroma server not available. Cannot ingest data")
-
+    
+    chroma_client.delete_collection(config['TEST_CHROMA_COLLECTION'])
     #initialize loader and vectorstore
     file_loader = loader.ChosenFilesDirectoryLoader(ROOT_PATH/Path(config['TEST_DATA_PATH']), list_of_files)
     vectorstore = vectorizer.load_chromadb_collection(client=chroma_client, collection=config['TEST_CHROMA_COLLECTION']) #persist path declared in docker file
@@ -144,7 +145,7 @@ if __name__ == "__main__":
             
             if source_path_str:
                 # Construct full path relative to DATA_PATH
-                full_path = ROOT_PATH / Path(config['TEST_DATA_PATH']) / source_path_str
+                full_path = Path(fr"{config['TEST_DATA_PATH']} / {source_path_str}")
                 extracted_meta = extract_metadata_from_path(full_path)
                 logger.debug(f"Extracted metadata for {source_path_str}: {extracted_meta}")
                 

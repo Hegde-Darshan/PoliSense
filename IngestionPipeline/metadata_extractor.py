@@ -1,10 +1,40 @@
 # metadata_extractor.py
+from fileinput import filename
 import re
 from pathlib import Path
 import nltk
 nltk.download('stopwords')
 nltk.download('punkt_tab')
 from rake_nltk import Rake
+
+# ROOT_PATH = Path(__file__).parent
+
+MIN_YEAR = 1800
+MAX_YEAR = 2100
+
+def extract_years(text: str) -> list[str]:
+    years = set()
+
+    # 1️⃣ Full ranges: 2019-2021 or 2019–2021
+    for start, end in re.findall(r"\b(\d{4})\s*[-–]\s*(\d{4})\b", text):
+        for y in range(int(start), int(end) + 1):
+            if MIN_YEAR <= y <= MAX_YEAR:
+                years.add(str(y))
+
+    # 2️⃣ Short ranges: 2022-27
+    for start, end in re.findall(r"\b(\d{4})\s*[-–]\s*(\d{2})\b", text):
+        century = (int(start) // 100) * 100
+        end_year = century + int(end)
+        for y in range(int(start), end_year + 1):
+            if MIN_YEAR <= y <= MAX_YEAR:
+                years.add(str(y))
+
+    # 3️⃣ Standalone years
+    for y in re.findall(r"\b\d{4}\b", text):
+        if MIN_YEAR <= int(y) <= MAX_YEAR:
+            years.add(y)
+
+    return sorted(years)
 
 METADATA_SCHEMA = {
     "scheme_name": str,
@@ -17,7 +47,8 @@ METADATA_SCHEMA = {
     "document_type": str,         # guidelines | policy | internal | application
     "keywords": list,             # flattened union
     "source_path": str,           # full relative path
-    "file_name": str
+    "file_name": str,
+    "special_attribute": list
 }
 
 BUSINESS_SIZE_KEYWORDS = {
@@ -29,10 +60,11 @@ BUSINESS_SIZE_KEYWORDS = {
 }
 
 INDUSTRY_KEYWORDS = {
-    "IPR": ["ipr", "intellectual property"],
     "Khadi": ["khadi"],
     "Cluster Development": ["cluster"],
-    "Finance": ["mudra", "loan", "credit"]
+    "Finance": ["mudra", "loan", "credit"],
+    "Agricultural":["agri", "krushi", "agricultural"],
+    "IT" : ["IT","tech","technology"]
 }
 
 DOCUMENT_TYPE_MAP = {
@@ -56,6 +88,12 @@ CATEGORY_KEYWORDS = {
     "Policy / Regulation": ["policy", "regulation", "act", "rules"]
 }
 
+SPECIAL_KEYWORDS = {
+    "IPR": ["ipr", "intellectual property"],
+    "Women": ["women","mahila"],
+    "Rural": ["rural"]
+    }
+
 def infer_category(text_blob: str) -> str:
     """
     Infer scheme category based on ranked keyword matching.
@@ -67,8 +105,11 @@ def infer_category(text_blob: str) -> str:
     return "Scheme"
 
 def extract_metadata_from_path(file_path: Path) -> dict:
+    # full_file_path = ROOT_PATH / file_path
     parts = [p.lower() for p in file_path.parts]
     file_name = file_path.name.lower()
+    print("File name",file_name)
+    print("partsss",str(parts))
 
     metadata = {
         "scheme_name": "",
@@ -80,16 +121,44 @@ def extract_metadata_from_path(file_path: Path) -> dict:
         "geography": [],
         "document_type": "",
         "keywords": [],
+        "special_attribute":[],
         "source_path": str(file_path),
         "file_name": file_path.name
     }
 
     # 1️⃣ Scheme code + name from folder like (BAIPR)_Building awareness...
     for part in parts:
-        match = re.match(r"\(([^)]+)\)_(.+)", part)
-        if match:
-            metadata["scheme_code"] = match.group(1).upper()
-            metadata["scheme_name"] = match.group(2).title()
+    # Look for scheme code anywhere in parentheses
+        code_match = re.search(r"\(([^)]+)\)", part)
+        if code_match:
+            code = code_match.group(1).upper()
+
+            # Ignore numeric-only brackets like (2022)
+            if not code.isdigit():
+                metadata["scheme_code"] = code
+                metadata["scheme_name"] = re.sub(r"\([^)]+\)", "", part)
+
+                break  # stop after first valid match
+
+    # Fallback: no scheme code found
+    if not metadata["scheme_name"]:
+        
+        for part in parts:
+            print("parttttt ",part)
+            # skip obvious non-scheme folders
+            if part.lower().strip() in {"subsidies schemes grants and incentives", "documents", "testdocuments"}:
+                continue
+
+            metadata["scheme_name"] = part
+            break
+
+    # Normalize scheme name
+    metadata["scheme_name"] = (
+        metadata["scheme_name"]
+        .replace("_", " ")
+        .strip()
+        .title()
+    )
 
     # 2️⃣ Business size
     text_blob = " ".join(parts + [file_name])
@@ -108,8 +177,7 @@ def extract_metadata_from_path(file_path: Path) -> dict:
             metadata["geography"].append(geo)
 
     # 5️⃣ Year extraction (handles ranges)
-    years = re.findall(r"(19|20)\d{2}", text_blob)
-    metadata["year"] = sorted(set(years))
+    metadata["year"] = extract_years(text_blob)
 
     # 6️⃣ Document type
     for dtype, keys in DOCUMENT_TYPE_MAP.items():
@@ -130,11 +198,22 @@ def extract_metadata_from_path(file_path: Path) -> dict:
     # Category 
     metadata["category"] = infer_category(text_blob)
 
+    for dtype, keys in SPECIAL_KEYWORDS.items():
+        if any(k in file_name for k in keys):
+            metadata["special_attribute"].append(dtype)
+            break
+
     return metadata
 
 # if __name__ == "__main__":
-#     path = Path("Subsidies Schemes Grants and Incentives\(BAIPR)_Building awareness on IPR for msme\IPR-Guidelines-CLCS-TUS-2019-2020.pdf")
-#     metadata = extract_metadata_from_path(path)
-#     print(metadata)
+#     # path = Path("Subsidies Schemes Grants and Incentives\(BAIPR)_Building awareness on IPR for msme\IPR-Guidelines-CLCS-TUS-2019-2020.pdf")
+#     # path = Path("TestDocuments\(TREAD)_trade related entreprenuership assistance and development scheme for women\TREAD Guidelines.pdf")
+#     # path = Path(r"TestDocuments\2022 Credit Guarantee Scheme for Startups\credit-guarantee-scheme-for-startup.pdf")
+    # source_path_str = "2022-27 Credit Guarantee Scheme for Startups\credit-guarantee-scheme-for-startup.pdf"
+    # source_path_str = "Startup India Seed Fund Scheme (SISFS)\credit-guarantee-scheme-for-startup.pdf"
+    # test_path = "TestDocuments"
+    # full_path = Path(fr"{test_path} / {source_path_str}")
+    # metadata = extract_metadata_from_path(full_path)
+    # print(metadata)
 
 

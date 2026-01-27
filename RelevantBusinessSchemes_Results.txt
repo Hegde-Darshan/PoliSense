@@ -29,13 +29,14 @@ Special Attributes: Startup, Tech-enabled, Youth-led
 SEARCH RESULTS SUMMARY:
 --------------------------------------------------------------------------------
 Total Matching Document Chunks: 15
-Unique Schemes Found: 0
+Unique Schemes Found: 2
 Unique Files Found: 3
 --------------------------------------------------------------------------------
 
 RELEVANT SCHEMES:
 --------------------------------------------------------------------------------
-  No schemes found.
+  • 2022-27 Karnataka Karnataka Startup Policy
+  • 2022-27 Karnataka Startup Policy
 
 RELEVANT FILES:
 --------------------------------------------------------------------------------
@@ -67,13 +68,14 @@ Special Attributes: Startup, Women-led, Innovative
 SEARCH RESULTS SUMMARY:
 --------------------------------------------------------------------------------
 Total Matching Document Chunks: 15
-Unique Schemes Found: 0
+Unique Schemes Found: 2
 Unique Files Found: 3
 --------------------------------------------------------------------------------
 
 RELEVANT SCHEMES:
 --------------------------------------------------------------------------------
-  No schemes found.
+  • 2022-27 Karnataka Karnataka Startup Policy
+  • 2022-27 Karnataka Startup Policy
 
 RELEVANT FILES:
 --------------------------------------------------------------------------------
@@ -98,13 +100,17 @@ Geography: State: Maharashtra
 SEARCH RESULTS SUMMARY:
 --------------------------------------------------------------------------------
 Total Matching Document Chunks: 15
-Unique Schemes Found: 0
+Unique Schemes Found: 5
 Unique Files Found: 4
 --------------------------------------------------------------------------------
 
 RELEVANT SCHEMES:
 --------------------------------------------------------------------------------
-  No schemes found.
+  • 2022-27 Karnataka Karnataka Startup Policy
+  • 2022-27 Karnataka Startup Policy
+  • Government Schemes For Startups In 2025
+  • SISFS - Startup India Seed Fund Scheme
+  • Startup India Seed Fund Scheme
 
 RELEVANT FILES:
 --------------------------------------------------------------------------------
@@ -133,13 +139,14 @@ Growth Stage: Early Growth
 SEARCH RESULTS SUMMARY:
 --------------------------------------------------------------------------------
 Total Matching Document Chunks: 15
-Unique Schemes Found: 0
+Unique Schemes Found: 2
 Unique Files Found: 3
 --------------------------------------------------------------------------------
 
 RELEVANT SCHEMES:
 --------------------------------------------------------------------------------
-  No schemes found.
+  • 2022-27 Karnataka Karnataka Startup Policy
+  • 2022-27 Karnataka Startup Policy
 
 RELEVANT FILES:
 --------------------------------------------------------------------------------
@@ -170,12 +177,13 @@ Registration: MSME Registered
 SEARCH RESULTS SUMMARY:
 --------------------------------------------------------------------------------
 Total Matching Document Chunks: 15
-Unique Schemes Found: 2
+Unique Schemes Found: 3
 Unique Files Found: 5
 --------------------------------------------------------------------------------
 
 RELEVANT SCHEMES:
 --------------------------------------------------------------------------------
+  • Skill Upgradation & Mahila Coir Yojana
   • TREAD - Trade Related Entreprenuership Assistance And Development Scheme For Women
   • Trade Related Entreprenuership Assistance And Development Scheme For Women
 
@@ -206,13 +214,14 @@ Special Attributes: Rural, SHG-based
 SEARCH RESULTS SUMMARY:
 --------------------------------------------------------------------------------
 Total Matching Document Chunks: 15
-Unique Schemes Found: 0
+Unique Schemes Found: 2
 Unique Files Found: 3
 --------------------------------------------------------------------------------
 
 RELEVANT SCHEMES:
 --------------------------------------------------------------------------------
-  No schemes found.
+  • 2022-27 Karnataka Karnataka Startup Policy
+  • 2022-27 Karnataka Startup Policy
 
 RELEVANT FILES:
 --------------------------------------------------------------------------------
@@ -237,12 +246,15 @@ Geography: Country: India
 SEARCH RESULTS SUMMARY:
 --------------------------------------------------------------------------------
 Total Matching Document Chunks: 15
-Unique Schemes Found: 2
+Unique Schemes Found: 5
 Unique Files Found: 5
 --------------------------------------------------------------------------------
 
 RELEVANT SCHEMES:
 --------------------------------------------------------------------------------
+  • 2022-27 Karnataka Karnataka Startup Policy
+  • 2022-27 Karnataka Startup Policy
+  • Skill Upgradation & Mahila Coir Yojana
   • TREAD - Trade Related Entreprenuership Assistance And Development Scheme For Women
   • Trade Related Entreprenuership Assistance And Development Scheme For Women
 
@@ -260,44 +272,44 @@ OVERALL SUMMARY
 ================================================================================
 
 Total Business Profiles: 7
-Total Unique Schemes Found: 4
+Total Unique Schemes Found: 21
 Total Unique Files Found: 26
 Total Document Chunks Matched: 105
 
 Per-Business Breakdown:
 --------------------------------------------------------------------------------
 IdeaSpark Innovations Pvt Ltd:
-  Schemes: 0
+  Schemes: 2
   Files: 3
   Total matches: 15
 
 InnoHer Solutions Pvt Ltd:
-  Schemes: 0
+  Schemes: 2
   Files: 3
   Total matches: 15
 
 Shree Ganesh Engineering Works:
-  Schemes: 0
+  Schemes: 5
   Files: 4
   Total matches: 15
 
 BlueStack Digital Solutions Pvt Ltd:
-  Schemes: 0
+  Schemes: 2
   Files: 3
   Total matches: 15
 
 GreenHarvest Foods LLP:
-  Schemes: 2
+  Schemes: 3
   Files: 5
   Total matches: 15
 
 Sakhi Handloom Collective:
-  Schemes: 0
+  Schemes: 2
   Files: 3
   Total matches: 15
 
 MegaSteel Industries Ltd:
-  Schemes: 2
+  Schemes: 5
   Files: 5
   Total matches: 15
 
