@@ -22,8 +22,8 @@ def lazy_chunker(documents: list[Document]) -> Iterator[Document]:
     Yields: Chunks of the document as langchain Document objects
     """
     text_chunker = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=200,
+        chunk_size=2000,
+        chunk_overlap=500,
         length_function=len,
     )
     yield from text_chunker.split_documents(documents)
