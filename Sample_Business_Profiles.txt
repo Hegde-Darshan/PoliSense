@@ -1,0 +1,117 @@
+{
+  "business_name": "IdeaSpark Innovations Pvt Ltd",
+  "legal_entity_type": "Private Limited",
+  "industry": "Technology",
+  "sub_industry": "AI & Machine Learning",
+  "employee_count": 18,
+  "turnover_range": "INR 1–2 Cr",
+  "year_of_establishment": 2022,
+  "geography": {
+    "country": "India",
+    "state": "Telangana",
+    "district": "Hyderabad"
+  },
+  "ownership_type": "Private",
+  "registration": {
+    "msme": true,
+    "udyam_number": "TS2022AI1234"
+  },
+  "growth_stage": "Early Stage",
+  "special_attributes": ["Startup", "Tech-enabled", "Youth-led"]
+}
+
+{
+  "business_name": "InnoHer Solutions Pvt Ltd",
+  "legal_entity_type": "Private Limited",
+  "industry": "Technology",
+  "sub_industry": "HealthTech",
+  "employee_count": 15,
+  "turnover_range": "INR 1–2 Cr",
+  "year_of_establishment": 2022,
+  "geography": {
+    "country": "India",
+    "state": "Karnataka",
+    "district": "Bangalore"
+  },
+  "ownership_type": "Women-Owned",
+  "registration": {
+    "msme": true,
+    "udyam_number": "KA2022HT1234"
+  },
+  "growth_stage": "Startup",
+  "special_attributes": ["Startup", "Women-led", "Innovative"]
+}
+
+
+{
+  "business_name": "Shree Ganesh Engineering Works",
+  "industry": "Manufacturing",
+  "sub_industry": "Auto Components",
+  "employee_count": 12,
+  "geography": {
+    "state": "Maharashtra"
+  }
+}
+
+
+{
+  "business_name": "BlueStack Digital Solutions Pvt Ltd",
+  "legal_entity_type": "Private Limited",
+  "industry": "IT Services",
+  "employee_count": 45,
+  "turnover_range": "INR 5–10 Cr",
+  "year_of_establishment": 2019,
+  "geography": {
+    "country": "India",
+    "state": "Karnataka"
+  },
+  "growth_stage": "Early Growth"
+}
+
+
+{
+  "business_name": "GreenHarvest Foods LLP",
+  "legal_entity_type": "LLP",
+  "industry": "Food Processing",
+  "sub_industry": "Agri Processing",
+  "employee_count": 120,
+  "turnover_range": "INR 50–100 Cr",
+  "year_of_establishment": 2014,
+  "geography": {
+    "country": "India",
+    "state": "Punjab",
+    "district": "Ludhiana"
+  },
+  "ownership_type": "Private",
+  "registration": {
+    "msme": true
+  },
+  "growth_stage": "Expansion"
+}
+
+
+{
+  "business_name": "Sakhi Handloom Collective",
+  "industry": "Textiles",
+  "sub_industry": "Handloom",
+  "employee_count": 25,
+  "geography": {
+    "state": "Odisha",
+    "district": "Mayurbhanj"
+  },
+  "ownership_type": "Women-Owned",
+  "special_attributes": ["Rural", "SHG-based"]
+}
+
+
+{
+  "business_name": "MegaSteel Industries Ltd",
+  "industry": "Heavy Manufacturing",
+  "employee_count": 3200,
+  "turnover_range": "> INR 1000 Cr",
+  "geography": {
+    "country": "India"
+  }
+}
+
+

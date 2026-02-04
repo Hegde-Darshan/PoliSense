@@ -1,0 +1,23 @@
+{
+  "business_name": "",
+  "legal_entity_type": "",
+  "industry": "",
+  "sub_industry": "",
+  "business_size": {
+    "employee_count": "",
+    "turnover_range": ""
+  },
+  "year_of_establishment": "",
+  "geography": {
+    "country": "",
+    "state": "",
+    "district": ""
+  },
+  "ownership_type": "",
+  "registration": {
+    "msme": false,
+    "udyam_number": ""
+  },
+  "growth_stage": "",
+  "special_attributes": []
+}
