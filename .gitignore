@@ -1,13 +1,42 @@
+# Environment files
+.env
+.env.secrets
+
+# Python
 __pycache__/
-vectorstore/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
 .idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs.log
+logs.log.*
+logs/
+
+# Data directories
+Data/
+TestDocuments/
 archive/
 models/
-test.py
-venv/
-logs.log
-chroma
 Subsidies Schemes Grants and Incentives/
-logs.log.1
-logs.log.2
-.env.secrets
+
+# Vector stores and databases
+vectorstore/
+chroma/
+chroma_data/
+
+# Test files (if you want to ignore them)
+test.py
