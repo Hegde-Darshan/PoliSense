@@ -14,6 +14,7 @@ import IngestionPipeline.vectorizer as vectorizer
 from IngestionPipeline.metadata_extractor import extract_metadata_from_path
 import faulthandler; faulthandler.enable() #optional: imported to debug system level errors
 
+
 # Configure loggers
 import logging.config
 logging.config.dictConfig(LOGGING_CONFIG)
@@ -89,7 +90,6 @@ def convert_metadata_for_chromadb(metadata: dict) -> dict:
             chromadb_metadata[key] = str(value)
     return chromadb_metadata
 
-
 if __name__ == "__main__":
       
     #get list of new files to ingest
@@ -118,6 +118,7 @@ if __name__ == "__main__":
     #initialize loader and vectorstore
     file_loader = loader.ChosenFilesDirectoryLoader(ROOT_PATH/Path(config['DATA_PATH']), list_of_files)
     vectorstore = vectorizer.load_chromadb_collection(client=chroma_client, collection=config['DEV_CHROMA_COLLECTION']) #persist path declared in docker file
+
     print(f"Vectorstore initialized as follows:\n{vectorstore}\n{type(vectorstore)}")
 
     if vectorstore is None:

@@ -4,3 +4,5 @@ READ_PATH: "documents/files_read.json"
 DEV_CHROMA_COLLECTION: "PoliSenseDev_v2"
 TEST_DATA_PATH: "TestDocuments"
 TEST_CHROMA_COLLECTION: "PoliSenseTest"
+CHROMA_COLLECTION: "PoliSenseDev"
+
