@@ -100,7 +100,8 @@ SPECIAL_KEYWORDS = {
     "Youth":["youth","young"],
     "Entrepreneurship": ["entrepreneurship","entrpreneur"],
     "Rural": ["rural"],
-    "Urban":["urban","metropolitan","city"]
+    "Urban":["urban","metropolitan","city"],
+    "SC/ST":["sc/st"]
     }
 
 def infer_category(text_blob: str) -> str:
