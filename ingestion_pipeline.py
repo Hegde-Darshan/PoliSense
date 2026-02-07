@@ -7,6 +7,14 @@ from langchain.schema import Document
 from dotenv import load_dotenv
 from IngestionPipeline.logger import LOGGING_CONFIG
 
+# Import packages with environment variable dependencies
+import IngestionPipeline.data_loader as loader
+import IngestionPipeline.utils as utils
+import IngestionPipeline.vectorizer as vectorizer
+from IngestionPipeline.metadata_extractor import extract_metadata_from_path
+import faulthandler; faulthandler.enable() #optional: imported to debug system level errors
+
+
 # Configure loggers
 import logging.config
 logging.config.dictConfig(LOGGING_CONFIG)
@@ -33,12 +41,6 @@ except FileNotFoundError:
     logger.error("config.yml file not found.")
     raise
 
-# Import packages with environment variable dependencies
-import IngestionPipeline.data_loader as loader
-import IngestionPipeline.utils as utils
-import IngestionPipeline.vectorizer as vectorizer
-import faulthandler; faulthandler.enable() #optional: imported to debug system level errors
-
 
 def collector(iterator: Iterator, collect: int) -> list[Document] | None:
     """
@@ -57,6 +59,36 @@ def collector(iterator: Iterator, collect: int) -> list[Document] | None:
     logger.debug(f"Returning {len(collection)} items from {iterator}")
     return collection if collection else None
 
+
+def convert_metadata_for_chromadb(metadata: dict) -> dict:
+    """
+    Convert metadata to ChromaDB-compatible format.
+    ChromaDB only accepts str, int, float, bool, or None - not lists or dicts.
+    Converts lists to comma-separated strings and removes dicts.
+    """
+    chromadb_metadata = {}
+    for key, value in metadata.items():
+        if value is None:
+            chromadb_metadata[key] = None
+        elif isinstance(value, bool):
+            chromadb_metadata[key] = value
+        elif isinstance(value, (int, float)):
+            chromadb_metadata[key] = value
+        elif isinstance(value, str):
+            chromadb_metadata[key] = value
+        elif isinstance(value, list):
+            # Convert list to comma-separated string, or empty string if list is empty
+            if value:
+                chromadb_metadata[key] = ", ".join(str(item) for item in value)
+            else:
+                chromadb_metadata[key] = ""  # Empty string for empty lists
+        elif isinstance(value, dict):
+            # Convert dict to JSON string
+            chromadb_metadata[key] = json.dumps(value)
+        else:
+            # Convert any other type to string
+            chromadb_metadata[key] = str(value)
+    return chromadb_metadata
 
 if __name__ == "__main__":
       
@@ -81,10 +113,12 @@ if __name__ == "__main__":
     print(type(chroma_client))
     if not chroma_client:
         raise Exception("Chroma server not available. Cannot ingest data")
-
+    
+    #chroma_client.delete_collection(config['TEST_CHROMA_COLLECTION'])
     #initialize loader and vectorstore
     file_loader = loader.ChosenFilesDirectoryLoader(ROOT_PATH/Path(config['DATA_PATH']), list_of_files)
-    vectorstore = vectorizer.load_chromadb_collection(client=chroma_client, collection=config['CHROMA_COLLECTION']) #persist path declared in docker file
+    vectorstore = vectorizer.load_chromadb_collection(client=chroma_client, collection=config['DEV_CHROMA_COLLECTION']) #persist path declared in docker file
+
     print(f"Vectorstore initialized as follows:\n{vectorstore}\n{type(vectorstore)}")
 
     if vectorstore is None:
@@ -92,19 +126,45 @@ if __name__ == "__main__":
 
     #ingest documents in batches, defined by collector function
     #initialize document iterator and collect first batch of documents
-    doc_iterator = file_loader.lazy_load()
+    doc_iterator = file_loader.lazy_load() 
     doc_collection = collector(doc_iterator, 4)
 
     #ingestion loop
     while doc_collection:
         logger.debug(f"number of documents collected: {len(doc_collection)}")
+        enriched_docs = []
+
+        for doc in doc_collection:
+            # Get the full relative path from metadata, or construct it from source
+            source_path_str = doc.metadata.get("source_path", "")
+            if not source_path_str:
+                # Fallback: construct path from source and filename if source_path not available
+                source_dir = doc.metadata.get("source", "")
+                filename = doc.metadata.get("filename", "")
+                if source_dir and filename:
+                    source_path_str = str(Path(source_dir) / filename)
+            
+            if source_path_str:
+                # Construct full path relative to DATA_PATH
+                full_path = Path(fr"{config['DATA_PATH']} / {source_path_str}")
+                extracted_meta = extract_metadata_from_path(full_path)
+                logger.debug(f"Extracted metadata for {source_path_str}: {extracted_meta}")
+                
+                # merge metadata (never overwrite existing loader metadata)
+                doc.metadata = {**extracted_meta, **doc.metadata}
+            
+            enriched_docs.append(doc)
+        
         #initialize chunk iterator and collect first batch of chunks
-        chunk_iterator = loader.lazy_chunker(doc_collection)
+        chunk_iterator = loader.lazy_chunker(enriched_docs)
         chunk_collection = collector(chunk_iterator, 10)
 
         while chunk_collection: 
             logger.debug(f"number of chunks collected: {len(chunk_collection)}")
-            # print(chunk_collection)
+            # Convert metadata to ChromaDB-compatible format (no lists/dicts)
+            for chunk in chunk_collection:
+                chunk.metadata = convert_metadata_for_chromadb(chunk.metadata)
+            
             try:
                 vectorstore.add_documents(chunk_collection)
             except Exception as e:
@@ -116,6 +176,7 @@ if __name__ == "__main__":
         logger.debug(f" {vectorstore._collection.count()}  vectors indexed")
         #getting the next batch of documents
         doc_collection = collector(iterator=doc_iterator, collect=4)
+        
 
     #save files read
     curr_files = json.load(open(Path(config['READ_PATH']), 'r')) if os.path.exists(Path(config['READ_PATH'])) else []

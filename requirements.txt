@@ -5,6 +5,7 @@ langchain-community
 langchain-huggingface
 langchain
 langchain-chroma
+langchain-openai
 
 # Hugging Face embeddings and transformers
 sentence-transformers
@@ -15,4 +16,8 @@ chromadb
 pypdf
 
 # Other dependencies
-dotenv
+python-dotenv
+nltk
+rake-nltk
+pyyaml
+lark
