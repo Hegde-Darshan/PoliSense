@@ -11,3 +11,4 @@ logs.log.1
 logs.log.2
 IngestionPipeline/__pycache__/
 RetrievalPipeline/__pycache__/
+TestDocuments/
