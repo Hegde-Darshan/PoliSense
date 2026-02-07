@@ -14,6 +14,7 @@ import IngestionPipeline.vectorizer as vectorizer
 from IngestionPipeline.metadata_extractor import extract_metadata_from_path
 import faulthandler; faulthandler.enable() #optional: imported to debug system level errors
 
+
 # Configure loggers
 import logging.config
 logging.config.dictConfig(LOGGING_CONFIG)
@@ -89,18 +90,17 @@ def convert_metadata_for_chromadb(metadata: dict) -> dict:
             chromadb_metadata[key] = str(value)
     return chromadb_metadata
 
-
 if __name__ == "__main__":
       
     #get list of new files to ingest
-    list_of_files = utils.get_new_filenames(ROOT_PATH/Path(config['TEST_DATA_PATH']), 
+    list_of_files = utils.get_new_filenames(ROOT_PATH/Path(config['DATA_PATH']), 
                         ROOT_PATH/Path(config['READ_PATH']))
     logger.debug(f"List of new files to ingest: {list_of_files}")
 
     #local chromadb server run by docker
     #check connection to chroma_server
     chroma_host = os.getenv("CHROMA_SERVER")
-    chroma_port_str = os.getenv("CHROMA_PORT") 
+    chroma_port_str = os.getenv("CHROMA_PORT")
     if chroma_host is None or chroma_port_str is None:
         raise EnvironmentError("CHROMA_SERVER and CHROMA_PORT environment variables must be set")
     try:
@@ -114,10 +114,11 @@ if __name__ == "__main__":
     if not chroma_client:
         raise Exception("Chroma server not available. Cannot ingest data")
     
-    chroma_client.delete_collection(config['TEST_CHROMA_COLLECTION'])
+    #chroma_client.delete_collection(config['TEST_CHROMA_COLLECTION'])
     #initialize loader and vectorstore
-    file_loader = loader.ChosenFilesDirectoryLoader(ROOT_PATH/Path(config['TEST_DATA_PATH']), list_of_files)
-    vectorstore = vectorizer.load_chromadb_collection(client=chroma_client, collection=config['TEST_CHROMA_COLLECTION']) #persist path declared in docker file
+    file_loader = loader.ChosenFilesDirectoryLoader(ROOT_PATH/Path(config['DATA_PATH']), list_of_files)
+    vectorstore = vectorizer.load_chromadb_collection(client=chroma_client, collection=config['DEV_CHROMA_COLLECTION']) #persist path declared in docker file
+
     print(f"Vectorstore initialized as follows:\n{vectorstore}\n{type(vectorstore)}")
 
     if vectorstore is None:
@@ -125,7 +126,7 @@ if __name__ == "__main__":
 
     #ingest documents in batches, defined by collector function
     #initialize document iterator and collect first batch of documents
-    doc_iterator = file_loader.lazy_load()
+    doc_iterator = file_loader.lazy_load() 
     doc_collection = collector(doc_iterator, 4)
 
     #ingestion loop
@@ -145,7 +146,7 @@ if __name__ == "__main__":
             
             if source_path_str:
                 # Construct full path relative to DATA_PATH
-                full_path = Path(fr"{config['TEST_DATA_PATH']} / {source_path_str}")
+                full_path = Path(fr"{config['DATA_PATH']} / {source_path_str}")
                 extracted_meta = extract_metadata_from_path(full_path)
                 logger.debug(f"Extracted metadata for {source_path_str}: {extracted_meta}")
                 

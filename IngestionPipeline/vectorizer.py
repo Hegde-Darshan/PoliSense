@@ -43,10 +43,10 @@ def init_chromadb(persist_path: str | None, collection: str = "PolisenseTest",
     embedding_model = HuggingFaceEmbeddings(model_name=embedding_model_name)
     vector_index = Chroma(
         collection_name=collection,
-        persist_directory=persist_path,
-        embedding_function=embedding_model
-    )
+        embedding_function=embedding_model)
     logger.info(f"Chroma index initialized with collection '{collection}'")
+    logger.info(vector_index)
+    
     return vector_index
 
 
@@ -58,32 +58,27 @@ def load_chromadb_collection(client, collection: str = "PolisenseTest",
     args:
         persist_path: Path to the directory where ChromaDB index is stored."""
     embedding_model = HuggingFaceEmbeddings(model_name=embedding_model_name)
-    try:
-        # Load existing Chroma index
-        vector_index = Chroma(
-            client=client,
-            collection_name=collection,
-            embedding_function=embedding_model)
-        logger.warning(f"returning collection '{collection}' if exists, else creating new one.")
-        return vector_index
-    except Exception as e:
-        logger.error("could not return a collection. Problem with the client connection.")
+ 
+    vector_index = Chroma(
+        client=client,
+        collection_name=collection,
+        embedding_function=embedding_model)
+    logger.warning(f"returning collection '{collection}' if exists, else creating new one.")
+    _ = vector_index._collection.count()  # Force initialization to check if collection exists
+    return vector_index
 
 
 # establish a https connection to the server
-def chroma_server_connect(host:str= "localhost", port:int=8000) -> ClientAPI | None:
+def chroma_server_connect(host:str= "localhost", port:int=8000) -> ClientAPI:
     """
     Initialize a HTTP connection to the ChromaDB server
 
     Returns: None
     Runs a local chromadb server instead
     """
-    try:
-        client = chromadb.HttpClient(host=host, port=port)
-        return client
-    except Exception as e:
-        logger.error(f"Failed to connect to ChromaDB server: {e}")
-
+    client = chromadb.HttpClient(host=host, port=port)
+    client.heartbeat()
+    return client
 
 # # initialize FAISS vector store
 # def initialize_faiss(persist_path: str) -> Chroma:
