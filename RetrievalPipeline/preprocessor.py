@@ -32,3 +32,31 @@ def build_metadata_filter(client_profile: Dict | None = None) -> Dict:
         filters["country"] = client_profile["country"]
 
     return filters
+
+
+
+def build_chroma_where_filter(filters: dict) -> dict:
+    """
+    Convert flat metadata filters into a Chroma-compatible where clause.
+    """
+    clauses = []
+
+    for key, values in filters.items():
+        if not values:
+            continue
+
+        # Normalize single value → list
+        if not isinstance(values, list):
+            values = [values]
+
+        clauses.append({
+            key: {"$in": values}
+        })
+
+    if not clauses:
+        return {}
+
+    if len(clauses) == 1:
+        return clauses[0]
+
+    return {"$or": clauses}
