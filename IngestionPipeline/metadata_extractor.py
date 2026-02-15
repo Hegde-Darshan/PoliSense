@@ -34,7 +34,7 @@ def extract_years(text: str) -> list[str]:
         if MIN_YEAR <= int(y) <= MAX_YEAR:
             years.add(y)
 
-    return " ".join(sorted(years))
+    return " ".join(sorted(years)) # type: ignore
 
 METADATA_SCHEMA = {
     "scheme_name": str,
@@ -213,12 +213,12 @@ def extract_metadata_from_path(file_path: Path) -> dict:
             metadata["state"] = geo
             break
     
-    metadata["central"] = bool(0)
+    metadata["central"] = bool(0) # type: ignore
     if any(v in text_blob for v in CENTRAL_KEYWORDS):
-        metadata["central"] = bool(1)
+        metadata["central"] = bool(1) # type: ignore
 
     # 5️⃣ Year extraction (handles ranges)
-    metadata["year"] = extract_years(text_blob)
+    metadata["year"] = extract_years(text_blob) # type: ignore
 
     # 6️⃣ Document type
     for dtype, keys in DOCUMENT_TYPE_MAP.items():
@@ -253,7 +253,7 @@ if __name__ == "__main__":
     # path = Path("TestDocuments\(TREAD)_trade related entreprenuership assistance and development scheme for women\TREAD Guidelines.pdf")
     # path = Path(r"TestDocuments\2022 Credit Guarantee Scheme for Startups\credit-guarantee-scheme-for-startup.pdf")
     # source_path_str = "2022-27 Credit Guarantee Scheme for Startups\credit-guarantee-scheme-for-startup.pdf"
-    source_path_str = "(TREAD)_trade related entreprenuership assistance and development scheme for women\TREAD Guidelines.pdf"
+    source_path_str = r"(TREAD)_trade related entreprenuership assistance and development scheme for women\TREAD Guidelines.pdf"
     # source_path_str = "Startup India Seed Fund Scheme (SISFS)\credit-guarantee-scheme-for-startup.pdf"
     test_path = "TestDocuments"
     full_path = Path(fr"{test_path} / {source_path_str}")

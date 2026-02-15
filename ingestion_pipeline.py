@@ -11,9 +11,12 @@ from IngestionPipeline.logger import LOGGING_CONFIG
 import IngestionPipeline.data_loader as loader
 import IngestionPipeline.utils as utils
 import IngestionPipeline.vectorizer as vectorizer
+import IngestionPipeline.prompts as prompts
+import IngestionPipeline.llm_extractor as llm_extractor
 from IngestionPipeline.metadata_extractor import extract_metadata_from_path
 import faulthandler; faulthandler.enable() #optional: imported to debug system level errors
 
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 # Configure loggers
 import logging.config
@@ -90,12 +93,17 @@ def convert_metadata_for_chromadb(metadata: dict) -> dict:
             chromadb_metadata[key] = str(value)
     return chromadb_metadata
 
+
 if __name__ == "__main__":
       
     #get list of new files to ingest
-    list_of_files = utils.get_new_filenames(ROOT_PATH/Path(config['DATA_PATH']), 
+    list_of_files = utils.get_new_filenames_for_llm(ROOT_PATH/Path(config['DATA_PATH']), 
                         ROOT_PATH/Path(config['READ_PATH']))
     logger.debug(f"List of new files to ingest: {list_of_files}")
+
+    if list_of_files is None:
+        logger.info("No new files to ingest. Exiting.")
+        exit(0)
 
     #local chromadb server run by docker
     #check connection to chroma_server
@@ -123,6 +131,32 @@ if __name__ == "__main__":
 
     if vectorstore is None:
         raise Exception("Vectorstore could not be initialized. Cannot ingest data")
+
+    #prepare for ingestion - 
+    #Get prompt template, initialize LLM ,invoke LLM to extract summarizaition and metadata for each policy, and enrich metadata with extracted information before indexing in vectorstore
+    #ingest each key in structuredOutput with the same metadata
+    for policy in list_of_files.keys():
+        prompt_manager = prompts.PoliSensePrompts(pdf_paths=list_of_files[policy], policy_name=policy)
+        logger.info(f"Prompt manager created for policy: {policy}")
+        llm_client = llm_extractor.initialize_llm_with_config()
+        logger.info(f"""LLM client initialized for policy: {policy} with the following configuration:\n
+                    """)
+        
+        llm_config = llm_client.__dict__
+        logger.info(f"LLM client parameters: {json.dumps(llm_config, indent=2, default=str)}")
+
+        struct_response = llm_client.invoke(prompt_manager.get_prompt())
+        summary = llm_extractor.PDFSummary.model_validate(struct_response)
+        summary_dict = summary.model_dump()
+        logger.debug(f"Structured output from LLM for policy {policy}:\n {json.dumps(summary_dict, indent=2)}")
+
+        #append policy group key to the output - policy group is the directory name under which the policy documents are stored. May or may not be the same as the name returned in policy_name key of LLM response                   
+        summary_dict['PolicyGroup'] = policy
+
+        """
+        INGESTION LOGIC HERE
+        
+        """ 
 
     #ingest documents in batches, defined by collector function
     #initialize document iterator and collect first batch of documents
@@ -180,7 +214,8 @@ if __name__ == "__main__":
 
     #save files read
     curr_files = json.load(open(Path(config['READ_PATH']), 'r')) if os.path.exists(Path(config['READ_PATH'])) else []
-    list_of_files = list_of_files + curr_files
+    if list_of_files is not None:
+        list_of_files = list(list_of_files.values()) + curr_files
     logger.debug(f"Files processed so far: {list_of_files}")
     json.dump(list_of_files, open(ROOT_PATH/Path(config['READ_PATH']), 'w'))
 
