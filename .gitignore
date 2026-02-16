@@ -32,7 +32,7 @@ TestDocuments/
 archive/
 models/
 Subsidies Schemes Grants and Incentives/
-
+IngestionPipeline/__pycache__/
 # Vector stores and databases
 vectorstore/
 chroma/
