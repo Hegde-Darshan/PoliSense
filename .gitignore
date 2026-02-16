@@ -39,4 +39,4 @@ chroma/
 chroma_data/
 
 # Test files (if you want to ignore them)
-test.py
+untracked/
