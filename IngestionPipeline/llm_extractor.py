@@ -57,7 +57,8 @@ def initialize_llm_with_config(
 
 if __name__ == "__main__":
     from dotenv import load_dotenv
-    env_vars = Path(r"C:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense")
+    # env_vars = Path(r"C:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense")
+    env_vars = Path("C:\\Users\\gowri\\Documents\\Projects\\PoliSense\\PoliSense")
     try:
         load_dotenv(env_vars / ".env")
         load_dotenv(env_vars / ".env.secrets")

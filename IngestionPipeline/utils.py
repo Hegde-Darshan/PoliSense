@@ -36,6 +36,7 @@ def get_new_filenames(folder_path: Path, processed_files:Path) -> List[str]:
 
 
 def get_new_filenames_for_llm(folder_path: Path, processed_files:Path) -> Dict[str, List[str]] | None:
+
     """
     Get new PDF filenames from the folder that have not been processed yet.
     
@@ -60,3 +61,25 @@ def get_new_filenames_for_llm(folder_path: Path, processed_files:Path) -> Dict[s
     
     json.dump(files_read, open(processed_files, 'w'))
     return files_to_read
+
+
+def build_embedding_document(summary_dict: dict) -> str:
+    pi = summary_dict.get("PolicyInformation") or {}
+    incentives = pi.get("IncentivesAndBenefits") or []
+
+    parts = [
+        f"Policy: {pi.get('PolicyName', '')}",
+        f"Category: {pi.get('Category', '')}",
+        f"Industry: {pi.get('Industry', '')} - {pi.get('SubIndustry', '')}",
+        f"Summary: {pi.get('PolicySummary', '')}",
+        f"Eligibility: {pi.get('EligibilityCriteria', '')}",
+        f"Keywords: {', '.join(pi.get('Keywords') or [])}",
+        f"SpecialAttributes: {', '.join(pi.get('SpecialAttributes') or [])}",
+        f"Goals: {', '.join(summary_dict.get('PolicyGoals') or [])}",
+    ]
+    for inc in incentives:
+        parts.append(
+            f"Incentive: {inc.get('IncentiveName', '')} - {inc.get('Description', '')}"
+        )
+
+    return "\n".join(p for p in parts if p.split(": ", 1)[-1].strip())
