@@ -6,14 +6,16 @@ from typing import Iterator
 from langchain.schema import Document
 from dotenv import load_dotenv
 from IngestionPipeline.logger import LOGGING_CONFIG
-
 # Import packages with environment variable dependencies
 import IngestionPipeline.data_loader as loader
 import IngestionPipeline.utils as utils
+from IngestionPipeline.pg_ingest import ingest_policy
 import IngestionPipeline.vectorizer as vectorizer
 import IngestionPipeline.prompts as prompts
 import IngestionPipeline.llm_extractor as llm_extractor
 from IngestionPipeline.metadata_extractor import extract_metadata_from_path
+import IngestionPipeline.db as db
+from langchain_huggingface import HuggingFaceEmbeddings
 import faulthandler; faulthandler.enable() #optional: imported to debug system level errors
 
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -30,6 +32,10 @@ logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 # Configure global and environment variables
 ROOT_PATH = Path(__file__).parent
+
+# Initialize once outside the loop
+conn = db.get_connection()
+embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 try:
     load_dotenv(ROOT_PATH / ".env")
 except Exception as e:
@@ -161,6 +167,14 @@ if __name__ == "__main__":
         - EACH KEY IN THE STRUCTURED OUTPUT CAN BE A FIELD IN THE DATABASE, AND THE FULL SUMMARY CAN BE A DOCUMENT IN THE VECTORSTORE WITH ALL THE FIELDS IN METADATA
         - THIS WAY, WE CAN LEVERAGE THE STRUCTURED OUTPUT FOR PRECISE FILTERING AND QUERYING, AND THE VECTORSTORE FOR SEMANTIC SEARCH AND RETRIEVAL OF RELEVANT POLICIES
         """ 
+
+        try:
+            inserted_ids = ingest_policy(summary_dict, conn, embedding_model)
+            logger.info(f"Ingested policy '{policy}' → {len(inserted_ids)} row(s) inserted, IDs: {inserted_ids}")
+        except Exception as e:
+            logger.error(f"Failed to ingest policy '{policy}': {e}")
+            conn.rollback()
+
 
     #ingest documents in batches, defined by collector function
     #initialize document iterator and collect first batch of documents

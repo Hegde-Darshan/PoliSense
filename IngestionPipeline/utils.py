@@ -83,3 +83,9 @@ def build_embedding_document(summary_dict: dict) -> str:
         )
 
     return "\n".join(p for p in parts if p.split(": ", 1)[-1].strip())
+
+
+def get_embedding(text: str, embedding_model) -> list[float]:
+    """Generate embedding vector for the given text using the provided embedding model."""
+    response = embedding_model.embed_content(text)
+    return response["embedding"]
