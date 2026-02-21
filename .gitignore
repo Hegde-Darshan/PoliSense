@@ -37,6 +37,7 @@ IngestionPipeline/__pycache__/
 vectorstore/
 chroma/
 chroma_data/
+postgres_data/
 
 # Test files (if you want to ignore them)
 untracked/

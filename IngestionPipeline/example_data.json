@@ -1,0 +1,144 @@
+{
+  "ParentPolicyName": null,
+  "PolicyInformation": {
+    "PolicyName": "Karnataka Information Technology Policy 2020-2025",
+    "Category": "Technology Policy",
+    "Industry": "Information Technology",
+    "SubIndustry": "Software, Hardware, IT enabled Services (ITeS), BPO, KPO, Cloud Services, Emerging Technologies",
+    "BusinessSize": "Startup, MSME, Large Enterprise, Mega Enterprise",
+    "Geography": "Karnataka",
+    "Year": [
+      "2020-2025"
+    ],
+    "SpecialAttributes": [
+      "Beyond Bengaluru",
+      "Innovation",
+      "Cyber Security",
+      "Talent Development",
+      "Ease of Doing Business"
+    ],
+    "Keywords": [
+      "IT",
+      "ITeS",
+      "Karnataka",
+      "Beyond Bengaluru",
+      "Innovation",
+      "Startups",
+      "Digital Economy",
+      "Incentives",
+      "R&D",
+      "CoE"
+    ],
+    "PolicySummary": "The Karnataka Information Technology Policy 2020-2025 is designed to maintain the state's leadership in innovation and technology, driving sustainable and holistic economic development. The policy is built on two primary themes: 'Beyond Bengaluru', which aims to foster IT industry growth and employment in cities outside of the state capital by developing new IT hubs and clusters, and 'Innovation', which seeks to strengthen Karnataka's position as a premier 'Innovation Hub' through initiatives like sector-specific Centres of Excellence (CoEs) and the Karnataka Digital Economy Mission. It offers a comprehensive package of incentives and support across infrastructure development, market development, ecosystem engagement, and talent development to attract investments, facilitate ease of doing business, and contribute significantly to India's digital economy goals.",
+    "EligibilityCriteria": "To avail fiscal incentives, an entity must be registered with KITS, Department of Electronics, IT, Bt and S&T as an IT/ITeS Entity. The eligibility criteria are: \n1. Nature of Business: The entity must be engaged in Information Technology (involving development, maintenance, and use of computer systems, hardware, software, and networks) or IT enabled Services (covering operations like call centres, BPO/KPO, cloud services, data processing, etc.). This also includes any other IT/ITeS verticals covered under the National Information Technology Policy.\n2. Location: The entity must have a registered office in Karnataka as per the Companies Act, 2013, or be registered under the Karnataka Shops & Commercial Establishment Act, 1961.\n3. Employment: The entity must employ at least 50% of its total qualified workforce in Karnataka. This count excludes contract employees.",
+    "IncentivesAndBenefits": [
+      {
+        "IncentiveName": "Financial Support for IT Hubs/Clusters",
+        "Description": "Provides financial support to encourage the development of IT Hubs/Clusters in areas 'Beyond Bengaluru' (outside Zone 3). This is applicable to all eligible IT/ITeS entities regardless of investment size.",
+        "Benefits": {
+          "Financial Support": "Up to 20% of Fixed Investment for Infrastructure (excluding land cost), subject to a ceiling of INR 3 Crores, whichever is lower.",
+          "Eligibility Conditions": "Applicable for setups outside Zone 3, subject to a minimum occupancy rate of 60% by IT/ITeS entities or a minimum employment generation of 500 in the IT/ITeS industry. Requires approval from State Level Committees (SLSWCC/SHLCC)."
+        }
+      },
+      {
+        "IncentiveName": "Financial Support for Co-working Spaces/Plug and Play Infrastructure",
+        "Description": "Provides financial support for establishing co-working spaces and plug-and-play infrastructure outside Zone 3. This is applicable to all eligible IT/ITeS entities regardless of investment size.",
+        "Benefits": {
+          "Financial Support": "Up to 33% of the Fixed Investment for Infrastructure (excluding land cost), with a ceiling of INR 2 Crores, whichever is lower.",
+          "Eligibility Conditions": "Applicable for co-working spaces setup outside Zone 3 with a minimum built-up area of 15,000 sq. ft. and a minimum occupancy rate of 60% by IT/ITeS entities or by 300 professionals in the IT/ITeS industry. Requires approval from State Level Committees (SLSWCC/SHLCC)."
+        }
+      },
+      {
+        "IncentiveName": "Lease/Rental Reimbursement",
+        "Description": "Offers reimbursement of lease or rental costs for IT/ITeS entities with an investment up to INR 250 crores that establish operations outside Zone 3. Entities can choose one of two reimbursement modes.",
+        "Benefits": {
+          "Reimbursement per sq. ft.": "INR 10 per sq. ft., up to a maximum of INR 3 lakhs overall, for a period of 1 year. Applicable once during the policy period.",
+          "Reimbursement per seat": "INR 1000 per seat, up to a maximum of INR 6 lakhs overall, for a period of 1 year. Applicable once during the policy period."
+        }
+      },
+      {
+        "IncentiveName": "Incentives for Mega Projects/Enterprises",
+        "Description": "A tailor-made package of incentives for Mega Enterprises, which are projects with an investment in fixed assets above INR 250 crores.",
+        "Benefits": {
+          "Custom Package": "A special package of incentives considered by the Government on a case-to-case basis. This may be over and above the standard benefits provided under the IT Policy."
+        }
+      },
+      {
+        "IncentiveName": "Exemption on Stamp Duty",
+        "Description": "Provides exemption on stamp duty for eligible IT/ITeS entities as per the prevailing Karnataka Industrial Policy. This is applicable to all eligible entities regardless of investment size.",
+        "Benefits": {
+          "Exemption Rate": "75% exemption in Mysuru, Hubballi, Dharwad, and Mangaluru. 100% exemption for all other Zones except Zone 3."
+        }
+      },
+      {
+        "IncentiveName": "Power Tariff Concession",
+        "Description": "Grants IT/ITeS industry the benefit of industrial power tariff instead of commercial tariff. This is applicable to all eligible entities regardless of investment size.",
+        "Benefits": {
+          "Concession": "Applicability of Industrial Power Tariff instead of Commercial Power Tariff, subject to KERC (Karnataka Electricity Regulatory Commission) Orders."
+        }
+      },
+      {
+        "IncentiveName": "FSI/FAR Benefits",
+        "Description": "Offers higher Floor Space Index (FSI) and Floor Area Ratio (FAR) over the base rates to provide built-up space at affordable rates for the IT/ITeS industry.",
+        "Benefits": {
+          "Benefit": "FSI and FAR are offered over the base FSI/FAR as per the prevailing Zonal Regulations."
+        }
+      },
+      {
+        "IncentiveName": "Quality Certification Cost Reimbursement",
+        "Description": "Reimbursement of costs for obtaining industry-standard quality certifications for IT/ITeS entities with an investment up to INR 250 crores, setting up operations outside Zone 3.",
+        "Benefits": {
+          "Reimbursement": "50% of the quality certification fee, with an overall ceiling of INR 6 Lakhs. This is applicable for a maximum of 3 industry-standard quality certifications."
+        }
+      },
+      {
+        "IncentiveName": "Marketing Cost Reimbursement",
+        "Description": "Provides reimbursement of costs incurred for international marketing through participation in trade shows or exhibitions for IT/ITeS entities with an investment up to INR 250 crores, located outside Zone 3.",
+        "Benefits": {
+          "Reimbursement": "30% of the actual costs, including travel, up to a maximum of INR 5 Lakhs per entity. This can be availed once during the policy period."
+        }
+      },
+      {
+        "IncentiveName": "Reimbursement of PF/ESI",
+        "Description": "Reimbursement of Provident Fund (PF) and Employees' State Insurance (ESI) contributions for new technical manpower employment created by IT/ITeS entities outside Zone 3. This is applicable to all eligible entities regardless of investment size.",
+        "Benefits": {
+          "Reimbursement Rate": "INR 2000 per employee per month for 2 years for all new employment of technical manpower.",
+          "Condition": "The employment must be for a continuous period of 2 years."
+        }
+      },
+      {
+        "IncentiveName": "Patents Cost Reimbursement",
+        "Description": "Reimbursement for the cost of filing and securing domestic and international patents for IT/ITeS Entities in the State with an investment up to INR 250 crores.",
+        "Benefits": {
+          "Domestic Patent": "Reimbursement up to INR 2 lakhs for each domestic patent awarded.",
+          "International Patent": "Reimbursement up to INR 10 lakhs for each international patent awarded."
+        }
+      },
+      {
+        "IncentiveName": "R&D Support",
+        "Description": "Provides matching grants for R&D projects in emerging technologies and 5G, driven by domestic IT/ITeS entities (not applicable to Indian subsidiaries of foreign entities). This is applicable to all eligible entities regardless of investment size.",
+        "Benefits": {
+          "Matching Grant": "Up to a maximum of 33% of the total project R&D cost, or up to INR 1 crore, whichever is lower. This grant can be availed by an entity once during the policy period."
+        }
+      },
+      {
+        "IncentiveName": "Ease of Doing Business Enhancements",
+        "Description": "A suite of regulatory facilitations and exemptions to streamline procedures and enhance the business environment for IT/ITeS entities in Karnataka.",
+        "Benefits": {
+          "Single Window Agency": "Karnataka Udyog Mitra (KUM) acts as the single window agency for clearances and processing of benefits.",
+          "Exemption from Standing Orders": "IT/ITeS entities are exempted from the Karnataka Industrial Employment (Standing Orders) Rules, 1946, for a period of 5 years.",
+          "Essential Services Status": "IT/ITeS/BPO/KPO industries are treated on par with public utilities to exempt them from general strikes and bandhs on a case-to-case basis.",
+          "Self-Certification": "Entities are permitted to file self-certifications under applicable acts and rules as per Labour Department notifications.",
+          "Facilitation for Women in Night Shifts": "Promotion and facilitation for women working in night shifts with prescribed safety, security, and welfare amenities."
+        }
+      }
+    ]
+  },
+  "PolicyGoals": [
+    "To enable the State's IT industry to contribute approximately 30% to India's goal of becoming a trillion-dollar digital economy.",
+    "To achieve the generation of over 60 Lakh direct and indirect employment opportunities in the State during the policy period.",
+    "To boost IT penetration and innovation across the State holistically and strengthen the ecosystem in new regions beyond Bengaluru.",
+    "To enable a remote, distributed labour force beyond Bengaluru, as required by the IT industry.",
+    "To evolve a State Cyber Security policy to implement necessary Data Protection safeguards and create and sustain a safe and resilient ecosystem."
+  ]
+}

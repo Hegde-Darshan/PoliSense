@@ -1,5 +1,10 @@
 import json
-from IngestionPipeline.utils import build_embedding_document, get_embedding
+from utils import build_embedding_document, get_embedding
+from pathlib import Path
+from db import get_connection
+from langchain_huggingface import HuggingFaceEmbeddings
+
+ROOT_PATH = Path(__file__).parent.parent
 
 def ingest_policy(summary_dict: dict, conn, embedding_model):
     pi = summary_dict.get("PolicyInformation") or {}
@@ -64,3 +69,24 @@ def ingest_policy(summary_dict: dict, conn, embedding_model):
 
     conn.commit()
     return inserted_ids
+
+
+def main():
+    
+    summary_dict = {}
+    with open(ROOT_PATH / "IngestionPipeline/example_data.json") as f:
+        summary_dict = json.load(f)
+    # print(summary_dict)
+    print("Acuired data")
+    try:
+        conn = get_connection()
+        print("success")
+    except Exception as e:
+        print("Error: ",e)
+    embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
+    ids = ingest_policy(summary_dict, conn, embedding_model)
+    print(ids)
+
+
+if __name__ == "__main__":
+    main()

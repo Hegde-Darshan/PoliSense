@@ -1,6 +1,6 @@
-CREATE DATABASE "PoliSense_dev";
+CREATE DATABASE "polisense_db_dev";
 
-\c PoliSense_dev;
+\c polisense_db_dev;
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS vector;
@@ -35,7 +35,7 @@ CREATE TABLE policies(
     incentive_details   JSONB,                       -- holds: description, benefits (dict[str,str])
 
     -- Embedding
-    embedding           VECTOR(768),
+    embedding           VECTOR(384),
     created_at          TIMESTAMPTZ DEFAULT now(),
     updated_at          TIMESTAMPTZ DEFAULT now()
 );

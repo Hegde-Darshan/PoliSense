@@ -96,8 +96,7 @@ def build_embedding_document(summary_dict: dict) -> str:
 
 def get_embedding(text: str, embedding_model) -> list[float]:
     """Generate embedding vector for the given text using the provided embedding model."""
-    response = embedding_model.embed_content(text)
-    return response["embedding"]
+    return embedding_model.embed_query(text)
 
 
 @dataclass
