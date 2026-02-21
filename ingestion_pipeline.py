@@ -6,19 +6,19 @@ from typing import Iterator
 from langchain.schema import Document
 from dotenv import load_dotenv
 from IngestionPipeline.logger import LOGGING_CONFIG
-# Import packages with environment variable dependencies
+
 import IngestionPipeline.data_loader as loader
 import IngestionPipeline.utils as utils
-from IngestionPipeline.pg_ingest import ingest_policy
+import IngestionPipeline.postgres as db_utils
 import IngestionPipeline.vectorizer as vectorizer
 import IngestionPipeline.prompts as prompts
 import IngestionPipeline.llm_extractor as llm_extractor
 from IngestionPipeline.metadata_extractor import extract_metadata_from_path
-import IngestionPipeline.db as db
-from langchain_huggingface import HuggingFaceEmbeddings
-import faulthandler; faulthandler.enable() #optional: imported to debug system level errors
 
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
+
+import faulthandler; faulthandler.enable() #optional: imported to debug system level errors
 
 # Configure loggers
 import logging.config
@@ -34,7 +34,7 @@ logging.getLogger("urllib3").setLevel(logging.WARNING)
 ROOT_PATH = Path(__file__).parent
 
 # Initialize once outside the loop
-conn = db.get_connection()
+conn = db_utils.get_connection()
 embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 try:
     load_dotenv(ROOT_PATH / ".env")
@@ -169,7 +169,7 @@ if __name__ == "__main__":
         """ 
 
         try:
-            inserted_ids = ingest_policy(summary_dict, conn, embedding_model)
+            inserted_ids = db_utils.ingest_policy(summary_dict, conn, embedding_model)
             logger.info(f"Ingested policy '{policy}' → {len(inserted_ids)} row(s) inserted, IDs: {inserted_ids}")
         except Exception as e:
             logger.error(f"Failed to ingest policy '{policy}': {e}")
