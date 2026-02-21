@@ -28,7 +28,7 @@ class PolicySummary(BaseModel):
 class PDFSummary(BaseModel):
     """Consolidated structured output format for PDF document summarization and metadata extraction."""
     ParentPolicyName: Optional[str] = Field(description="Name of the parent policy, if the document is a sub-policy or related to a larger policy framework")
-    PolicyInformation: Optional[PolicySummary] = Field(description="Structured summary of the policy/sub-policy level information extracted from the document")
+    PolicyInformation: Optional[List[PolicySummary]] = Field(description="Structured summary of the policy/sub-policy level information extracted from the document")
     PolicyGoals: Optional[List[str]] = Field(description="List of the main goals or objectives of the policy as extracted from the document")
 
 
