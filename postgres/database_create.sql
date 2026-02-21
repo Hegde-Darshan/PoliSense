@@ -49,7 +49,7 @@ CREATE INDEX idx_policies_category       ON policies (category);
 -- GIN indexes for JSONB and array columns
 CREATE INDEX idx_policies_years          ON policies USING GIN (years);
 CREATE INDEX idx_policies_details        ON policies USING GIN (policy_details);
-CREATE INDEX idx_policies_incentives     ON policies USING GIN (incentive_details);
+-- CREATE INDEX idx_policies_incentives     ON policies USING GIN (incentive_details);
 
 -- Vector index
 CREATE INDEX idx_policies_embedding      ON policies USING ivfflat (embedding vector_cosine_ops)

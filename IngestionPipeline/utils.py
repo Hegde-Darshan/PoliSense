@@ -72,27 +72,6 @@ def get_new_filenames_for_llm(folder_path: Path, processed_files:Path) -> Dict[s
     return files_to_read
 
 
-def build_embedding_document(summary_dict: dict) -> str:
-    pi = summary_dict.get("PolicyInformation") or {}
-    incentives = pi.get("IncentivesAndBenefits") or []
-
-    parts = [
-        f"Policy: {pi.get('PolicyName', '')}",
-        f"Category: {pi.get('Category', '')}",
-        f"Industry: {pi.get('Industry', '')} - {pi.get('SubIndustry', '')}",
-        f"Summary: {pi.get('PolicySummary', '')}",
-        f"Eligibility: {pi.get('EligibilityCriteria', '')}",
-        f"Keywords: {', '.join(pi.get('Keywords') or [])}",
-        f"SpecialAttributes: {', '.join(pi.get('SpecialAttributes') or [])}",
-        f"Goals: {', '.join(summary_dict.get('PolicyGoals') or [])}",
-    ]
-    for inc in incentives:
-        parts.append(
-            f"Incentive: {inc.get('IncentiveName', '')} - {inc.get('Description', '')}"
-        )
-
-    return "\n".join(p for p in parts if p.split(": ", 1)[-1].strip())
-
 
 def get_embedding(text: str, embedding_model) -> list[float]:
     """Generate embedding vector for the given text using the provided embedding model."""
