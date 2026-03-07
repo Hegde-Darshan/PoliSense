@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 import json
 
-from utils import get_embedding
+from .utils import build_embedding_document, get_embedding
 from pathlib import Path
 from langchain_huggingface import HuggingFaceEmbeddings
 
@@ -26,6 +26,30 @@ def get_connection():
         password=os.getenv("POSTGRES_PASSWORD"),
     )
     return conn
+
+
+def ingest_into_review_queue(summary_dict: dict,
+        conn: psycopg2.extensions.connection):
+    """Ingests the structured policy summary into a review queue table in Postgres for HITL verification."""
+    pi_name = summary_dict.get("ParentPolicyName") or None
+    if pi_name is not None:
+        with conn.cursor() as cur:
+            cur.execute("""
+                INSERT INTO review_queue (
+                    parent_policy_name, policy_summary, policy_goals
+                ) VALUES (
+                    %(parent_policy_name)s, %(policy_summary)s, %(policy_goals)s
+                )
+                RETURNING review_id
+            """, {
+                "parent_policy_name":   pi_name,
+                "policy_summary":       summary_dict.get("PolicyInformation", {}).get("PolicySummary"),
+                "policy_goals":         summary_dict.get("PolicyGoals") or [],
+                })
+
+            review_id = cur.fetchone()[0] # type: ignore
+        conn.commit()
+        return review_id
 
 
 def ingest_policy(summary_dict: dict, 

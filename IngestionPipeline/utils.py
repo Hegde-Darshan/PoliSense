@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Dict, List, Any
 
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional, Literal
 
 root_logger = logging.getLogger("ingestion_pipeline")
@@ -17,7 +17,8 @@ def get_new_filenames(folder_path: Path, processed_files:Path) -> List[str]:
     
     Args:
         folder_path: Path object of the folder containing PDF files.
-        processed_files (optional): Path object of the JSON file tracking processed files. if not provided, assumes no files are read in the folder"""
+        processed_files (optional): Path object of the JSON file tracking processed files. if not provided, assumes no files are read in the folder
+    """
     try:
         files_read = list(json.load(open(processed_files, 'r')))
         print(f"Files already processed: {files_read}")
@@ -38,7 +39,6 @@ def get_new_filenames(folder_path: Path, processed_files:Path) -> List[str]:
 
 
 def get_new_filenames_for_llm(folder_path: Path, processed_files:Path) -> Dict[str, List[str]] | None:
-
     """
     Get new PDF filenames from the folder that have not been processed yet.
     From Data Directory, get all directory names (assumes each corresponds to a policy name)
@@ -46,7 +46,8 @@ def get_new_filenames_for_llm(folder_path: Path, processed_files:Path) -> Dict[s
 
     Args:
         folder_path: Path object of the folder containing PDF files.
-        processed_files (optional): Path object of the JSON file tracking processed files. if not provided, assumes no files are read in the folder"""
+        processed_files (optional): Path object of the JSON file tracking processed files. if not provided, assumes no files are read in the folder
+    """
     try:
         policy_processed = list(json.load(open(processed_files, 'r')))
         print(f"Files already processed: {policy_processed}")
@@ -87,11 +88,10 @@ class IngestionWorkflowState:
     policy_to_query: Optional[List[str]] = None
     policy_current: Optional[str] = None
     policy_current_idx: Optional[int] = None
-    policy_queried: Optional[List[str]] = None
-    policy_failed: Optional[List[str]] = None
+    policy_queried: List[str] = field(default_factory=list)
+    policy_failed: List[str] = field(default_factory=list)
+    uuid_ingested: List[Any] = field(default_factory=list)
     llm_config: Optional[Dict[str, Any]] = None
     llm_query: Optional[str] = None
     llm_response: Optional[Dict] = None
-    postgres_uuid: Optional[str] = None
-    flag_approved: Optional[Literal["approved", "rejected"]] = None
-    approver_note: Optional[str] = None
+    
