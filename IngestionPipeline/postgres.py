@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 import json
 
-from .utils import build_embedding_document, get_embedding
+from .utils import get_embedding
 from pathlib import Path
 from langchain_huggingface import HuggingFaceEmbeddings
 
@@ -128,7 +128,7 @@ def ingest_policy(summary_dict: dict,
                 inserted_ids.append(cur.fetchone()[0]) # type: ignore
 
     conn.commit()
-    return inserted_ids
+    return inserted_ids # type: ignore
 
 
 if __name__ == "__main__":
