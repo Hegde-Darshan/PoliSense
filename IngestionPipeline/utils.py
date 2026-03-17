@@ -103,7 +103,7 @@ def embed_documents(text: str) -> list[float]:
 
 
 @dataclass
-class IngestionWorkflowState:
+class IngestionWorkflowState: #Schema for langgraph workflow state for ingestion pipeline
     """Schema for langgraph workflow state"""
     file_directory: Optional[str] = None
     processed_directories: Optional[str] = None
