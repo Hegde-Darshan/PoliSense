@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 import json
 
-from .utils import get_embedding
+from utils import get_embedding, load_policy_data
 from pathlib import Path
 from langchain_huggingface import HuggingFaceEmbeddings
 
@@ -84,17 +84,29 @@ def ingest_policy(summary_dict: dict,
             f"Goals: {', '.join(summary_dict.get('PolicyGoals') or [])}",
             ]
             for inc in incentives:
+                parts_i = parts[:]
+                # print(parts_i)
                 incentive_details = {
                 "description": inc.get("Description"),
                 "benefits":    inc.get("Benefits") or {},
                 }
-                parts.append(
+                parts_i.append(
                     f"Incentive: {inc.get('IncentiveName', '')} - {inc.get('Description', '')}"
+                )
+                parts_i.append(
+                    f"Benefits: {json.dumps(inc.get('Benefits', {}))}"
                 )
             
                 # Build shared values across all rows for this policy
-                embedding_document  = "\n".join(p for p in parts if p.split(": ", 1)[-1].strip())
-                embedding_vector = get_embedding(embedding_document, embedding_model)
+                embedding_document  = "\n".join(p for p in parts_i if p.split(": ", 1)[-1].strip())
+                # embedding_vector = get_embedding(embedding_document, embedding_model)
+                embedding_vector = get_embedding(embedding_document)
+                
+                print(f"\n--- Incentive: {inc.get('IncentiveName')} ---")
+                print(f"Embedding doc (first 200 chars): {embedding_document[:200]}")
+                print(f"Embedding vector (first 5 dims): {embedding_vector[:5]}")
+                print(f"Embedding doc FULL length: {len(embedding_document)}")
+                print(f"Last 300 chars: {embedding_document[-300:]}")       
                 cur.execute("""
                     INSERT INTO policies (
                         parent_policy_name, policy_name, incentive_name,
@@ -131,18 +143,32 @@ def ingest_policy(summary_dict: dict,
     return inserted_ids # type: ignore
 
 
+def clear_policies_table(conn):
+    """Truncates the policies (and optionally review_queue) table."""
+    with conn.cursor() as cur:
+        cur.execute("TRUNCATE TABLE policies RESTART IDENTITY CASCADE;")
+        # Uncomment if you also want to clear the review queue:
+        # cur.execute("TRUNCATE TABLE review_queue RESTART IDENTITY CASCADE;")
+    conn.commit()
+    print("✅ policies table cleared.")
+
+
 if __name__ == "__main__":
-    summary_dict = {}
-    with open(ROOT_PATH / "IngestionPipeline/example_data.json") as f:
-        summary_dict = json.load(f)
+    # summary_dict = {}
+    # with open(ROOT_PATH / "IngestionPipeline/example_data.json") as f:
+    #     summary_dict = json.load(f)
     # print(summary_dict)
+    embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
+    policies = load_policy_data()
+    # print(policies)
     print("Acuired data")
     try:
         conn = get_connection()
         print("success")
     except Exception as e:
         print("Error: ",e)
-    embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
-    ids = ingest_policy(summary_dict, conn, embedding_model) # type: ignore
-    print(ids)
+    clear_policies_table(conn)
+    for policy in policies:
+        ids = ingest_policy(policy, conn, embedding_model)
+        print(ids)
 
