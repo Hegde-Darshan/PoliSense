@@ -9,10 +9,9 @@ from IngestionPipeline.logger import LOGGING_CONFIG
 from typing import Literal
 import psycopg2
 import json
+
 #import functions - 
-#import IngestionPipeline.data_loader as loader
 import IngestionPipeline.utils as utils
-#import IngestionPipeline.vectorizer as vectorizer
 import IngestionPipeline.prompts as prompts
 import IngestionPipeline.llm_extractor as llm_extractor
 from IngestionPipeline.utils import IngestionWorkflowState
@@ -40,6 +39,7 @@ except Exception as e:
 
 #load config file
 import yaml
+import sys
 try:
     with open(ROOT_PATH / "config.yml", 'r') as config_file:
         config = yaml.safe_load(config_file)
@@ -155,6 +155,9 @@ def update_status_files(state: IngestionWorkflowState) -> IngestionWorkflowState
 
 if __name__ == "__main__":
     graph = StateGraph(state_schema=IngestionWorkflowState)
+
+    #add the triggered folder name here
+
     graph.add_node("get_relavent_files", get_relavent_files)
     graph.add_node("extract_information", extract_information)
     graph.add_node("next_policy", get_next_policy_idx)

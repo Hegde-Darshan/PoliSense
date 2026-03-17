@@ -73,14 +73,13 @@ def get_new_filenames_for_llm(folder_path: Path, processed_files:Path) -> Dict[s
     return files_to_read
 
 
-
 def get_embedding(text: str, embedding_model) -> list[float]:
     """Generate embedding vector for the given text using the provided embedding model."""
     return embedding_model.embed_query(text)
 
 
 @dataclass
-class IngestionWorkflowState:
+class IngestionWorkflowState: #Schema for langgraph workflow state for ingestion pipeline
     """Schema for langgraph workflow state"""
     file_directory: Optional[str] = None
     processed_directories: Optional[str] = None
