@@ -138,6 +138,7 @@ if __name__ == "__main__":
     if vectorstore is None:
         raise Exception("Vectorstore could not be initialized. Cannot ingest data")
 
+############################################################################################################################################################################################################################################
     #prepare for ingestion - 
     #Get prompt template, initialize LLM ,invoke LLM to extract summarizaition and metadata for each policy, and enrich metadata with extracted information before indexing in vectorstore
     #ingest each key in structuredOutput with the same metadata
@@ -161,20 +162,21 @@ if __name__ == "__main__":
 
         """
         INGESTION LOGIC HERE
-        - INGEST METADATA AND OTHER DETERMINISTIC FIELDS TO POSTGRESQL (OR ANY OTHER DATABASE) FOR QUERYING PURPOSES
-        - INGEST FULL SUMMARY AND OTHER TEXT FIELDS TO POSTGRES PGVECTOR
-        - GENERATE AND STORE EMBEDDINGS FOR CERTAIN SEMANTIC FIELDS IN THE STRUCTURED OUTPUT
-        - EACH KEY IN THE STRUCTURED OUTPUT CAN BE A FIELD IN THE DATABASE, AND THE FULL SUMMARY CAN BE A DOCUMENT IN THE VECTORSTORE WITH ALL THE FIELDS IN METADATA
-        - THIS WAY, WE CAN LEVERAGE THE STRUCTURED OUTPUT FOR PRECISE FILTERING AND QUERYING, AND THE VECTORSTORE FOR SEMANTIC SEARCH AND RETRIEVAL OF RELEVANT POLICIES
+        - [DONE] INGEST METADATA AND OTHER DETERMINISTIC FIELDS TO POSTGRESQL (OR ANY OTHER DATABASE) FOR QUERYING PURPOSES
+        - [DONE] INGEST FULL SUMMARY AND OTHER TEXT FIELDS TO POSTGRES PGVECTOR
+        - [DONE] GENERATE AND STORE EMBEDDINGS FOR CERTAIN SEMANTIC FIELDS IN THE STRUCTURED OUTPUT
+        - [DONE] EACH KEY IN THE STRUCTURED OUTPUT CAN BE A FIELD IN THE DATABASE, AND THE FULL SUMMARY CAN BE A DOCUMENT IN THE VECTORSTORE WITH ALL THE FIELDS IN METADATA
+        - [DONE] THIS WAY, WE CAN LEVERAGE THE STRUCTURED OUTPUT FOR PRECISE FILTERING AND QUERYING, AND THE VECTORSTORE FOR SEMANTIC SEARCH AND RETRIEVAL OF RELEVANT POLICIES
         """ 
 
         try:
-            inserted_ids = db_utils.ingest_policy(summary_dict, conn, embedding_model)
+            inserted_ids = db_utils.ingest_policy(summary_dict, conn)
             logger.info(f"Ingested policy '{policy}' → {len(inserted_ids)} row(s) inserted, IDs: {inserted_ids}")
         except Exception as e:
             logger.error(f"Failed to ingest policy '{policy}': {e}")
             conn.rollback()
 
+################################################################################################################################################################################################################################################################
 
     #ingest documents in batches, defined by collector function
     #initialize document iterator and collect first batch of documents

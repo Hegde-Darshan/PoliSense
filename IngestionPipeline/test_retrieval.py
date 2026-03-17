@@ -5,7 +5,7 @@ import psycopg2
 from pathlib import Path
 from dotenv import load_dotenv
 from langchain_huggingface import HuggingFaceEmbeddings
-from utils import get_embedding
+import utils
 from postgres import get_connection
 
 ROOT_PATH = Path(__file__).parent.parent
@@ -32,7 +32,7 @@ def retrieve_policies(
     """
     # BGE models perform better with this instruction prefix for queries
     prefixed_query = f"Represent this sentence for searching relevant passages: {query}"
-    query_vector = get_embedding(prefixed_query)
+    query_vector = utils.embed_documents(prefixed_query)
 
     # Build dynamic WHERE clause for optional metadata filters
     filters = []

@@ -5,15 +5,25 @@ from dotenv import load_dotenv
 import os
 import json
 
-from utils import get_embedding, load_policy_data
 from pathlib import Path
-from langchain_huggingface import HuggingFaceEmbeddings
+from sentence_transformers import SentenceTransformer
+# from langchain_huggingface import HuggingFaceEmbeddings
 
 
 load_dotenv()
 ROOT_PATH = Path(__file__).parent.parent
 load_dotenv(ROOT_PATH / ".env")
 load_dotenv(ROOT_PATH / ".env.secrets")
+
+def embed_documents(text: str) -> list[float]:
+    """
+    Generate embedding using sentence-transformers directly.
+    embedding_model param kept for backward compatibility but ignored.
+    """
+    model = SentenceTransformer("BAAI/bge-small-en-v1.5")  # fresh every time, no cache
+    result = model.encode(text, normalize_embeddings=True).tolist()
+    print(f"Input len: {len(text)}, vec[:3]: {result[:3]}")
+    return result
 
 
 def get_connection():
@@ -53,8 +63,7 @@ def ingest_into_review_queue(summary_dict: dict,
 
 
 def ingest_policy(summary_dict: dict, 
-        conn: psycopg2.extensions.connection, 
-        embedding_model: HuggingFaceEmbeddings = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")):
+        conn: psycopg2.extensions.connection):
     """
     Ingests the structured policy summary into the Postgres database. 
     Handles multiple subpolicies and incentives by inserting a row for each incentive under a policy.
@@ -76,35 +85,39 @@ def ingest_policy(summary_dict: dict,
             if not incentives:
                 incentives = [{}]
             inserted_ids = []
-            parts = [
+            policy_parts = [
             f"Summary: {p.get('PolicySummary', '')}",
             f"Eligibility: {p.get('EligibilityCriteria', '')}",
             f"Keywords: {', '.join(p.get('Keywords') or [])}",
             f"SpecialAttributes: {', '.join(p.get('SpecialAttributes') or [])}",
             f"Goals: {', '.join(summary_dict.get('PolicyGoals') or [])}",
             ]
+            incentive_parts =[]
+
             for inc in incentives:
-                parts_i = parts[:]
-                # print(parts_i)
                 incentive_details = {
                 "description": inc.get("Description"),
                 "benefits":    inc.get("Benefits") or {},
                 }
-                parts_i.append(
+                incentive_parts.append(
                     f"Incentive: {inc.get('IncentiveName', '')} - {inc.get('Description', '')}"
                 )
-                parts_i.append(
+                incentive_parts.append(
                     f"Benefits: {json.dumps(inc.get('Benefits', {}))}"
                 )
             
                 # Build shared values across all rows for this policy
-                embedding_document  = "\n".join(p for p in parts_i if p.split(": ", 1)[-1].strip())
+                incentive_context = "\n".join(i for i in incentive_parts)
+                policy_context = "\n".join(i for i in policy_parts)
+                # embedding_document  = "\n".join(p for p in parts_i if p.split(": ", 1)[-1].strip())
+                embedding_document = incentive_context + "\n" + policy_context
                 # embedding_vector = get_embedding(embedding_document, embedding_model)
-                embedding_vector = get_embedding(embedding_document)
+                embedding_vector = embed_documents(embedding_document)
                 
                 print(f"\n--- Incentive: {inc.get('IncentiveName')} ---")
                 print(f"Embedding doc (first 200 chars): {embedding_document[:200]}")
                 print(f"Embedding vector (first 5 dims): {embedding_vector[:5]}")
+                print(f"Embedding vector (last 5 dims): {embedding_vector[-5:]}")
                 print(f"Embedding doc FULL length: {len(embedding_document)}")
                 print(f"Last 300 chars: {embedding_document[-300:]}")       
                 cur.execute("""
@@ -158,8 +171,11 @@ if __name__ == "__main__":
     # with open(ROOT_PATH / "IngestionPipeline/example_data.json") as f:
     #     summary_dict = json.load(f)
     # print(summary_dict)
-    embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
-    policies = load_policy_data()
+    import utils
+    import inspect
+    print(inspect.getsource(utils.embed_documents))
+    # embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
+    policies = utils.load_policy_data()
     # print(policies)
     print("Acuired data")
     try:
@@ -169,6 +185,6 @@ if __name__ == "__main__":
         print("Error: ",e)
     clear_policies_table(conn)
     for policy in policies:
-        ids = ingest_policy(policy, conn, embedding_model)
+        ids = ingest_policy(policy, conn)
         print(ids)
 
