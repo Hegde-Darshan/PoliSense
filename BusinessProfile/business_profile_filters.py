@@ -239,6 +239,7 @@ SAMPLE_PROFILES = [
 if __name__ == "__main__":
     conn      = get_connection()
     canonical = get_canonical_values(conn)
+    print(canonical)
     validator = ProfileValidator(canonical)
 
     # Optionally print all valid values
