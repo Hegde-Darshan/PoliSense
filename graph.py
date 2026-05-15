@@ -91,8 +91,8 @@ def extract_information(state: IngestionWorkflowState) -> IngestionWorkflowState
     llm_client = llm_extractor.initialize_llm_with_config(is_structured_model=True)
     state.llm_config = dict(llm_client.__dict__)
     #print(f"Invoking LLM with prompt: {prompt_manager.get_prompt()}")
-    #struct_response = llm_client.invoke(prompt_manager.get_prompt())
-    struct_response = llm_client.invoke("This is a test invocation. Return response in the same format but tailor it with empty or test string values")
+    struct_response = llm_client.invoke(prompt_manager.get_prompt())
+    # struct_response = llm_client.invoke("This is a test invocation. Return response in the same format but tailor it with empty or test string values")
     summary = llm_extractor.PDFSummary.model_validate(struct_response)
     state.llm_response = summary.model_dump()
     return state
@@ -106,7 +106,9 @@ def db_ingestion(state: IngestionWorkflowState, db_conn: psycopg2.extensions.con
     """
     try:
         if state.llm_response:
-            inserted_ids = db_utils.ingest_policy(state.llm_response, db_conn)
+            summary_dict = state.llm_response
+            summary_dict['PolicyGroup'] = state.policy_current
+            inserted_ids = db_utils.ingest_policy(summary_dict, db_conn)
             state.uuid_ingested.extend(inserted_ids)
             logger.info(f"Ingested policy '{state.policy_current}' → {len(inserted_ids)} row(s) inserted, IDs: {inserted_ids}")
             #append to policy_queried list
