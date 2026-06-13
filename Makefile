@@ -10,7 +10,7 @@ help: ## help: Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 	awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
-up: ## up: Start ChromaDB
+up: ## up: Start ChromaD
 	docker compose up -d
 
 down: ## down: Stop ChromaDB
@@ -26,8 +26,8 @@ logs: ## logs: Tail ChromaDB logs
 ps: ## ps: Show running containers
 	docker compose ps
 
-health: ## health: Check ChromaDB health
-	curl -s http://$(CHROMA_SERVER):$(CHROMA_PORT)/api/v2/heartbeat || echo "Chroma not reachable"
+health: ## health: Check Postgres container health
+	@docker compose exec -T postgres pg_isready -q || echo "Postgres not reachable"
 
 clean: ## clean: Stop and delete all data (DANGEROUS)
 	docker compose down -v

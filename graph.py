@@ -39,7 +39,7 @@ except Exception as e:
 
 #load config file
 import yaml
-import sys
+
 try:
     with open(ROOT_PATH / "config.yml", 'r') as config_file:
         config = yaml.safe_load(config_file)

@@ -6,7 +6,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from langchain_huggingface import HuggingFaceEmbeddings
 import utils
-from postgres import get_connection
+from IngestionPipeline.postgres_utils import get_connection
 
 ROOT_PATH = Path(__file__).parent.parent
 load_dotenv(ROOT_PATH / ".env")
@@ -21,10 +21,10 @@ def retrieve_policies(
     conn,
     top_k: int = 5,
     # Optional metadata filters — pass None to skip
-    industry: str = None,
-    category: str = None,
-    geography: str = None,
-    business_size: str = None,
+    industry: str|None = None,
+    category: str|None = None,
+    geography: str|None = None,
+    business_size: str|None = None,
 ) -> list[dict]:
     """
     Retrieve the most relevant policies for a given query using vector similarity.

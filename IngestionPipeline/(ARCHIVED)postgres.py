@@ -183,8 +183,8 @@ if __name__ == "__main__":
         print("success")
     except Exception as e:
         print("Error: ",e)
-    clear_policies_table(conn)
+    clear_policies_table(conn) # type: ignore
     for policy in policies:
-        ids = ingest_policy(policy, conn)
+        ids = ingest_policy(policy, conn) # type: ignore
         print(ids)
 

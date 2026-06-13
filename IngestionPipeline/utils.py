@@ -77,31 +77,6 @@ def get_new_filenames_for_llm(folder_path: Path, processed_files:Path) -> Dict[s
     return files_to_read
 
 
-# def embed_documents(text: str) -> list[float]:
-#     """
-#     Generate embedding using sentence-transformers directly.
-#     embedding_model param kept for backward compatibility but ignored.
-#     """
-#     # model_name = "BAAI/bge-small-en-v1.5"
-    
-#     # # Cache the model so it's not reloaded on every call
-#     # if model_name not in _model_cache:
-#     #     _model_cache[model_name] = SentenceTransformer(model_name)
-    
-#     # model = _model_cache[model_name]
-#     # vector = model.encode(text, normalize_embeddings=True)
-#     # return vector.tolist()
-
-#     model = SentenceTransformer("BAAI/bge-small-en-v1.5")  # fresh every time, no cache
-#     result = model.encode(text, normalize_embeddings=True).tolist()
-#     print(f"Input len: {len(text)}, vec[:3]: {result[:3]}")
-#     return result
-
-# def get_embedding(text: str, embedding_model) -> list[float]:
-#     """Generate embedding vector for the given text using the provided embedding model."""
-#     return embedding_model.embed_query(text)
-
-
 @dataclass
 class IngestionWorkflowState: #Schema for langgraph workflow state for ingestion pipeline
     """Schema for langgraph workflow state"""
@@ -117,23 +92,44 @@ class IngestionWorkflowState: #Schema for langgraph workflow state for ingestion
     llm_config: Optional[Dict[str, Any]] = None
     llm_query: Optional[str] = None
     llm_response: Optional[Dict] = None
-    
 
 
 def load_policy_data() -> list[dict]:
     folder_path = Path(ROOT_PATH, "LLM_Summaries")
-    # print(folder_path)
     policies = []
     for policy in os.listdir(folder_path):
         output = None
         with open(folder_path / policy, 'r') as p:
             data = json.load(p)
             output = data.get("outputs")
-            # print(data.get("outputs"))
         if output:
             policies.append(output)
-    # print(policies)
     return policies
+
+
+def embed_documents(text: str) -> list[float]:
+    """
+    Generate embedding using sentence-transformers directly.
+    embedding_model param kept for backward compatibility but ignored.
+    """
+    # model_name = "BAAI/bge-small-en-v1.5"
+    
+    # # Cache the model so it's not reloaded on every call
+    # if model_name not in _model_cache:
+    #     _model_cache[model_name] = SentenceTransformer(model_name)
+    
+    # model = _model_cache[model_name]
+    # vector = model.encode(text, normalize_embeddings=True)
+    # return vector.tolist()
+
+    model = SentenceTransformer("BAAI/bge-small-en-v1.5")  # fresh every time, no cache
+    result = model.encode(text, normalize_embeddings=True).tolist()
+    print(f"Input len: {len(text)}, vec[:3]: {result[:3]}")
+    return result
+
+# def get_embedding(text: str, embedding_model) -> list[float]:
+#     """Generate embedding vector for the given text using the provided embedding model."""
+#     return embedding_model.embed_query(text)
 
 
 # if __name__ == "__main__":
