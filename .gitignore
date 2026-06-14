@@ -31,16 +31,24 @@ TestDocuments/
 archive/
 models/
 Subsidies Schemes Grants and Incentives/
-
+IngestionPipeline/__pycache__/
 # Vector stores and databases
 vectorstore/
 chroma/
 chroma_data/
+postgres_data/
 
 # Test files (if you want to ignore them)
 test.py
+untracked/
+BusinessProfile/
+Data/
+postgres_data/
+untracked/
 
-TestDocuments/
+#Claude
+.claude/
+
 
 
 postgres_data/

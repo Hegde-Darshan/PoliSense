@@ -6,6 +6,7 @@ import nltk
 nltk.download('stopwords')
 nltk.download('punkt_tab')
 from rake_nltk import Rake
+import json
 
 # ROOT_PATH = Path(__file__).parent
 
@@ -60,7 +61,7 @@ BUSINESS_SIZE_KEYWORDS = {
 }
 
 INDUSTRY_KEYWORDS = {
-    "Technology": ["tech", "health technology", "it", "technology"],
+    "Technology": ["tech", "health technology", "information technology", "technology", "bio technology"],
     "Finance": ["finance", "mudra", "credit"],
     "Textile":["textile","khadi", "cotton", "silk", "coir"],
     "Agricultural":["agri", "krushi", "agricultural", "raita"],
@@ -69,7 +70,7 @@ INDUSTRY_KEYWORDS = {
     "Trade":["trade"]
 }
 
-SUB_INDUSTRY_KEYWORDS = ["health technology","biotech", "fintech", "agritech", "khadi","silk", "coir","cotton","rice","wheat", "ragi","it","information technology","ai/machine learning", "ai"]
+SUB_INDUSTRY_KEYWORDS = ["health technology","biotech", "fintech", "agritech", "khadi","silk", "coir","cotton","rice","wheat", "ragi","information technology","ai/machine learning", "artificial intelligence"]
 
 DOCUMENT_TYPE_MAP = {
     "guidelines": ["guideline", "guidelines"],
@@ -188,6 +189,8 @@ def extract_metadata_from_path(file_path: Path) -> dict:
 
     # 2️⃣ Business size
     text_blob = " ".join(parts + [file_name])
+    # normalize text
+    words = set(re.findall(r"\b[a-zA-Z]+\b", text_blob.lower()))
     for size, keys in BUSINESS_SIZE_KEYWORDS.items():
         if any(k in text_blob for k in keys):
             # metadata["business_size"].append(size)
@@ -246,18 +249,49 @@ def extract_metadata_from_path(file_path: Path) -> dict:
             metadata["special_attribute"] = dtype
             break
 
-    return metadata
+    return convert_metadata_for_chromadb(metadata)
 
-if __name__ == "__main__":
-    # path = Path("Subsidies Schemes Grants and Incentives\(BAIPR)_Building awareness on IPR for msme\IPR-Guidelines-CLCS-TUS-2019-2020.pdf")
-    # path = Path("TestDocuments\(TREAD)_trade related entreprenuership assistance and development scheme for women\TREAD Guidelines.pdf")
-    # path = Path(r"TestDocuments\2022 Credit Guarantee Scheme for Startups\credit-guarantee-scheme-for-startup.pdf")
-    # source_path_str = "2022-27 Credit Guarantee Scheme for Startups\credit-guarantee-scheme-for-startup.pdf"
-    source_path_str = "(TREAD)_trade related entreprenuership assistance and development scheme for women\TREAD Guidelines.pdf"
-    # source_path_str = "Startup India Seed Fund Scheme (SISFS)\credit-guarantee-scheme-for-startup.pdf"
-    test_path = "TestDocuments"
-    full_path = Path(fr"{test_path} / {source_path_str}")
-    metadata = extract_metadata_from_path(full_path)
-    print(metadata)
+
+def convert_metadata_for_chromadb(metadata: dict) -> dict:
+    """
+    Convert metadata to ChromaDB-compatible format.
+    ChromaDB only accepts str, int, float, bool, or None - not lists or dicts.
+    Converts lists to comma-separated strings and removes dicts.
+    """
+    chromadb_metadata = {}
+    for key, value in metadata.items():
+        if value is None:
+            chromadb_metadata[key] = None
+        elif isinstance(value, bool):
+            chromadb_metadata[key] = value
+        elif isinstance(value, (int, float)):
+            chromadb_metadata[key] = value
+        elif isinstance(value, str):
+            chromadb_metadata[key] = value
+        elif isinstance(value, list):
+            # Convert list to comma-separated string, or empty string if list is empty
+            if value:
+                chromadb_metadata[key] = ", ".join(str(item) for item in value)
+            else:
+                chromadb_metadata[key] = ""  # Empty string for empty lists
+        elif isinstance(value, dict):
+            # Convert dict to JSON string
+            chromadb_metadata[key] = json.dumps(value)
+        else:
+            # Convert any other type to string
+            chromadb_metadata[key] = str(value)
+    return chromadb_metadata
+
+# if __name__ == "__main__":
+#     # path = Path("Subsidies Schemes Grants and Incentives\(BAIPR)_Building awareness on IPR for msme\IPR-Guidelines-CLCS-TUS-2019-2020.pdf")
+#     # path = Path("TestDocuments\(TREAD)_trade related entreprenuership assistance and development scheme for women\TREAD Guidelines.pdf")
+#     # path = Path(r"TestDocuments\2022 Credit Guarantee Scheme for Startups\credit-guarantee-scheme-for-startup.pdf")
+#     # source_path_str = "2022-27 Credit Guarantee Scheme for Startups\credit-guarantee-scheme-for-startup.pdf"
+#     source_path_str = "(TREAD)_trade related entreprenuership assistance and development scheme for women\TREAD Guidelines.pdf"
+#     # source_path_str = "Startup India Seed Fund Scheme (SISFS)\credit-guarantee-scheme-for-startup.pdf"
+#     test_path = "TestDocuments"
+#     full_path = Path(fr"{test_path} / {source_path_str}")
+#     metadata = extract_metadata_from_path(full_path)
+#     print(metadata)
 
 
