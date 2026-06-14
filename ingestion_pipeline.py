@@ -20,6 +20,8 @@ logging.config.dictConfig(LOGGING_CONFIG)
 root_logger = logging.getLogger()
 logger = root_logger.getChild("ingestion_pipeline")
 
+
+
 # Suppress unnecessary logs
 logging.getLogger("sentence_transformers").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)

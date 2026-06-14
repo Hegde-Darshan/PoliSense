@@ -1,0 +1,318 @@
+================================================================================
+RELEVANT BUSINESS SCHEMES - EXTRACTION RESULTS
+================================================================================
+
+Generated from ChromaDB Collection: PoliSenseTest
+Total Business Profiles Processed: 7
+================================================================================
+
+================================================================================
+BUSINESS 1: IdeaSpark Innovations Pvt Ltd
+================================================================================
+
+BUSINESS PROFILE:
+--------------------------------------------------------------------------------
+Business Name: IdeaSpark Innovations Pvt Ltd
+Legal Entity Type: Private Limited
+Industry: Technology
+Sub-Industry: AI & Machine Learning
+Employee Count: 18
+Turnover Range: INR 1–2 Cr
+Year of Establishment: 2022
+Geography: Country: India, State: Telangana, District: Hyderabad
+Ownership Type: Private
+Growth Stage: Early Stage
+Registration: MSME Registered, Udyam Number: TS2022AI1234
+Special Attributes: Startup, Tech-enabled, Youth-led
+--------------------------------------------------------------------------------
+
+SEARCH RESULTS SUMMARY:
+--------------------------------------------------------------------------------
+Total Matching Document Chunks: 15
+Unique Schemes Found: 2
+Unique Files Found: 3
+--------------------------------------------------------------------------------
+
+RELEVANT SCHEMES:
+--------------------------------------------------------------------------------
+  • 2022-27 Karnataka Karnataka Startup Policy
+  • 2022-27 Karnataka Startup Policy
+
+RELEVANT FILES:
+--------------------------------------------------------------------------------
+  • KarnatakaStartupPolicy2022-OperationalGuidelines-23022024-v01-sent.pdf
+  • Startup_Policy_2022-27-Kan_Eng.pdf
+  • start up policy's.pdf
+
+
+================================================================================
+BUSINESS 2: InnoHer Solutions Pvt Ltd
+================================================================================
+
+BUSINESS PROFILE:
+--------------------------------------------------------------------------------
+Business Name: InnoHer Solutions Pvt Ltd
+Legal Entity Type: Private Limited
+Industry: Technology
+Sub-Industry: HealthTech
+Employee Count: 15
+Turnover Range: INR 1–2 Cr
+Year of Establishment: 2022
+Geography: Country: India, State: Karnataka, District: Bangalore
+Ownership Type: Women-Owned
+Growth Stage: Startup
+Registration: MSME Registered, Udyam Number: KA2022HT1234
+Special Attributes: Startup, Women-led, Innovative
+--------------------------------------------------------------------------------
+
+SEARCH RESULTS SUMMARY:
+--------------------------------------------------------------------------------
+Total Matching Document Chunks: 15
+Unique Schemes Found: 2
+Unique Files Found: 3
+--------------------------------------------------------------------------------
+
+RELEVANT SCHEMES:
+--------------------------------------------------------------------------------
+  • 2022-27 Karnataka Karnataka Startup Policy
+  • 2022-27 Karnataka Startup Policy
+
+RELEVANT FILES:
+--------------------------------------------------------------------------------
+  • KarnatakaStartupPolicy2022-OperationalGuidelines-23022024-v01-sent.pdf
+  • Startup_Policy_2022-27-Kan_Eng.pdf
+  • start up policy's.pdf
+
+
+================================================================================
+BUSINESS 3: Shree Ganesh Engineering Works
+================================================================================
+
+BUSINESS PROFILE:
+--------------------------------------------------------------------------------
+Business Name: Shree Ganesh Engineering Works
+Industry: Manufacturing
+Sub-Industry: Auto Components
+Employee Count: 12
+Geography: State: Maharashtra
+--------------------------------------------------------------------------------
+
+SEARCH RESULTS SUMMARY:
+--------------------------------------------------------------------------------
+Total Matching Document Chunks: 15
+Unique Schemes Found: 5
+Unique Files Found: 4
+--------------------------------------------------------------------------------
+
+RELEVANT SCHEMES:
+--------------------------------------------------------------------------------
+  • 2022-27 Karnataka Karnataka Startup Policy
+  • 2022-27 Karnataka Startup Policy
+  • Government Schemes For Startups In 2025
+  • SISFS - Startup India Seed Fund Scheme
+  • Startup India Seed Fund Scheme
+
+RELEVANT FILES:
+--------------------------------------------------------------------------------
+  • Guidelines for Startup India Seed Fund Scheme.pdf
+  • KarnatakaStartupPolicy2022-OperationalGuidelines-23022024-v01-sent.pdf
+  • Startup_Policy_2022-27-Kan_Eng.pdf
+  • start up policy's.pdf
+
+
+================================================================================
+BUSINESS 4: BlueStack Digital Solutions Pvt Ltd
+================================================================================
+
+BUSINESS PROFILE:
+--------------------------------------------------------------------------------
+Business Name: BlueStack Digital Solutions Pvt Ltd
+Legal Entity Type: Private Limited
+Industry: IT Services
+Employee Count: 45
+Turnover Range: INR 5–10 Cr
+Year of Establishment: 2019
+Geography: Country: India, State: Karnataka
+Growth Stage: Early Growth
+--------------------------------------------------------------------------------
+
+SEARCH RESULTS SUMMARY:
+--------------------------------------------------------------------------------
+Total Matching Document Chunks: 15
+Unique Schemes Found: 2
+Unique Files Found: 3
+--------------------------------------------------------------------------------
+
+RELEVANT SCHEMES:
+--------------------------------------------------------------------------------
+  • 2022-27 Karnataka Karnataka Startup Policy
+  • 2022-27 Karnataka Startup Policy
+
+RELEVANT FILES:
+--------------------------------------------------------------------------------
+  • KarnatakaStartupPolicy2022-OperationalGuidelines-23022024-v01-sent.pdf
+  • Startup_Policy_2022-27-Kan_Eng.pdf
+  • start up policy's.pdf
+
+
+================================================================================
+BUSINESS 5: GreenHarvest Foods LLP
+================================================================================
+
+BUSINESS PROFILE:
+--------------------------------------------------------------------------------
+Business Name: GreenHarvest Foods LLP
+Legal Entity Type: LLP
+Industry: Food Processing
+Sub-Industry: Agri Processing
+Employee Count: 120
+Turnover Range: INR 50–100 Cr
+Year of Establishment: 2014
+Geography: Country: India, State: Punjab, District: Ludhiana
+Ownership Type: Private
+Growth Stage: Expansion
+Registration: MSME Registered
+--------------------------------------------------------------------------------
+
+SEARCH RESULTS SUMMARY:
+--------------------------------------------------------------------------------
+Total Matching Document Chunks: 15
+Unique Schemes Found: 3
+Unique Files Found: 5
+--------------------------------------------------------------------------------
+
+RELEVANT SCHEMES:
+--------------------------------------------------------------------------------
+  • Skill Upgradation & Mahila Coir Yojana
+  • TREAD - Trade Related Entreprenuership Assistance And Development Scheme For Women
+  • Trade Related Entreprenuership Assistance And Development Scheme For Women
+
+RELEVANT FILES:
+--------------------------------------------------------------------------------
+  • Mahila Coir Yojana.pdf
+  • TREAD Guidelines.pdf
+  • schemes_for_the_development_and_promotion_of_women_entrepreneurs.pdf
+  • tread.pdf
+  • women_schemes.pdf
+
+
+================================================================================
+BUSINESS 6: Sakhi Handloom Collective
+================================================================================
+
+BUSINESS PROFILE:
+--------------------------------------------------------------------------------
+Business Name: Sakhi Handloom Collective
+Industry: Textiles
+Sub-Industry: Handloom
+Employee Count: 25
+Geography: State: Odisha, District: Mayurbhanj
+Ownership Type: Women-Owned
+Special Attributes: Rural, SHG-based
+--------------------------------------------------------------------------------
+
+SEARCH RESULTS SUMMARY:
+--------------------------------------------------------------------------------
+Total Matching Document Chunks: 15
+Unique Schemes Found: 2
+Unique Files Found: 3
+--------------------------------------------------------------------------------
+
+RELEVANT SCHEMES:
+--------------------------------------------------------------------------------
+  • 2022-27 Karnataka Karnataka Startup Policy
+  • 2022-27 Karnataka Startup Policy
+
+RELEVANT FILES:
+--------------------------------------------------------------------------------
+  • KarnatakaStartupPolicy2022-OperationalGuidelines-23022024-v01-sent.pdf
+  • Startup_Policy_2022-27-Kan_Eng.pdf
+  • start up policy's.pdf
+
+
+================================================================================
+BUSINESS 7: MegaSteel Industries Ltd
+================================================================================
+
+BUSINESS PROFILE:
+--------------------------------------------------------------------------------
+Business Name: MegaSteel Industries Ltd
+Industry: Heavy Manufacturing
+Employee Count: 3200
+Turnover Range: > INR 1000 Cr
+Geography: Country: India
+--------------------------------------------------------------------------------
+
+SEARCH RESULTS SUMMARY:
+--------------------------------------------------------------------------------
+Total Matching Document Chunks: 15
+Unique Schemes Found: 5
+Unique Files Found: 5
+--------------------------------------------------------------------------------
+
+RELEVANT SCHEMES:
+--------------------------------------------------------------------------------
+  • 2022-27 Karnataka Karnataka Startup Policy
+  • 2022-27 Karnataka Startup Policy
+  • Skill Upgradation & Mahila Coir Yojana
+  • TREAD - Trade Related Entreprenuership Assistance And Development Scheme For Women
+  • Trade Related Entreprenuership Assistance And Development Scheme For Women
+
+RELEVANT FILES:
+--------------------------------------------------------------------------------
+  • KarnatakaStartupPolicy2022-OperationalGuidelines-23022024-v01-sent.pdf
+  • Mahila Coir Yojana.pdf
+  • Startup_Policy_2022-27-Kan_Eng.pdf
+  • start up policy's.pdf
+  • women_schemes.pdf
+
+
+================================================================================
+OVERALL SUMMARY
+================================================================================
+
+Total Business Profiles: 7
+Total Unique Schemes Found: 21
+Total Unique Files Found: 26
+Total Document Chunks Matched: 105
+
+Per-Business Breakdown:
+--------------------------------------------------------------------------------
+IdeaSpark Innovations Pvt Ltd:
+  Schemes: 2
+  Files: 3
+  Total matches: 15
+
+InnoHer Solutions Pvt Ltd:
+  Schemes: 2
+  Files: 3
+  Total matches: 15
+
+Shree Ganesh Engineering Works:
+  Schemes: 5
+  Files: 4
+  Total matches: 15
+
+BlueStack Digital Solutions Pvt Ltd:
+  Schemes: 2
+  Files: 3
+  Total matches: 15
+
+GreenHarvest Foods LLP:
+  Schemes: 3
+  Files: 5
+  Total matches: 15
+
+Sakhi Handloom Collective:
+  Schemes: 2
+  Files: 3
+  Total matches: 15
+
+MegaSteel Industries Ltd:
+  Schemes: 5
+  Files: 5
+  Total matches: 15
+
+================================================================================
+END OF REPORT
+================================================================================
