@@ -44,3 +44,5 @@ untracked/
 
 #Claude
 .claude/
+
+postgres_data/
