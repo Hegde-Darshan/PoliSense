@@ -1,23 +1,23 @@
 import os
 
 from langgraph.graph import StateGraph, START, END
-from langsmith import traceable, Client as SmithClient
+from langsmith import traceable
+from langchain_core.tracers.langchain import wait_for_all_tracers
+from functools import partial
 
 from pathlib import Path
 from dotenv import load_dotenv
 from IngestionPipeline.logger import LOGGING_CONFIG
-from typing import Literal
 import psycopg2
 import json
+import yaml
 
 #import functions - 
 import IngestionPipeline.utils as utils
 import IngestionPipeline.prompts as prompts
 import IngestionPipeline.llm_extractor as llm_extractor
 from IngestionPipeline.utils import IngestionWorkflowState
-import IngestionPipeline.postgres as db_utils
-
-from langchain_google_genai import ChatGoogleGenerativeAI
+import IngestionPipeline.postgres_utils as db_utils
 
 # Configure loggers
 import logging.config
@@ -28,6 +28,11 @@ logger = root_logger.getChild("graph")
 # Suppress unnecessary logs
 logging.getLogger("sentence_transformers").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
+logging.getLogger("httpcore.connection").setLevel(logging.WARNING)
+logging.getLogger("httpcore.http11").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
+logging.getLogger("langsmith.client").setLevel(logging.WARNING)
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 # Configure global and environment variables
 ROOT_PATH = Path(__file__).parent
@@ -35,11 +40,9 @@ try:
     load_dotenv(ROOT_PATH / ".env")
     load_dotenv(ROOT_PATH / ".env.secrets")
 except Exception as e:
-    logger.error(f"Error loading .env file: {e}")
+    logger.error(f"Error loading .env files: {e}")
 
 #load config file
-import yaml
-
 try:
     with open(ROOT_PATH / "config.yml", 'r') as config_file:
         config = yaml.safe_load(config_file)
@@ -49,13 +52,6 @@ except FileNotFoundError:
 
 #Get langsmith client (to trace some specific variables in the workflow)
 
-"""
-Steps - 
-1. Get files to query on -
-2. LLM inference to extract relevant information from the files -
-3.1. Vectorize the extracted information and store in vector database -
-3.2. HITL to verify the extracted information and vectorization -
-"""
 
 @traceable
 def is_next_iteration(state: IngestionWorkflowState) -> bool:
@@ -65,10 +61,11 @@ def is_next_iteration(state: IngestionWorkflowState) -> bool:
 @traceable
 def get_next_policy_idx(state: IngestionWorkflowState) -> IngestionWorkflowState:
     state.policy_current_idx += 1 #type: ignore
-    state.policy_current = state.policy_to_query[state.policy_current_idx] #type: ignore
     if state.policy_current_idx >= len(state.policy_to_query): #type: ignore
         state.policy_current_idx = -1
         state.policy_current = None
+    else:
+        state.policy_current = state.policy_to_query[state.policy_current_idx] #type: ignore
     return state
 
 
@@ -77,8 +74,8 @@ def get_relavent_files(state: IngestionWorkflowState) -> IngestionWorkflowState:
     list_of_files = utils.get_new_filenames_for_llm(state.file_directory, state.processed_directories)  # type: ignore
     state.file_paths = list_of_files
     state.policy_to_query = list(list_of_files.keys()) # type: ignore
-    state.policy_current_idx = 0
-    state.policy_current = state.policy_to_query[state.policy_current_idx] # type: ignore
+    state.policy_current_idx = -1 #initialize to -1 so that the first call to get_next_policy_idx will set it to 0
+    state.policy_current = None
     return state
 
 
@@ -110,7 +107,7 @@ def db_ingestion(state: IngestionWorkflowState, db_conn: psycopg2.extensions.con
             summary_dict['PolicyGroup'] = state.policy_current
             inserted_ids = db_utils.ingest_policy(summary_dict, db_conn)
             state.uuid_ingested.extend(inserted_ids)
-            logger.info(f"Ingested policy '{state.policy_current}' → {len(inserted_ids)} row(s) inserted, IDs: {inserted_ids}")
+            logger.info(f"Ingested policy '{state.policy_current}' -> {len(inserted_ids)} row(s) inserted, IDs: {inserted_ids}")
             #append to policy_queried list
             state.policy_queried.append(state.policy_current) #type: ignore
         else:
@@ -156,26 +153,26 @@ def update_status_files(state: IngestionWorkflowState) -> IngestionWorkflowState
 
 
 if __name__ == "__main__":
+    db_conn = db_utils.get_connection()
+
     graph = StateGraph(state_schema=IngestionWorkflowState)
 
-    #add the triggered folder name here
-
     graph.add_node("get_relavent_files", get_relavent_files)
+    graph.add_node("first_policy", get_next_policy_idx)
     graph.add_node("extract_information", extract_information)
     graph.add_node("next_policy", get_next_policy_idx)
-    graph.add_node("db_ingestion", db_ingestion)
-    graph.add_node("HITL_verification", HITL_verification)
+    graph.add_node("db_ingestion", partial(db_ingestion, db_conn=db_conn))
     graph.add_node("update_status_files", update_status_files)
 
     # Define transitions between states
     graph.add_edge(START, "get_relavent_files")
-    graph.add_edge("get_relavent_files", "extract_information")
+    graph.add_edge("get_relavent_files", "first_policy")
+    graph.add_conditional_edges("first_policy", is_next_iteration, {True: "extract_information", False: "update_status_files"})
     graph.add_edge("extract_information", "db_ingestion")
-    graph.add_edge("extract_information", "HITL_verification")
     graph.add_edge("db_ingestion", "next_policy")
     graph.add_conditional_edges("next_policy", is_next_iteration, {True: "extract_information", False: "update_status_files"})
     graph.add_edge("update_status_files", END)
-    graph.add_edge("HITL_verification", END)
+
     # Compile and execute the graph
     compiled_graph = graph.compile()
     compiled_graph.get_graph().draw_mermaid_png(output_file_path=r"untracked/graph_visualization.png")
@@ -184,10 +181,11 @@ if __name__ == "__main__":
     graph_state = IngestionWorkflowState()
     graph_state.file_directory = str(ROOT_PATH/Path(config['DATA_PATH']))
     graph_state.processed_directories = str(ROOT_PATH/Path(config['READ_PATH']))
-    #create postgres connection to Polisense_dev database. Main and review_queue table should already be created with the required schema.
-    db_conn = db_utils.get_connection()
+
     print(f"Starting graph execution with initial state: {graph_state}\n\n")
     
-
-    #compiled_graph.invoke(graph_state)
-    print(f"Graph execution completed with final state: {graph_state}")
+    try:
+        compiled_graph.invoke(graph_state)
+        print(f"Graph execution completed with final state: {graph_state}")
+    finally:
+        wait_for_all_tracers()

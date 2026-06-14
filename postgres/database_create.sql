@@ -56,3 +56,11 @@ CREATE INDEX idx_policies_embedding      ON policies USING ivfflat (embedding ve
                                          WITH (lists = 100);
 
 
+CREATE TABLE review_queue (
+    review_id           SERIAL PRIMARY KEY,
+    parent_policy_name  TEXT,
+    policy_summary      TEXT,
+    policy_goals        TEXT[],
+    created_at          TIMESTAMPTZ DEFAULT now()
+);
+

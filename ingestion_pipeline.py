@@ -32,6 +32,7 @@ conn = db_utils.get_connection()
 embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 try:
     load_dotenv(ROOT_PATH / ".env")
+    load_dotenv(ROOT_PATH / ".env.secrets")
 except Exception as e:
     logger.error(f"Error loading .env file: {e}")
 
@@ -60,16 +61,15 @@ if __name__ == "__main__":
     #prepare for ingestion - 
     #Get prompt template, initialize LLM ,invoke LLM to extract summarizaition and metadata for each policy, and enrich metadata with extracted information before indexing in vectorstore
     #ingest each key in structuredOutput with the same metadata
+    llm_client = llm_extractor.initialize_llm_with_config()
+    llm_config = llm_client.__dict__
+    logger.info(f"LLM client parameters: {json.dumps(llm_config, indent=2, default=str)}")
+    ingested_files, skipped_files = {}, {}
+
     for policy in list_of_files.keys():
         prompt_manager = prompts.PoliSensePrompts(pdf_paths=list_of_files[policy], policy_name=policy)
         logger.info(f"Prompt manager created for policy: {policy}")
-        llm_client = llm_extractor.initialize_llm_with_config()
-        logger.info(f"""LLM client initialized for policy: {policy} with the following configuration:\n
-                    """)
         
-        llm_config = llm_client.__dict__
-        logger.info(f"LLM client parameters: {json.dumps(llm_config, indent=2, default=str)}")
-
         struct_response = llm_client.invoke(prompt_manager.get_prompt())
         summary = llm_extractor.PDFSummary.model_validate(struct_response)
         summary_dict = summary.model_dump()
@@ -90,18 +90,24 @@ if __name__ == "__main__":
         try:
             inserted_ids = db_utils.ingest_policy(summary_dict, conn)
             logger.info(f"Ingested policy '{policy}' → {len(inserted_ids)} row(s) inserted, IDs: {inserted_ids}")
+            ingested_files[policy] = list_of_files[policy]
         except Exception as e:
             logger.error(f"Failed to ingest policy '{policy}': {e}")
             conn.rollback()
+            skipped_files[policy] = list_of_files[policy]
 
     #save files read
+    #logic not included here to exclude keys that failed ingestion
     curr_files = json.load(open(Path(config['READ_PATH']), 'r')) if os.path.exists(Path(config['READ_PATH'])) else []
-    if list_of_files is not None:
-        list_of_files = list(list_of_files.values()) + curr_files
+    if ingested_files is not None:
+        list_of_files = list(ingested_files.values()) + curr_files
     logger.debug(f"Files processed so far: {list_of_files}")
     json.dump(list_of_files, open(ROOT_PATH/Path(config['READ_PATH']), 'w'))
 
-    # skipped_files = file_loader.skipped
-    # json.dump(skipped_files, open(ROOT_PATH/Path(config['SKIPPED_PATH']), 'w'))
+    all_skipped_files = json.load(open(Path(config['SKIPPED_PATH']), 'r')) if os.path.exists(Path(config['SKIPPED_PATH'])) else []
+    if skipped_files is not None:
+        skipped_files = list(skipped_files.values()) + all_skipped_files
+    logger.warning(f"Files skipped so far: {skipped_files}")
+    json.dump(skipped_files, open(ROOT_PATH/Path(config['SKIPPED_PATH']), 'w'))
     
     logger.info("Ingestion process completed.")
