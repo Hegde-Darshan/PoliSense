@@ -2,12 +2,16 @@ import os
 from pathlib import Path
 import glob
 
-from langchain.schema import Document
-from langchain_community.document_loaders import DirectoryLoader, PyPDFLoader
+from langchain_core.documents import Document
+from langchain_community.document_loaders import DirectoryLoader, PyPDFLoader, PDFPlumberLoader, UnstructuredPDFLoader
 from langchain.text_splitter import CharacterTextSplitter, RecursiveCharacterTextSplitter
 from typing import Iterator, List
 
 import logging
+
+import pytesseract
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+print(pytesseract.get_tesseract_version())
 
 root_logger = logging.getLogger("ingestion_pipeline")
 logger = root_logger.getChild("data_loader")
@@ -73,7 +77,9 @@ class ChosenFilesDirectoryLoader(DirectoryLoader):
 
             if os.path.isfile(file_path) and file_path.suffix == ".pdf":
                 logger.debug(f"Loading file: {file_path}")
-                loader = PyPDFLoader(str(file_path))
+                #loader = PyPDFLoader(str(file_path))
+                #loader = PDFPlumberLoader(str(file_path))
+                loader = UnstructuredPDFLoader(str(file_path), mode="single", languages=['eng'])
                 for doc in loader.lazy_load():
                     #need to add other metadata here if required
                     doc.metadata["filename"] = str(file_name)

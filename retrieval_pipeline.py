@@ -1,6 +1,7 @@
 from typing import List, Dict, Any
 
 from RetrievalPipeline.preprocessor import preprocess_query, build_metadata_filter
+from RetrievalPipeline.preprocessor import preprocess_query, build_metadata_filter, build_chroma_where_filter
 from RetrievalPipeline.retriever import retrieve_documents
 
 
