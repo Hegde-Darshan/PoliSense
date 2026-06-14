@@ -49,6 +49,6 @@ untracked/
 #Claude
 .claude/
 
-
-
+.env
+backup.sql
 postgres_data/
