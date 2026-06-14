@@ -30,9 +30,9 @@ def get_connection():
     conn = psycopg2.connect(
         host=os.getenv("POSTGRES_HOST", "localhost"),
         port=os.getenv("POSTGRES_PORT", 5432),
-        dbname=os.getenv("POSTGRES_DB", "PoliSense_dev"),
-        user=os.getenv("POSTGRES_USER"),
-        password=os.getenv("POSTGRES_PASSWORD"),
+        dbname=os.getenv("POSTGRES_DB", "polisense_db_dev"),
+        user=os.getenv("POSTGRES_USER", "polisense_user"),
+        password=os.getenv("POSTGRES_PASSWORD", ""),
     )
     return conn
 

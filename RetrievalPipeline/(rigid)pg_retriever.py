@@ -11,7 +11,7 @@ sys.path.insert(0, str(ROOT_PATH))
 from dotenv import load_dotenv
 # from langchain_huggingface import HuggingFaceEmbeddings
 
-from IngestionPipeline.postgres import get_connection, embed_documents
+from IngestionPipeline.postgres_utils import get_connection, embed_documents
 from BusinessProfile.business_profile_filters import *
 
 load_dotenv(ROOT_PATH / ".env")

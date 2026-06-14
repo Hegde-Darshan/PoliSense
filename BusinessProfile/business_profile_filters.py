@@ -12,14 +12,16 @@ from pathlib import Path
 ROOT_PATH = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT_PATH))
 
-from IngestionPipeline.postgres import get_connection
+from IngestionPipeline.postgres_utils import get_connection
 
 
 # ── STEP 1: Extract canonical values from DB ──────────────────────────────────
 
 def get_canonical_values(conn) -> dict:
+
     """Pull all distinct filterable values directly from the policies table."""
     with conn.cursor() as cur:
+        # cur.execute("SELECT COUNT(*) FROM policies;")
 
         cur.execute("SELECT DISTINCT industry FROM policies WHERE industry IS NOT NULL")
         industries = sorted(set(r[0] for r in cur.fetchall()))
@@ -237,7 +239,8 @@ SAMPLE_PROFILES = [
 # ── Main: validate profiles and show extracted filters ────────────────────────
 
 if __name__ == "__main__":
-    conn      = get_connection()
+    conn = get_connection()
+    print(conn)
     canonical = get_canonical_values(conn)
     print(canonical)
     validator = ProfileValidator(canonical)
