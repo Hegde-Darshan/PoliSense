@@ -346,12 +346,14 @@ def build_filter_clauses(filters: dict[str, Any]) -> tuple[str, list]:
     if industry:
         # Strip parenthetical qualifiers: "Manufacturing (General)" → "Manufacturing"
         industry_token = industry.split("(")[0].strip()
-        # Match the specific industry OR catch-all multi-sector rows
+        # Match the specific industry OR catch-all multi-sector rows.
+        # Hardcoded literals use %% so psycopg2 does not treat them as
+        # parameter placeholders — they render as literal % in the query.
         clauses.append(
             "(industry ILIKE %s"
-            " OR industry ILIKE '%Multiple Industries%'"
-            " OR industry ILIKE '%Multi-sectoral%'"
-            " OR industry ILIKE '%MSME%')"
+            " OR industry ILIKE '%%Multiple Industries%%'"
+            " OR industry ILIKE '%%Multi-sectoral%%'"
+            " OR industry ILIKE '%%MSME%%')"
         )
         params.append(f"%{industry_token}%")
  
@@ -380,23 +382,27 @@ def build_filter_clauses(filters: dict[str, Any]) -> tuple[str, list]:
         if geography.lower() in KNOWN_DB_STATES:
             # State exists in DB — include both state and National rows
             clauses.append(
-                "(geography ILIKE %s OR geography ILIKE '%National%')"
+                "(geography ILIKE %s OR geography ILIKE '%%National%%')"
             )
             params.append(f"%{geography}%")
         else:
             # State not in DB — only return National policies rather than
             # applying a filter that would match nothing
-            clauses.append("geography ILIKE '%National%'")
+            clauses.append("geography ILIKE '%%National%%'")
+            # params.append(f"%National%")
     # If geography is "National" or missing, no clause added → all rows included
  
     # ── business_size ─────────────────────────────────────────────────────────
     business_size = filters.get("business_size")  # canonical: "Micro"|"Small"|"Medium"
     if business_size:
         db_tokens = MSME_TIER_TO_DB_TOKEN.get(business_size, [business_size])
+        # print(db_tokens)
         # Build: (business_size ILIKE '%Small%' OR business_size ILIKE '%MSME%')
         or_parts = " OR ".join("business_size ILIKE %s" for _ in db_tokens)
+        # print(or_parts)
         clauses.append(f"({or_parts})")
         params.extend(f"%{token}%" for token in db_tokens)
+        # print(params)
  
     # ── years ─────────────────────────────────────────────────────────────────
     # years = filters.get("years") or []
@@ -411,7 +417,6 @@ def build_filter_clauses(filters: dict[str, Any]) -> tuple[str, list]:
  
     return (" AND ".join(clauses) if clauses else "TRUE"), params
  
-
 
 def retrieve_candidates(
     query_vector: list[float],
@@ -450,11 +455,14 @@ def retrieve_candidates(
         LIMIT %s;
     """
     params = [vector_str] + filter_params + [vector_str, top_k]
-
+    # print(filter_params)
+    # print(len(params))
     conn = get_connection()
 
     # conn = psycopg2.connect(**DB_CONFIG)
     try:
+        # print(sql)
+        # print(params)
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             cur.execute(sql, params)
             rows = cur.fetchall()
@@ -615,7 +623,7 @@ def find_matching_policies(
 
     log("\n→ [2/4] Building profile text and embedding...")
     profile_text = profile_to_text(business_profile)
-    log(f"        Profile text preview: {profile_text}...")
+    log(f"        Profile text preview: {profile_text[:120]}...")
     query_vector = embed_text(profile_text)
     log(f"        Vector dim: {len(query_vector)}")
 
@@ -645,7 +653,7 @@ if __name__ == "__main__":
         "legal_entity_type":      "Private Limited",
         "year_of_establishment":  2019,
         "ownership_type":         "Women-Owned (>51% women ownership)",
-        "industry":               "Manufacturing (General)",
+        "industry":               "Manufacturing",
         "sub_industry":           "Handmade leather goods and accessories",
         "primary_activity":       "Manufacturing / Production",
         "products_services":      "Leather bags, wallets, and belts — domestic + export",
