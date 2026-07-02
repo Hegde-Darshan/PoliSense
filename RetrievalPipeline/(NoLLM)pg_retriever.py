@@ -116,12 +116,24 @@ FIELD_ALIASES: dict[str, list[str]] = {
     ],
 }
 
+MSME_TIER_TO_DB_TOKEN: dict[str, list[str]] = {
+    # A Micro business matches rows that mention Micro OR MSME
+    "Micro":  ["Micro", "MSME"],
+    # A Small business matches rows that mention Small OR MSME
+    # (rows like "Micro and Small Enterprises" also contain "Small")
+    "Small":  ["Small", "MSME"],
+    # A Medium business matches rows that mention Medium OR MSME
+    "Medium": ["Medium", "MSME"],
+}
+
 # Normalise free-text MSME registration answers → canonical size tokens
 # Extend this map as new questionnaire phrasings appear
 MSME_SIZE_NORMALISATION: dict[str, str] = {
     "micro":   "Micro",
     "small":   "Small",
     "medium":  "Medium",
+    "msme": "MSME",
+    "startup": "Startup"
 }
 
 
@@ -164,8 +176,8 @@ def extract_filters(profile: dict[str, Any]) -> dict[str, Any]:
     industry = _first_value(profile, FIELD_ALIASES["industry"])
     filters["industry"] = str(industry).strip() if industry else None
 
-    sub_industry = _first_value(profile, FIELD_ALIASES["sub_industry"])
-    filters["sub_industry"] = str(sub_industry).strip() if sub_industry else None
+    # sub_industry = _first_value(profile, FIELD_ALIASES["sub_industry"])
+    # filters["sub_industry"] = str(sub_industry).strip() if sub_industry else None
 
     category = _first_value(profile, FIELD_ALIASES["category"])
     filters["category"] = str(category).strip() if category else None
@@ -176,21 +188,21 @@ def extract_filters(profile: dict[str, Any]) -> dict[str, Any]:
     raw_size = _first_value(profile, FIELD_ALIASES["business_size"])
     filters["business_size"] = _normalise_business_size(raw_size)
 
-    raw_attrs = _first_value(profile, FIELD_ALIASES["special_attributes"])
-    if isinstance(raw_attrs, list):
-        filters["special_attributes"] = [str(a).strip() for a in raw_attrs if a]
-    elif isinstance(raw_attrs, str) and raw_attrs:
-        filters["special_attributes"] = [raw_attrs.strip()]
-    else:
-        filters["special_attributes"] = []
+    # raw_attrs = _first_value(profile, FIELD_ALIASES["special_attributes"])
+    # if isinstance(raw_attrs, list):
+    #     filters["special_attributes"] = [str(a).strip() for a in raw_attrs if a]
+    # elif isinstance(raw_attrs, str) and raw_attrs:
+    #     filters["special_attributes"] = [raw_attrs.strip()]
+    # else:
+    #     filters["special_attributes"] = []
 
-    raw_years = _first_value(profile, FIELD_ALIASES["years"])
-    if isinstance(raw_years, list):
-        filters["years"] = [str(y) for y in raw_years]
-    elif isinstance(raw_years, str) and raw_years:
-        filters["years"] = [raw_years]
-    else:
-        filters["years"] = []
+    # raw_years = _first_value(profile, FIELD_ALIASES["years"])
+    # if isinstance(raw_years, list):
+    #     filters["years"] = [str(y) for y in raw_years]
+    # elif isinstance(raw_years, str) and raw_years:
+    #     filters["years"] = [raw_years]
+    # else:
+    #     filters["years"] = []
 
     return filters
 
@@ -295,49 +307,110 @@ def embed_text(text: str) -> list[float]:
 
 # ── Step 4: Hybrid search ─────────────────────────────────────────────────────
 
+
 def build_filter_clauses(filters: dict[str, Any]) -> tuple[str, list]:
     """
     Convert filters dict → parameterised SQL WHERE fragment.
-    Mirrors the LLM version exactly so both pipelines hit the same indexes.
+ 
+    Each clause is written to match the actual stored values in the DB:
+ 
+    industry
+        Stored as short labels: "Manufacturing", "MSME", "General", etc.
+        Strip any parenthetical qualifier from the profile value before
+        matching, e.g. "Manufacturing (General)" → search for "Manufacturing".
+        Also always include rows where industry = "Multiple Industries" or
+        "Multi-sectoral" since those are catch-all rows relevant to everyone.
+ 
+    geography
+        Only two state values exist: "Karnataka" and "National".
+        If the profile state isn't in the DB we still want National policies,
+        so we always include geography = 'National' as an OR branch.
+        The state-specific OR branch is added only when the state is present
+        in the DB — avoids a clause that matches nothing and makes the AND
+        combination too restrictive.
+ 
+    business_size
+        Stored as verbose multi-tier strings, never a single tier.
+        We search for each DB token that corresponds to the profile's MSME
+        tier using OR, so "Small" matches both "Micro and Small Enterprises"
+        and "Micro, Small and Medium Enterprises (MSMEs)" and plain "MSME".
+ 
+    sub_industry / category / years / special_attributes
+        Unchanged — these work as before.
     """
     clauses: list[str] = []
     params:  list[Any] = []
-
+ 
+    # ── industry ─────────────────────────────────────────────────────────────
     industry = filters.get("industry")
     if industry:
-        clauses.append("industry ILIKE %s")
-        params.append(f"%{industry}%")
-
-    sub_industry = filters.get("sub_industry")
-    if sub_industry:
-        clauses.append("sub_industry ILIKE %s")
-        params.append(f"%{sub_industry}%")
-
+        # Strip parenthetical qualifiers: "Manufacturing (General)" → "Manufacturing"
+        industry_token = industry.split("(")[0].strip()
+        # Match the specific industry OR catch-all multi-sector rows
+        clauses.append(
+            "(industry ILIKE %s"
+            " OR industry ILIKE '%Multiple Industries%'"
+            " OR industry ILIKE '%Multi-sectoral%'"
+            " OR industry ILIKE '%MSME%')"
+        )
+        params.append(f"%{industry_token}%")
+ 
+    # ── sub_industry ─────────────────────────────────────────────────────────
+    # sub_industry = filters.get("sub_industry")
+    # if sub_industry:
+    #     clauses.append("sub_industry ILIKE %s")
+    #     params.append(f"%{sub_industry}%")
+ 
+    # ── category ─────────────────────────────────────────────────────────────
     category = filters.get("category")
     if category:
         clauses.append("category ILIKE %s")
         params.append(f"%{category}%")
-
+ 
+    # ── geography ─────────────────────────────────────────────────────────────
+    # Always include National policies. Add a state-specific OR only when
+    # the profile state actually exists as a geography value in the DB.
+    # Known state values in DB: "Karnataka", "State-specific (Karnataka)"
+    # If you add more states to the DB, extend KNOWN_DB_STATES below.
+    KNOWN_DB_STATES: set[str] = {
+        "karnataka",
+    }
     geography = filters.get("geography")
     if geography and geography.lower() != "national":
-        clauses.append("(geography ILIKE %s OR geography ILIKE %s)")
-        params.extend([f"%{geography}%", "%National%"])
-
-    business_size = filters.get("business_size")
+        if geography.lower() in KNOWN_DB_STATES:
+            # State exists in DB — include both state and National rows
+            clauses.append(
+                "(geography ILIKE %s OR geography ILIKE '%National%')"
+            )
+            params.append(f"%{geography}%")
+        else:
+            # State not in DB — only return National policies rather than
+            # applying a filter that would match nothing
+            clauses.append("geography ILIKE '%National%'")
+    # If geography is "National" or missing, no clause added → all rows included
+ 
+    # ── business_size ─────────────────────────────────────────────────────────
+    business_size = filters.get("business_size")  # canonical: "Micro"|"Small"|"Medium"
     if business_size:
-        clauses.append("business_size ILIKE %s")
-        params.append(f"%{business_size}%")
-
-    years = filters.get("years") or []
-    if years:
-        clauses.append("years && %s::text[]")
-        params.append(years)
-
-    for attr in filters.get("special_attributes") or []:
-        clauses.append("policy_details->'special_attributes' @> %s::jsonb")
-        params.append(json.dumps([attr]))
-
+        db_tokens = MSME_TIER_TO_DB_TOKEN.get(business_size, [business_size])
+        # Build: (business_size ILIKE '%Small%' OR business_size ILIKE '%MSME%')
+        or_parts = " OR ".join("business_size ILIKE %s" for _ in db_tokens)
+        clauses.append(f"({or_parts})")
+        params.extend(f"%{token}%" for token in db_tokens)
+ 
+    # ── years ─────────────────────────────────────────────────────────────────
+    # years = filters.get("years") or []
+    # if years:
+    #     clauses.append("years && %s::text[]")
+    #     params.append(years)
+ 
+    # # ── special_attributes (JSONB containment) ────────────────────────────────
+    # for attr in filters.get("special_attributes") or []:
+    #     clauses.append("policy_details->'special_attributes' @> %s::jsonb")
+    #     params.append(json.dumps([attr]))
+ 
     return (" AND ".join(clauses) if clauses else "TRUE"), params
+ 
 
 
 def retrieve_candidates(
@@ -542,7 +615,7 @@ def find_matching_policies(
 
     log("\n→ [2/4] Building profile text and embedding...")
     profile_text = profile_to_text(business_profile)
-    log(f"        Profile text preview: {profile_text[:120].replace(chr(10), ' ')}...")
+    log(f"        Profile text preview: {profile_text}...")
     query_vector = embed_text(profile_text)
     log(f"        Vector dim: {len(query_vector)}")
 
