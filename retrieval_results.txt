@@ -1,54 +1,825 @@
 =================================================================
-  PoliSense — Retrieval Results
-  Generated: 2026-06-14 15:09:34
-  Total profiles: 6
+Business Profile 
 =================================================================
+Industry: Manufacturing — specifically Handmade leather goods and accessories
+Products / services: Leather bags, wallets, and belts — domestic + export
+MSME tier: Small Enterprise
+Location: Rajasthan, India
+Location type: Industrial Park / Cluster
+Growth stage: Early Growth
+Special attributes: Women-led / Women-owned (> 51%), Export-oriented unit, R&D / IP-driven
+Policy needs: Capital investment subsidy, Export promotion, Working capital / interest subsidy
+Registrations held: GST Registration, Export Import Code (IEC)
+Additional context: business_name: Innovate Crafts Pvt Ltd; legal_entity_type: Private Limited; year_of_establishment: 2019; ownership_type: Women-Owned (>51% women ownership); primary_activity: Manufacturing / Production; employee_count: 38; turnover_range: INR 1 – 5 Crore; fixed_asset_investment: Less than INR 1 Crore; country: India; district: Jodhpur; udyam_number: UDYAM-RJ-12-0045678; dpiit_startup: No; multi_state_interest: Yes — open to any state
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Scheme for Marketing Assistance and Technology Upgradation in Micro, Small and Medium Enterprises (MSMEs)
+   Parent    : National Manufacturing Competitiveness Programme (NMCP)
+   Incentive : Marketing Hubs
+   Geography : National
+   Size      : Micro, Small and Medium Enterprises (MSMEs)
+   Similarity: 0.8062
+   MMR score: 0.4837
+   Summary   : A strategic initiative under the National Manufacturing Competitiveness Programme (NMCP) designed to enhance the competitiveness of MSMEs in both national and i...
+   Benefits  : Capital Expenditure: One-time Government of India contribution of up to Rs. 30 lakh per hub for renovation/upgradation and Rs. 5 lakh per hub for furniture, com
+  #2  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #3  Up-scaled Design Clinic Scheme for Design Expertise to MSME manufacturing sector
+   Parent    : National Manufacturing Competitiveness Programme
+   Incentive : Design Project Funding for Students
+   Geography : National
+   Size      : MSME
+   Similarity: 0.7706
+   MMR score: 0.1264
+   Summary   : The Up-scaled Design Clinic Scheme, a component of the National Manufacturing Competitiveness Programme, aims to enhance the understanding and application of de...
+   Benefits  : FinancialAssistance: The scheme supports design work by reimbursing 75% of expenses incurred, subject to a maximum of Rs. 1.5 lakh per project. The MSME unit's 
+  #4  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Insurance: 5-8% of the GoI grant.; Auditors Fee: 2-3% of the GoI grant.; Documentation: 3-5% of the GoI grant.; Evaluation study: 2-3% of the GoI grant.; Other 
+  #5  Financial Assistance on Bar Code
+   Parent    : National Manufacturing Competitiveness Programme (NMCP)
+   Incentive : Reimbursement of One-time Registration Fee for Bar Code
+   Geography : National
+   Size      : Micro and Small Enterprises (MSEs)
+   Similarity: 0.7575
+   MMR score: 0.1142
+   Summary   : This scheme aims to enhance the marketing competitiveness of Micro & Small Enterprises (MSEs) in domestic and international markets by promoting the adoption of...
+   Benefits  : Reimbursement Amount: 75% of the one-time registration fee. This is applicable for MSEs who registered with GS1 India on or after 1st January, 2002.
+  #6  Building Awareness on Intellectual Property Rights (IPR) for Micro, Small and Medium Enterprises
+   Parent    : National Manufacturing Competitiveness Programme (NMCP)
+   Incentive : Awareness/Sensitization Programmes on IPR
+   Geography : National
+   Size      : Micro, Small and Medium Enterprises
+   Similarity: 0.7625
+   MMR score: 0.1048
+   Summary   : This scheme, a component of the National Manufacturing Competitiveness Programme (NMCP), aims to enhance the awareness of Micro, Small, and Medium Enterprises (...
+   Benefits  : FinancialAssistance: Maximum grant of Rs. 1.00 lakh per programme. This covers expenses like venue rent, training materials, faculty honorarium, transport, and 
+  #7  Scheme for Marketing Assistance and Technology Upgradation in Micro, Small and Medium Enterprises (MSMEs)
+   Parent    : National Manufacturing Competitiveness Programme (NMCP)
+   Incentive : New Markets through State/District Level Local Exhibitions/Trade Fairs
+   Geography : National
+   Size      : Micro, Small and Medium Enterprises (MSMEs)
+   Similarity: 0.8028
+   MMR score: 0.0891
+   Summary   : A strategic initiative under the National Manufacturing Competitiveness Programme (NMCP) designed to enhance the competitiveness of MSMEs in both national and i...
+   Benefits  : General Units: Reimbursement of 50% of costs for pavilion/stall charges (up to 6 sq. mtr) and to-and-fro travel fare for one person (limited to AC II tier). The
+  #8  Scheme for Marketing Assistance and Technology Upgradation in Micro, Small and Medium Enterprises (MSMEs)
+   Parent    : National Manufacturing Competitiveness Programme (NMCP)
+   Incentive : Corporate Governance Practices
+   Geography : National
+   Size      : Micro, Small and Medium Enterprises (MSMEs)
+   Similarity: 0.8021
+   MMR score: 0.0862
+   Summary   : A strategic initiative under the National Manufacturing Competitiveness Programme (NMCP) designed to enhance the competitiveness of MSMEs in both national and i...
+   Benefits  : Financial Assistance: Reimbursement of 50% of the total expenditure on associated consultancy charges, legal, or statutory fees, subject to a maximum of Rs. 45,
+  #9  Scheme for Marketing Assistance and Technology Upgradation in Micro, Small and Medium Enterprises (MSMEs)
+   Parent    : National Manufacturing Competitiveness Programme (NMCP)
+   Incentive : Technology Upgradation in Packaging
+   Geography : National
+   Size      : Micro, Small and Medium Enterprises (MSMEs)
+   Similarity: 0.7949
+   MMR score: 0.0812
+   Summary   : A strategic initiative under the National Manufacturing Competitiveness Programme (NMCP) designed to enhance the competitiveness of MSMEs in both national and i...
+   Benefits  : Awareness Programmes: Financial support of 80% of the cost, up to Rs. 0.50 lakh per programme, for one-day awareness programs on new packaging concepts and tech
+  #10  Scheme for Marketing Assistance and Technology Upgradation in Micro, Small and Medium Enterprises (MSMEs)
+   Parent    : National Manufacturing Competitiveness Programme (NMCP)
+   Incentive : Special Components for North-Eastern Region (NER)
+   Geography : National
+   Size      : Micro, Small and Medium Enterprises (MSMEs)
+   Similarity: 0.7958
+   MMR score: 0.0808
+   Summary   : A strategic initiative under the National Manufacturing Competitiveness Programme (NMCP) designed to enhance the competitiveness of MSMEs in both national and i...
+   Benefits  : Reimbursement: Reimbursement of 80% of costs covering pavilion/stall charges (up to 6 sq. mtr), to-and-fro travel fare for one person (limited to AC II tier), a
 
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-  Business : VoltEdge Battery Pvt Ltd
-  Query    : 
-  Filters  : {}
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+=================================================================
+Business Profile 
+=================================================================
+Industry: Information Technology — specifically Deep Tech / Semiconductor Design
+Products / services: Fabless chip design for IoT sensors
+MSME tier: Small Enterprise
+Location: Karnataka, India
+Location type: Tech Park / IT SEZ
+Growth stage: Seed / Early Stage
+Special attributes: DPIIT Recognized Startup, R&D / IP-driven, Deep Tech
+Policy needs: R&D grants, Patent filing support, Seed funding
+Registrations held: GST Registration, STPI Registration
+Additional context: profile_id: P01; business_name: Bengaluru Nanotech Systems Pvt Ltd; legal_entity_type: Private Limited; year_of_establishment: 2021; ownership_type: Founder-Led (Male); primary_activity: R&D / Product Development; employee_count: 22; turnover_range: INR 1 - 5 Crore; fixed_asset_investment: INR 1 - 5 Crore; country: India; district: Bengaluru Urban; udyam_number: UDYAM-KA-03-0012345; dpiit_startup: Yes — DPIIT Recognized; multi_state_interest: No — Karnataka only
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Funding for New Industrial Estate (Special Category Areas): For North-East & Hill States, Island territories, and Aspirational Districts, the GoI grant is 70% o
+  #2  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Loan Assistance: The remaining portion of the project cost is financed as a loan by lending institutions/banks. This loan is passed on by the NGO to the women b
+  #3  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Scale of Assistance: The amount of assistance will not exceed the actual amount required for the creation or strengthening/expansion of infrastructure and meeti
+  #4  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #5  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Insurance: 5-8% of the GoI grant.; Auditors Fee: 2-3% of the GoI grant.; Documentation: 3-5% of the GoI grant.; Evaluation study: 2-3% of the GoI grant.; Other 
+  #6  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Grant Limit: The grant is limited to Rs. 5.00 lakh per project.; Restriction: The grant cannot be used for the creation of posts.; Usage of Grant: Can be used f
+  #7  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Batch Size: The minimum batch size for such a training activity is 20 participants.; Grant Amount: A grant up to a maximum limit of Rs. 1.00 lakh per programme.
+  #8  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Maximum Assistance: The assistance is restricted to a maximum of Rs. 3.00 Crore in each case. This grant is over and above any grant received by the institution
+  #9  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Coverage: The total assistance includes overhead costs such as motivation camps, hiring of space and equipment, electricity/water, stationary, personnel costs, 
 
-  No results found.
+=================================================================
+Business Profile 
+=================================================================
+Industry: Handloom & Handicrafts — specifically Coir products
+Products / services: Coir mats, ropes, and geo-textiles for erosion control
+MSME tier: Micro Enterprise
+Location: Karnataka, India
+Location type: Rural Cluster
+Growth stage: Established / Steady State
+Special attributes: Traditional / Handicraft Sector, Rural Employment Generator, Export-oriented unit
+Policy needs: Raw material subsidy, Export promotion, Technology upgradation
+Registrations held: GST Registration, Coir Board Registration
+Additional context: profile_id: P02; business_name: Malnad Coir Works; legal_entity_type: Partnership; year_of_establishment: 2015; ownership_type: Family-Owned; primary_activity: Manufacturing / Production; employee_count: 45; turnover_range: INR 1 - 5 Crore; fixed_asset_investment: Less than INR 1 Crore; country: India; district: Dakshina Kannada; udyam_number: UDYAM-KA-08-0067890; dpiit_startup: No; multi_state_interest: No — Karnataka only
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #2  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Waiver: No collateral security is required for loans up to Rs. 10 lakh.
+  #3  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Coverage: The total assistance includes overhead costs such as motivation camps, hiring of space and equipment, electricity/water, stationary, personnel costs, 
+  #4  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Insurance: 5-8% of the GoI grant.; Auditors Fee: 2-3% of the GoI grant.; Documentation: 3-5% of the GoI grant.; Evaluation study: 2-3% of the GoI grant.; Other 
+  #5  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Funding for New Industrial Estate (Special Category Areas): For North-East & Hill States, Island territories, and Aspirational Districts, the GoI grant is 70% o
+  #6  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Tarun: Provides finance from Rs. 5,00,001 to Rs. 10 lakh for further growth.; Kishor: Provides finance from Rs. 50,001 to Rs. 5 lakh for businesses seeking expa
+  #7  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Functionality: The card can be used for withdrawing cash from ATMs and for making purchases at Point of Sale (POS) machines, ensuring easy and flexible access t
+  #8  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Amount: An overdraft facility of Rs. 5,000 is provided.
+  #9  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : SupportToLenders: This encourages financial institutions to lend to the micro-enterprise sector by mitigating risk and ensuring liquidity.
+  #10  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Scale of Assistance: The amount of assistance will not exceed the actual amount required for the creation or strengthening/expansion of infrastructure and meeti
 
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-  Business : ChargeFast Solutions Pvt Ltd
-  Query    : 
-  Filters  : {}
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+=================================================================
+Business Profile 
+=================================================================
+Industry: Handloom & Handicrafts — specifically Cotton handloom textiles
+Products / services: Handwoven sarees, dupattas, and dress material
+MSME tier: Micro Enterprise
+Location: Karnataka, India
+Location type: Rural Cluster
+Growth stage: Established / Steady State
+Special attributes: Women-led / Women-owned (> 51%), Traditional / Handicraft Sector, SC/ST Owned
+Policy needs: Weaver welfare schemes, Yarn subsidy, Market linkage support
+Registrations held: GST Registration, Handloom Weaver ID Card
+Additional context: profile_id: P03; business_name: Gangavati Handloom Weavers Collective; legal_entity_type: Cooperative Society; year_of_establishment: 2008; ownership_type: Women-Owned (>51% women ownership); primary_activity: Manufacturing / Production; employee_count: 60; turnover_range: Less than INR 1 Crore; fixed_asset_investment: Less than INR 1 Crore; country: India; district: Koppal; udyam_number: UDYAM-KA-19-0023456; dpiit_startup: No; multi_state_interest: No — Karnataka only
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Funding for New Industrial Estate (Special Category Areas): For North-East & Hill States, Island territories, and Aspirational Districts, the GoI grant is 70% o
+  #2  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Loan Assistance: The remaining portion of the project cost is financed as a loan by lending institutions/banks. This loan is passed on by the NGO to the women b
+  #3  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Waiver: No collateral security is required for loans up to Rs. 10 lakh.
+  #4  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Scale of Assistance: The amount of assistance will not exceed the actual amount required for the creation or strengthening/expansion of infrastructure and meeti
+  #5  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #6  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Insurance: 5-8% of the GoI grant.; Auditors Fee: 2-3% of the GoI grant.; Documentation: 3-5% of the GoI grant.; Evaluation study: 2-3% of the GoI grant.; Other 
+  #7  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Batch Size: The minimum batch size for such a training activity is 20 participants.; Grant Amount: A grant up to a maximum limit of Rs. 1.00 lakh per programme.
+  #8  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Grant Limit: The grant is limited to Rs. 5.00 lakh per project.; Restriction: The grant cannot be used for the creation of posts.; Usage of Grant: Can be used f
+  #9  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Tarun: Provides finance from Rs. 5,00,001 to Rs. 10 lakh for further growth.; Kishor: Provides finance from Rs. 50,001 to Rs. 5 lakh for businesses seeking expa
+  #10  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Functionality: The card can be used for withdrawing cash from ATMs and for making purchases at Point of Sale (POS) machines, ensuring easy and flexible access t
 
-  No results found.
+=================================================================
+Business Profile 
+=================================================================
+Industry: Food Processing — specifically Millet-based ready-to-eat products
+Products / services: Millet flakes, energy bars, and instant mixes
+MSME tier: Small Enterprise
+Location: Karnataka, India
+Location type: Industrial Park / Cluster
+Growth stage: Early Growth
+Special attributes: Women-led / Women-owned (> 51%), Food Safety Certified, Uses Local Agri Produce
+Policy needs: Capital investment subsidy, Food processing infrastructure grant, Working capital / interest subsidy
+Registrations held: GST Registration, FSSAI License
+Additional context: profile_id: P04; business_name: Aparna AgroFoods Private Limited; legal_entity_type: Private Limited; year_of_establishment: 2018; ownership_type: Women-Owned (>51% women ownership); primary_activity: Manufacturing / Production; employee_count: 34; turnover_range: INR 1 - 5 Crore; fixed_asset_investment: INR 1 - 5 Crore; country: India; district: Belagavi; udyam_number: UDYAM-KA-11-0034567; dpiit_startup: No; multi_state_interest: Yes — open to any state
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #2  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Loan Assistance: The remaining portion of the project cost is financed as a loan by lending institutions/banks. This loan is passed on by the NGO to the women b
+  #3  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Scale of Assistance: The amount of assistance will not exceed the actual amount required for the creation or strengthening/expansion of infrastructure and meeti
+  #4  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Funding for New Industrial Estate (Special Category Areas): For North-East & Hill States, Island territories, and Aspirational Districts, the GoI grant is 70% o
+  #5  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Insurance: 5-8% of the GoI grant.; Auditors Fee: 2-3% of the GoI grant.; Documentation: 3-5% of the GoI grant.; Evaluation study: 2-3% of the GoI grant.; Other 
+  #6  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Batch Size: The minimum batch size for such a training activity is 20 participants.; Grant Amount: A grant up to a maximum limit of Rs. 1.00 lakh per programme.
+  #7  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Grant Limit: The grant is limited to Rs. 5.00 lakh per project.; Restriction: The grant cannot be used for the creation of posts.; Usage of Grant: Can be used f
+  #8  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Maximum Assistance: The assistance is restricted to a maximum of Rs. 3.00 Crore in each case. This grant is over and above any grant received by the institution
+  #9  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Coverage: The total assistance includes overhead costs such as motivation camps, hiring of space and equipment, electricity/water, stationary, personnel costs, 
 
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-  Business : GreenFleet Mobility Pvt Ltd
-  Query    : 
-  Filters  : {}
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+=================================================================
+Business Profile 
+=================================================================
+Industry: Automotive — specifically Electric Vehicle components
+Products / services: Battery management systems and EV motor controllers
+MSME tier: Medium Enterprise
+Location: Karnataka, India
+Location type: Industrial Park / Cluster
+Growth stage: Growth / Scaling
+Special attributes: Women-led / Women-owned (> 51%), R&D / IP-driven, EV / Clean Mobility
+Policy needs: Capital investment subsidy, EV manufacturing incentive, Skill development support
+Registrations held: GST Registration, BIS Certification
+Additional context: profile_id: P05; business_name: Shakti EV Components LLP; legal_entity_type: Limited Liability Partnership; year_of_establishment: 2020; ownership_type: Women-Owned (>51% women ownership); primary_activity: Manufacturing / Production; employee_count: 55; turnover_range: INR 5 - 25 Crore; fixed_asset_investment: INR 5 - 25 Crore; country: India; district: Bengaluru Rural; udyam_number: UDYAM-KA-05-0045678; dpiit_startup: No; multi_state_interest: No — Karnataka only
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Karnataka Electric Vehicle & Energy Storage Policy-2017
+   Summary   : The Karnataka Electric Vehicle & Energy Storage Policy-2017 aims to establish Karnataka as a premier destination for the manufacturing of electric vehicles (EVs...
+   Benefits  : Duration: The exemption is available for an initial period of five years.
+  #2  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #3  Karnataka Electric Vehicle & Energy Storage Policy-2017
+   Summary   : The Karnataka Electric Vehicle & Energy Storage Policy-2017 aims to establish Karnataka as a premier destination for the manufacturing and development of Electr...
+   Benefits  : Applicability: 100% exemption on duty/tax on electricity tariff for the initial period of Five years for MSMEs in the manufacturing sector.
+  #4  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Loan Assistance: The remaining portion of the project cost is financed as a loan by lending institutions/banks. This loan is passed on by the NGO to the women b
+  #5  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Maximum Assistance: The assistance is restricted to a maximum of Rs. 3.00 Crore in each case. This grant is over and above any grant received by the institution
+  #6  Karnataka Electric Vehicle & Energy Storage Policy-2017
+   Summary   : The Karnataka Electric Vehicle & Energy Storage Policy-2017 aims to establish Karnataka as a premier destination for the manufacturing of electric vehicles (EVs...
+   Benefits  : Rate: A concessional rate of Rs. 1.00 per Rs. 1,000 for all loan documents, lease deeds, and sale deeds.
+  #7  Karnataka Electric Vehicle & Energy Storage Policy-2017
+   Summary   : The Karnataka Electric Vehicle & Energy Storage Policy-2017 aims to establish Karnataka as a premier destination for the manufacturing of electric vehicles (EVs...
+   Benefits  : For Micro Enterprises: 25% of the Value of Fixed Assets (VFA) with a maximum of Rs. 15.00 lakh.; For Small Enterprises: 20% of the Value of Fixed Assets (VFA) w
+  #8  Karnataka Electric Vehicle & Energy Storage Policy-2017
+   Summary   : The Karnataka Electric Vehicle & Energy Storage Policy-2017 aims to establish Karnataka as a premier destination for the manufacturing of electric vehicles (EVs...
+   Benefits  : Coverage: Available for a maximum of 50 trainees per company, with an annual cap of 1,000 candidates across the state.; Stipend Amount: Up to 50% of the trainin
+  #9  Karnataka Electric Vehicle & Energy Storage Policy-2017
+   Summary   : The Karnataka Electric Vehicle & Energy Storage Policy-2017 aims to establish Karnataka as a premier destination for the manufacturing of electric vehicles (EVs...
+   Benefits  : Applicability: Applies to (i) loan agreements, credit deeds, mortgage and hypothecation deeds executed for availing loans from financial institutions, and (ii) 
+  #10  Karnataka Electric Vehicle & Energy Storage Policy-2017
+   Summary   : The Karnataka Electric Vehicle & Energy Storage Policy-2017 aims to establish Karnataka as a premier destination for the manufacturing of electric vehicles (EVs...
+   Benefits  : Reimbursement: 100% of the land conversion fee paid will be reimbursed.
 
-  No results found.
+=================================================================
+Business Profile 
+=================================================================
+Industry: Logistics & Warehousing — specifically Cold chain logistics
+Products / services: Temperature-controlled warehousing and freight for perishables
+MSME tier: MSME Enterprise
+Location: Maharashtra, India
+Location type: Logistics Park
+Growth stage: Growth / Scaling
+Policy needs: Infrastructure subsidy, Cold chain grant, Multi-state expansion incentive
+Registrations held: GST Registration
+Additional context: profile_id: P06; business_name: TransIndia Logistics Solutions Pvt Ltd; legal_entity_type: Private Limited; year_of_establishment: 2016; ownership_type: Founder-Led (Male); primary_activity: Services; employee_count: 120; turnover_range: INR 25 - 100 Crore; fixed_asset_investment: INR 25 - 100 Crore; country: India; district: Pune; dpiit_startup: No; multi_state_interest: Yes — open to any state
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #2  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Coverage: The total assistance includes overhead costs such as motivation camps, hiring of space and equipment, electricity/water, stationary, personnel costs, 
+  #3  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Insurance: 5-8% of the GoI grant.; Auditors Fee: 2-3% of the GoI grant.; Documentation: 3-5% of the GoI grant.; Evaluation study: 2-3% of the GoI grant.; Other 
+  #4  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Funding for New Industrial Estate (Special Category Areas): For North-East & Hill States, Island territories, and Aspirational Districts, the GoI grant is 70% o
+  #5  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Scale of Assistance: The amount of assistance will not exceed the actual amount required for the creation or strengthening/expansion of infrastructure and meeti
+  #6  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Maximum Assistance: The assistance is restricted to a maximum of Rs. 3.00 Crore in each case. This grant is over and above any grant received by the institution
+  #7  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Batch Size: The minimum batch size for such a training activity is 20 participants.; Grant Amount: A grant up to a maximum limit of Rs. 1.00 lakh per programme.
+  #8  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Grant Limit: The grant is limited to Rs. 5.00 lakh per project.; Restriction: The grant cannot be used for the creation of posts.; Usage of Grant: Can be used f
+  #9  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Loan Assistance: The remaining portion of the project cost is financed as a loan by lending institutions/banks. This loan is passed on by the NGO to the women b
 
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-  Business : NeuralChip Technologies Pvt Ltd
-  Query    : 
-  Filters  : {}
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+=================================================================
+Business Profile 
+=================================================================
+Industry: Pharmaceuticals — specifically Active Pharmaceutical Ingredients (API)
+Products / services: APIs for generic antibiotics and antivirals
+MSME tier: MSME Enterprise
+Location: National, India
+Location type: Pharma SEZ
+Growth stage: Growth / Scaling
+Special attributes: Import Substitution, Export-oriented unit
+Policy needs: Production Linked Incentive (PLI), Export promotion, R&D grants
+Registrations held: GST Registration, CDSCO License, WHO-GMP Certified
+Additional context: profile_id: P07; business_name: PharmaGen Biosciences Pvt Ltd; legal_entity_type: Private Limited; year_of_establishment: 2019; ownership_type: Founder-Led (Male); primary_activity: Manufacturing / Production; employee_count: 90; turnover_range: INR 25 - 100 Crore; fixed_asset_investment: INR 25 - 100 Crore; country: India; district: Multiple; dpiit_startup: No; multi_state_interest: Yes — open to any state
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #2  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Coverage: The total assistance includes overhead costs such as motivation camps, hiring of space and equipment, electricity/water, stationary, personnel costs, 
+  #3  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Insurance: 5-8% of the GoI grant.; Auditors Fee: 2-3% of the GoI grant.; Documentation: 3-5% of the GoI grant.; Evaluation study: 2-3% of the GoI grant.; Other 
+  #4  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Funding for New Industrial Estate (Special Category Areas): For North-East & Hill States, Island territories, and Aspirational Districts, the GoI grant is 70% o
+  #5  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Scale of Assistance: The amount of assistance will not exceed the actual amount required for the creation or strengthening/expansion of infrastructure and meeti
+  #6  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Maximum Assistance: The assistance is restricted to a maximum of Rs. 3.00 Crore in each case. This grant is over and above any grant received by the institution
+  #7  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Loan Assistance: The remaining portion of the project cost is financed as a loan by lending institutions/banks. This loan is passed on by the NGO to the women b
+  #8  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Batch Size: The minimum batch size for such a training activity is 20 participants.; Grant Amount: A grant up to a maximum limit of Rs. 1.00 lakh per programme.
+  #9  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Grant Limit: The grant is limited to Rs. 5.00 lakh per project.; Restriction: The grant cannot be used for the creation of posts.; Usage of Grant: Can be used f
 
-  No results found.
+=================================================================
+Business Profile 
+=================================================================
+Industry: Fisheries & Aquaculture — specifically Seafood processing and drying
+Products / services: Dried fish, fish pickle, and value-added seafood products
+MSME tier: Micro Enterprise
+Location: Karnataka, India
+Location type: Coastal / Rural Cluster
+Growth stage: Early Growth
+Special attributes: Women-led / Women-owned (> 51%), Coastal Livelihood, Rural Employment Generator
+Policy needs: Cold storage subsidy, Skill development support, Working capital / interest subsidy
+Registrations held: GST Registration, FSSAI License
+Additional context: profile_id: P08; business_name: Karavali Fisherwomen Producer Company; legal_entity_type: Producer Company; year_of_establishment: 2017; ownership_type: Women-Owned (>51% women ownership); primary_activity: Manufacturing / Production; employee_count: 75; turnover_range: Less than INR 1 Crore; fixed_asset_investment: Less than INR 1 Crore; country: India; district: Uttara Kannada; udyam_number: UDYAM-KA-14-0056789; dpiit_startup: No; multi_state_interest: No — Karnataka only
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #2  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Waiver: No collateral security is required for loans up to Rs. 10 lakh.
+  #3  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Coverage: The total assistance includes overhead costs such as motivation camps, hiring of space and equipment, electricity/water, stationary, personnel costs, 
+  #4  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Insurance: 5-8% of the GoI grant.; Auditors Fee: 2-3% of the GoI grant.; Documentation: 3-5% of the GoI grant.; Evaluation study: 2-3% of the GoI grant.; Other 
+  #5  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Funding for New Industrial Estate (Special Category Areas): For North-East & Hill States, Island territories, and Aspirational Districts, the GoI grant is 70% o
+  #6  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Tarun: Provides finance from Rs. 5,00,001 to Rs. 10 lakh for further growth.; Kishor: Provides finance from Rs. 50,001 to Rs. 5 lakh for businesses seeking expa
+  #7  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Functionality: The card can be used for withdrawing cash from ATMs and for making purchases at Point of Sale (POS) machines, ensuring easy and flexible access t
+  #8  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Amount: An overdraft facility of Rs. 5,000 is provided.
+  #9  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : SupportToLenders: This encourages financial institutions to lend to the micro-enterprise sector by mitigating risk and ensuring liquidity.
+  #10  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Scale of Assistance: The amount of assistance will not exceed the actual amount required for the creation or strengthening/expansion of infrastructure and meeti
 
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-  Business : MedSense Electronics Pvt Ltd
-  Query    : 
-  Filters  : {}
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+=================================================================
+Business Profile 
+=================================================================
+Industry: Handloom & Handicrafts — specifically Silk textiles / Sericulture
+Products / services: Mysore silk sarees and furnishing fabric
+MSME tier: Small Enterprise
+Location: Karnataka, India
+Location type: Industrial Park / Cluster
+Growth stage: Established / Steady State
+Special attributes: Traditional / Handicraft Sector, GI Tagged Product, Export-oriented unit
+Policy needs: Technology upgradation, Export promotion, Cluster development support
+Registrations held: GST Registration, Silk Mark Certification
+Additional context: profile_id: P09; business_name: Mysuru Silk Innovations; legal_entity_type: Private Limited; year_of_establishment: 2014; ownership_type: Family-Owned; primary_activity: Manufacturing / Production; employee_count: 80; turnover_range: INR 5 - 25 Crore; fixed_asset_investment: INR 1 - 5 Crore; country: India; district: Mysuru; udyam_number: UDYAM-KA-17-0067891; dpiit_startup: No; multi_state_interest: No — Karnataka only
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #2  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Coverage: The total assistance includes overhead costs such as motivation camps, hiring of space and equipment, electricity/water, stationary, personnel costs, 
+  #3  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Insurance: 5-8% of the GoI grant.; Auditors Fee: 2-3% of the GoI grant.; Documentation: 3-5% of the GoI grant.; Evaluation study: 2-3% of the GoI grant.; Other 
+  #4  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Funding for New Industrial Estate (Special Category Areas): For North-East & Hill States, Island territories, and Aspirational Districts, the GoI grant is 70% o
+  #5  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Scale of Assistance: The amount of assistance will not exceed the actual amount required for the creation or strengthening/expansion of infrastructure and meeti
+  #6  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Maximum Assistance: The assistance is restricted to a maximum of Rs. 3.00 Crore in each case. This grant is over and above any grant received by the institution
+  #7  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Batch Size: The minimum batch size for such a training activity is 20 participants.; Grant Amount: A grant up to a maximum limit of Rs. 1.00 lakh per programme.
+  #8  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Loan Assistance: The remaining portion of the project cost is financed as a loan by lending institutions/banks. This loan is passed on by the NGO to the women b
+  #9  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Grant Limit: The grant is limited to Rs. 5.00 lakh per project.; Restriction: The grant cannot be used for the creation of posts.; Usage of Grant: Can be used f
 
-  No results found.
+=================================================================
+Business Profile 
+=================================================================
+Industry: FMCG — specifically Natural / Herbal Cosmetics
+Products / services: Herbal skincare and haircare products
+MSME tier: Micro Enterprise
+Location: Karnataka, India
+Location type: Home-Based / Micro Unit
+Growth stage: Seed / Early Stage
+Special attributes: Women-led / Women-owned (> 51%), First-Generation Entrepreneur, Home-Based Business
+Policy needs: Micro-enterprise startup loan, Marketing and branding support, Skill development support
+Registrations held: GST Registration, FSSAI License
+Additional context: profile_id: P10; business_name: Nirmala Herbal Cosmetics; legal_entity_type: Sole Proprietorship; year_of_establishment: 2022; ownership_type: Women-Owned (>51% women ownership); primary_activity: Manufacturing / Production; employee_count: 8; turnover_range: Less than INR 1 Crore; fixed_asset_investment: Less than INR 1 Crore; country: India; district: Hubballi-Dharwad; udyam_number: UDYAM-KA-13-0078912; dpiit_startup: No; multi_state_interest: No — Karnataka only
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #2  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Waiver: No collateral security is required for loans up to Rs. 10 lakh.
+  #3  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Grant Limit: The grant is limited to Rs. 5.00 lakh per project.; Restriction: The grant cannot be used for the creation of posts.; Usage of Grant: Can be used f
+  #4  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Maximum Assistance: The assistance is restricted to a maximum of Rs. 3.00 Crore in each case. This grant is over and above any grant received by the institution
+  #5  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Funding for New Industrial Estate (Special Category Areas): For North-East & Hill States, Island territories, and Aspirational Districts, the GoI grant is 70% o
+  #6  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Tarun: Provides finance from Rs. 5,00,001 to Rs. 10 lakh for further growth.; Kishor: Provides finance from Rs. 50,001 to Rs. 5 lakh for businesses seeking expa
+  #7  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Functionality: The card can be used for withdrawing cash from ATMs and for making purchases at Point of Sale (POS) machines, ensuring easy and flexible access t
+  #8  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Amount: An overdraft facility of Rs. 5,000 is provided.
+  #9  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : SupportToLenders: This encourages financial institutions to lend to the micro-enterprise sector by mitigating risk and ensuring liquidity.
+  #10  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Batch Size: The minimum batch size for such a training activity is 20 participants.; Grant Amount: A grant up to a maximum limit of Rs. 1.00 lakh per programme.
 
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-  Business : IdeaSpark Innovations Pvt Ltd
-  Query    : 
-  Filters  : {}
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+=================================================================
+Business Profile 
+=================================================================
+Industry: Manufacturing — specifically Precision tools and dies
+Products / services: CNC-machined tooling for automotive and aerospace OEMs
+MSME tier: MSME Enterprise
+Location: National, India
+Location type: Multiple Manufacturing Plants
+Growth stage: Mature / Market Leader
+Special attributes: Large Enterprise, Import Substitution
+Policy needs: Production Linked Incentive (PLI), Capital investment subsidy, Skill development support
+Registrations held: GST Registration, ISO 9001 Certified
+Additional context: profile_id: P11; business_name: National Precision Tooling Ltd; legal_entity_type: Public Limited; year_of_establishment: 2005; ownership_type: Founder-Led (Male); primary_activity: Manufacturing / Production; employee_count: 310; turnover_range: INR 100+ Crore; fixed_asset_investment: INR 100+ Crore; country: India; district: Multiple; dpiit_startup: No; multi_state_interest: Yes — open to any state
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Scheme for Marketing Assistance and Technology Upgradation in Micro, Small and Medium Enterprises (MSMEs)
+   Parent    : National Manufacturing Competitiveness Programme (NMCP)
+   Incentive : Marketing Hubs
+   Geography : National
+   Size      : Micro, Small and Medium Enterprises (MSMEs)
+   Similarity: 0.7967
+   MMR score: 0.4780
+   Summary   : A strategic initiative under the National Manufacturing Competitiveness Programme (NMCP) designed to enhance the competitiveness of MSMEs in both national and i...
+   Benefits  : Capital Expenditure: One-time Government of India contribution of up to Rs. 30 lakh per hub for renovation/upgradation and Rs. 5 lakh per hub for furniture, com
+  #2  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #3  Up-scaled Design Clinic Scheme for Design Expertise to MSME manufacturing sector
+   Parent    : National Manufacturing Competitiveness Programme
+   Incentive : Promotional Activities and Publicity
+   Geography : National
+   Size      : MSME
+   Similarity: 0.7685
+   MMR score: 0.1252
+   Summary   : The Up-scaled Design Clinic Scheme, a component of the National Manufacturing Competitiveness Programme, aims to enhance the understanding and application of de...
+   Benefits  : FinancialAssistance: A GoI contribution not exceeding Rs. 100.00 Lakh is admissible for these activities.
+  #4  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Coverage: The total assistance includes overhead costs such as motivation camps, hiring of space and equipment, electricity/water, stationary, personnel costs, 
+  #5  Scheme for Marketing Assistance and Technology Upgradation in Micro, Small and Medium Enterprises (MSMEs)
+   Parent    : National Manufacturing Competitiveness Programme (NMCP)
+   Incentive : New Markets through State/District Level Local Exhibitions/Trade Fairs
+   Geography : National
+   Size      : Micro, Small and Medium Enterprises (MSMEs)
+   Similarity: 0.7925
+   MMR score: 0.0829
+   Summary   : A strategic initiative under the National Manufacturing Competitiveness Programme (NMCP) designed to enhance the competitiveness of MSMEs in both national and i...
+   Benefits  : General Units: Reimbursement of 50% of costs for pavilion/stall charges (up to 6 sq. mtr) and to-and-fro travel fare for one person (limited to AC II tier). The
+  #6  Scheme for Marketing Assistance and Technology Upgradation in Micro, Small and Medium Enterprises (MSMEs)
+   Parent    : National Manufacturing Competitiveness Programme (NMCP)
+   Incentive : Reimbursement for ISO 18000 / ISO 22000 / ISO 27000 Certification
+   Geography : National
+   Size      : Micro, Small and Medium Enterprises (MSMEs)
+   Similarity: 0.7903
+   MMR score: 0.0793
+   Summary   : A strategic initiative under the National Manufacturing Competitiveness Programme (NMCP) designed to enhance the competitiveness of MSMEs in both national and i...
+   Benefits  : Financial Assistance: One-time reimbursement of 75% of the expenditure, subject to a maximum of Rs. 1.00 lakh per unit. This covers consultant fees, certificati
+  #7  Scheme for Marketing Assistance and Technology Upgradation in Micro, Small and Medium Enterprises (MSMEs)
+   Parent    : National Manufacturing Competitiveness Programme (NMCP)
+   Incentive : Competition Studies
+   Geography : National
+   Size      : Micro, Small and Medium Enterprises (MSMEs)
+   Similarity: 0.7887
+   MMR score: 0.0772
+   Summary   : A strategic initiative under the National Manufacturing Competitiveness Programme (NMCP) designed to enhance the competitiveness of MSMEs in both national and i...
+   Benefits  : Financial Assistance: Government of India contribution of 80% of the study cost, up to a maximum of Rs. 8.0 lakh per study.
+  #8  Scheme for Marketing Assistance and Technology Upgradation in Micro, Small and Medium Enterprises (MSMEs)
+   Parent    : National Manufacturing Competitiveness Programme (NMCP)
+   Incentive : Special Components for North-Eastern Region (NER)
+   Geography : National
+   Size      : Micro, Small and Medium Enterprises (MSMEs)
+   Similarity: 0.7896
+   MMR score: 0.0771
+   Summary   : A strategic initiative under the National Manufacturing Competitiveness Programme (NMCP) designed to enhance the competitiveness of MSMEs in both national and i...
+   Benefits  : Reimbursement: Reimbursement of 80% of costs covering pavilion/stall charges (up to 6 sq. mtr), to-and-fro travel fare for one person (limited to AC II tier), a
+  #9  Scheme for Marketing Assistance and Technology Upgradation in Micro, Small and Medium Enterprises (MSMEs)
+   Parent    : National Manufacturing Competitiveness Programme (NMCP)
+   Incentive : Corporate Governance Practices
+   Geography : National
+   Size      : Micro, Small and Medium Enterprises (MSMEs)
+   Similarity: 0.7890
+   MMR score: 0.0749
+   Summary   : A strategic initiative under the National Manufacturing Competitiveness Programme (NMCP) designed to enhance the competitiveness of MSMEs in both national and i...
+   Benefits  : Financial Assistance: Reimbursement of 50% of the total expenditure on associated consultancy charges, legal, or statutory fees, subject to a maximum of Rs. 45,
+  #10  Scheme for Marketing Assistance and Technology Upgradation in Micro, Small and Medium Enterprises (MSMEs)
+   Parent    : National Manufacturing Competitiveness Programme (NMCP)
+   Incentive : Skill Upgradation/Development for Modern Marketing Techniques
+   Geography : National
+   Size      : Micro, Small and Medium Enterprises (MSMEs)
+   Similarity: 0.7855
+   MMR score: 0.0731
+   Summary   : A strategic initiative under the National Manufacturing Competitiveness Programme (NMCP) designed to enhance the competitiveness of MSMEs in both national and i...
+   Benefits  : Financial Assistance: Government of India contribution of 80% of the programme cost, up to a maximum of Rs. 6.0 lakh per cluster.
 
-  No results found.
+=================================================================
+Business Profile 
+=================================================================
+Industry: Handloom & Handicrafts — specifically Coir products
+Products / services: Coir pith, coco peat blocks, and coir fibre for export
+MSME tier: Small Enterprise
+Location: Karnataka, India
+Location type: Coastal / Rural Cluster
+Growth stage: Established / Steady State
+Special attributes: Export-oriented unit, Traditional / Handicraft Sector
+Policy needs: Export promotion, Container / freight subsidy, Technology upgradation
+Registrations held: GST Registration, Coir Board Registration, Import Export Code (IEC)
+Additional context: profile_id: P12; business_name: Coastal Coir Exports Pvt Ltd; legal_entity_type: Private Limited; year_of_establishment: 2011; ownership_type: Founder-Led (Male); primary_activity: Manufacturing / Export; employee_count: 65; turnover_range: INR 5 - 25 Crore; fixed_asset_investment: INR 1 - 5 Crore; country: India; district: Udupi; udyam_number: UDYAM-KA-20-0089123; dpiit_startup: No; multi_state_interest: Yes — open to any state
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #2  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Insurance: 5-8% of the GoI grant.; Auditors Fee: 2-3% of the GoI grant.; Documentation: 3-5% of the GoI grant.; Evaluation study: 2-3% of the GoI grant.; Other 
+  #3  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Coverage: The total assistance includes overhead costs such as motivation camps, hiring of space and equipment, electricity/water, stationary, personnel costs, 
+  #4  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Funding for New Industrial Estate (Special Category Areas): For North-East & Hill States, Island territories, and Aspirational Districts, the GoI grant is 70% o
+  #5  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Scale of Assistance: The amount of assistance will not exceed the actual amount required for the creation or strengthening/expansion of infrastructure and meeti
+  #6  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Maximum Assistance: The assistance is restricted to a maximum of Rs. 3.00 Crore in each case. This grant is over and above any grant received by the institution
+  #7  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Batch Size: The minimum batch size for such a training activity is 20 participants.; Grant Amount: A grant up to a maximum limit of Rs. 1.00 lakh per programme.
+  #8  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Loan Assistance: The remaining portion of the project cost is financed as a loan by lending institutions/banks. This loan is passed on by the NGO to the women b
+  #9  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Grant Limit: The grant is limited to Rs. 5.00 lakh per project.; Restriction: The grant cannot be used for the creation of posts.; Usage of Grant: Can be used f
 
+=================================================================
+Business Profile 
+=================================================================
+Industry: Dairy & Agri-Processing — specifically Milk and dairy products
+Products / services: Pasteurized milk, curd, and ghee for local and regional markets
+MSME tier: Micro Enterprise
+Location: Karnataka, India
+Location type: Rural Cluster
+Growth stage: Established / Steady State
+Special attributes: Women-led / Women-owned (> 51%), Rural Employment Generator, Cooperative / SHG Linked
+Policy needs: Dairy infrastructure subsidy, Cold chain support, Working capital / interest subsidy
+Registrations held: GST Registration, FSSAI License
+Additional context: profile_id: P13; business_name: Vijayapura Women's Dairy Cooperative; legal_entity_type: Cooperative Society; year_of_establishment: 2013; ownership_type: Women-Owned (>51% women ownership); primary_activity: Manufacturing / Production; employee_count: 50; turnover_range: INR 1 - 5 Crore; fixed_asset_investment: Less than INR 1 Crore; country: India; district: Vijayapura; udyam_number: UDYAM-KA-29-0091234; dpiit_startup: No; multi_state_interest: No — Karnataka only
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #2  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Waiver: No collateral security is required for loans up to Rs. 10 lakh.
+  #3  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Loan Assistance: The remaining portion of the project cost is financed as a loan by lending institutions/banks. This loan is passed on by the NGO to the women b
+  #4  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Scale of Assistance: The amount of assistance will not exceed the actual amount required for the creation or strengthening/expansion of infrastructure and meeti
+  #5  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Funding for New Industrial Estate (Special Category Areas): For North-East & Hill States, Island territories, and Aspirational Districts, the GoI grant is 70% o
+  #6  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Tarun: Provides finance from Rs. 5,00,001 to Rs. 10 lakh for further growth.; Kishor: Provides finance from Rs. 50,001 to Rs. 5 lakh for businesses seeking expa
+  #7  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Functionality: The card can be used for withdrawing cash from ATMs and for making purchases at Point of Sale (POS) machines, ensuring easy and flexible access t
+  #8  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Amount: An overdraft facility of Rs. 5,000 is provided.
+  #9  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : SupportToLenders: This encourages financial institutions to lend to the micro-enterprise sector by mitigating risk and ensuring liquidity.
+  #10  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Insurance: 5-8% of the GoI grant.; Auditors Fee: 2-3% of the GoI grant.; Documentation: 3-5% of the GoI grant.; Evaluation study: 2-3% of the GoI grant.; Other 
+
+=================================================================
+Business Profile 
+=================================================================
+Industry: Renewable Energy — specifically Solar EPC and rooftop installations
+Products / services: Solar rooftop design, installation, and O&M for commercial clients
+MSME tier: Small Enterprise
+Location: National, India
+Location type: Multiple Sites
+Growth stage: Growth / Scaling
+Special attributes: Clean Energy / Green Tech
+Policy needs: Renewable energy subsidy, Net metering incentive, Green financing support
+Registrations held: GST Registration, MNRE Empanelment
+Additional context: profile_id: P14; business_name: Renewa Solar Energy Pvt Ltd; legal_entity_type: Private Limited; year_of_establishment: 2020; ownership_type: Founder-Led (Male); primary_activity: Services; employee_count: 40; turnover_range: INR 5 - 25 Crore; fixed_asset_investment: INR 1 - 5 Crore; country: India; district: Multiple; udyam_number: UDYAM-KA-01-0098765; dpiit_startup: No; multi_state_interest: Yes — open to any state
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #2  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Coverage: The total assistance includes overhead costs such as motivation camps, hiring of space and equipment, electricity/water, stationary, personnel costs, 
+  #3  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Loan Assistance: The remaining portion of the project cost is financed as a loan by lending institutions/banks. This loan is passed on by the NGO to the women b
+  #4  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Funding for New Industrial Estate (Special Category Areas): For North-East & Hill States, Island territories, and Aspirational Districts, the GoI grant is 70% o
+  #5  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Scale of Assistance: The amount of assistance will not exceed the actual amount required for the creation or strengthening/expansion of infrastructure and meeti
+  #6  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Maximum Assistance: The assistance is restricted to a maximum of Rs. 3.00 Crore in each case. This grant is over and above any grant received by the institution
+  #7  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Insurance: 5-8% of the GoI grant.; Auditors Fee: 2-3% of the GoI grant.; Documentation: 3-5% of the GoI grant.; Evaluation study: 2-3% of the GoI grant.; Other 
+  #8  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Batch Size: The minimum batch size for such a training activity is 20 participants.; Grant Amount: A grant up to a maximum limit of Rs. 1.00 lakh per programme.
+  #9  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Grant Limit: The grant is limited to Rs. 5.00 lakh per project.; Restriction: The grant cannot be used for the creation of posts.; Usage of Grant: Can be used f
+
+=================================================================
+Business Profile 
+=================================================================
+Industry: Professional Services — specifically Startup incubation and mentorship
+Products / services: Incubation support, mentorship, and seed capital access for women founders
+MSME tier: Micro Enterprise
+Location: Karnataka, India
+Location type: Co-working / Incubation Center
+Growth stage: Early Growth
+Special attributes: Women-led / Women-owned (> 51%), DPIIT Recognized Startup, Social Enterprise
+Policy needs: Women entrepreneurship grant, Incubator support scheme, Seed funding
+Registrations held: GST Registration, 12A / 80G (Section 8)
+Additional context: profile_id: P15; business_name: Radhika Ventures — Women Tech Incubator; legal_entity_type: Section 8 Company; year_of_establishment: 2021; ownership_type: Women-Owned (>51% women ownership); primary_activity: Services; employee_count: 15; turnover_range: Less than INR 1 Crore; fixed_asset_investment: Less than INR 1 Crore; country: India; district: Bengaluru Urban; udyam_number: UDYAM-KA-03-0099876; dpiit_startup: Yes — DPIIT Recognized; multi_state_interest: Yes — open to any state
+=================================================================
+POLISENSE — TOP POLICY MATCHES
+=================================================================
+  #1  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Maximum GoI Assistance: Assistance is calculated based on a maximum eligible project cost of Rs. 30.00 crore.; Funding for General Areas: For project costs from
+  #2  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Waiver: No collateral security is required for loans up to Rs. 10 lakh.
+  #3  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Grant Limit: The grant is limited to Rs. 5.00 lakh per project.; Restriction: The grant cannot be used for the creation of posts.; Usage of Grant: Can be used f
+  #4  Assistance to Training Institutions (ATI) Scheme
+   Summary   : The Assistance to Training Institutions (ATI) Scheme is a Central Sector Scheme by the Ministry of Micro, Small and Medium Enterprises (MSME) aimed at fostering...
+   Benefits  : Maximum Assistance: The assistance is restricted to a maximum of Rs. 3.00 Crore in each case. This grant is over and above any grant received by the institution
+  #5  Micro & Small Enterprises Cluster Development Programme (MSE-CDP)
+   Summary   : The Micro & Small Enterprises Cluster Development Programme (MSE-CDP) is a scheme by the Government of India, revised in May 2022, to enhance the sustainability...
+   Benefits  : Funding for New Industrial Estate (Special Category Areas): For North-East & Hill States, Island territories, and Aspirational Districts, the GoI grant is 70% o
+  #6  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Insurance: 5-8% of the GoI grant.; Auditors Fee: 2-3% of the GoI grant.; Documentation: 3-5% of the GoI grant.; Evaluation study: 2-3% of the GoI grant.; Other 
+  #7  Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme for Women
+   Summary   : The Trade Related Entrepreneurship Assistance and Development (TREAD) Scheme is a Government of India initiative aimed at the economic empowerment of disadvanta...
+   Benefits  : Batch Size: The minimum batch size for such a training activity is 20 participants.; Grant Amount: A grant up to a maximum limit of Rs. 1.00 lakh per programme.
+  #8  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Tarun: Provides finance from Rs. 5,00,001 to Rs. 10 lakh for further growth.; Kishor: Provides finance from Rs. 50,001 to Rs. 5 lakh for businesses seeking expa
+  #9  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Functionality: The card can be used for withdrawing cash from ATMs and for making purchases at Point of Sale (POS) machines, ensuring easy and flexible access t
+  #10  Pradhan Mantri Mudra Yojana (PMMY)
+   Summary   : The Pradhan Mantri Mudra Yojana (PMMY), launched on April 8, 2015, is a national scheme aimed at providing financial support to the non-corporate, non-farm smal...
+   Benefits  : Amount: An overdraft facility of Rs. 5,000 is provided.

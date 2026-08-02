@@ -648,66 +648,68 @@ def find_matching_policies(
 # ── CLI demo ───────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    example_profile = {
-        "business_name":          "Innovate Crafts Pvt Ltd",
-        "legal_entity_type":      "Private Limited",
-        "year_of_establishment":  2019,
-        "ownership_type":         "Women-Owned (>51% women ownership)",
-        "industry":               "Manufacturing",
-        "sub_industry":           "Handmade leather goods and accessories",
-        "primary_activity":       "Manufacturing / Production",
-        "products_services":      "Leather bags, wallets, and belts — domestic + export",
-        "employee_count":         38,
-        "turnover_range":         "INR 1 – 5 Crore",
-        "fixed_asset_investment": "Less than INR 1 Crore",
-        "growth_stage":           "Early Growth",
-        "country":                "India",
-        "state":                  "Rajasthan",
-        "district":               "Jodhpur",
-        "location_type":          "Industrial Park / Cluster",
-        "msme_registration":      "Yes — Small Enterprise",
-        "udyam_number":           "UDYAM-RJ-12-0045678",
-        "dpiit_startup":          "No",
-        "other_registrations":    ["GST Registration", "Export Import Code (IEC)"],
-        "special_attributes":     [
-            "Women-led / Women-owned (> 51%)",
-            "Export-oriented unit",
-            "R&D / IP-driven",
-        ],
-        "multi_state_interest":   "Yes — open to any state",
-        "policy_intent":          [
-            "Capital investment subsidy",
-            "Export promotion",
-            "Working capital / interest subsidy",
-        ],
-    }
+    import json
+    from pathlib import Path
 
-    matches = find_matching_policies(
-        example_profile,
-        top_k=30,
-        final_n=5,
-        lmbda=0.6,
-    )
+    path = Path(r"C:\Users\gowri\Documents\Projects\PoliSense\PoliSense\BusinessProfile\Business_Profiles.json")
 
-    print("=" * 65)
-    print(" POLISENSE — TOP POLICY MATCHES  (no-LLM / MMR)")
-    print("=" * 65)
-    for m in matches:
-        pd = m.get("policy_details") or {}
-        id_ = m.get("incentive_details") or {}
-        print(f"\n  #{m['mmr_rank']}  {m['policy_name']}")
-        if m.get("parent_policy_name"):
-            print(f"       Parent    : {m['parent_policy_name']}")
-        print(f"       Incentive : {m.get('incentive_name', '—')}")
-        print(f"       Geography : {m.get('geography', '—')}")
-        print(f"       Size      : {m.get('business_size', '—')}")
-        print(f"       Similarity: {m.get('similarity', 0):.4f}  "
-              f"MMR score: {m['mmr_score']:.4f}")
-        summary = pd.get("policy_summary", "")
-        if summary:
-            print(f"       Summary   : {summary[:160]}...")
-        benefits = id_.get("benefits") or {}
-        if benefits:
-            benefit_str = "; ".join(f"{k}: {v}" for k, v in benefits.items())
-            print(f"       Benefits  : {benefit_str[:160]}")
+    with open(path, encoding="utf-8") as b:
+        business_profiles = json.load(b)
+    
+    if not business_profiles:
+        print("Please provide correct Business Profile Path")
+
+    results = []
+
+    for profile in business_profiles:
+        result = ""
+        result += "=" * 65
+        profile_text = profile_to_text(profile)
+        result += "\nBusiness Profile \n"
+        result += "=" * 65
+        result += "\n" + profile_text + "\n"
+        matches = find_matching_policies(
+            profile,
+            top_k=30,
+            final_n=10,
+            lmbda=0.6,
+        )
+        result += "=" * 65
+        result += "\nPOLISENSE — TOP POLICY MATCHES\n"
+        result += "=" * 65
+        print("=" * 65)
+        print("\nPOLISENSE — TOP POLICY MATCHES  (no-LLM / MMR)\n")
+        print("=" * 65)
+        for m in matches:
+            pd = m.get("policy_details") or {}
+            id_ = m.get("incentive_details") or {}
+            print(f"\n  #{m['mmr_rank']}  {m['policy_name']}")
+            result += f"\n  #{m['mmr_rank']}  {m['policy_name']}"
+            if m.get("parent_policy_name"):
+                print(f"       Parent    : {m['parent_policy_name']}")
+                print(f"       Incentive : {m.get('incentive_name', '—')}")
+                print(f"       Geography : {m.get('geography', '—')}")
+                print(f"       Size      : {m.get('business_size', '—')}")
+                print(f"       Similarity: {m.get('similarity', 0):.4f}")
+                print(f"       MMR score: {m['mmr_score']:.4f}")
+                result += f"\n   Parent    : {m['parent_policy_name']}"
+                result += f"\n   Incentive : {m.get('incentive_name', '—')}"
+                result += f"\n   Geography : {m.get('geography', '—')}"
+                result += f"\n   Size      : {m.get('business_size', '—')}"
+                result += f"\n   Similarity: {m.get('similarity', 0):.4f}"
+                result += f"\n   MMR score: {m['mmr_score']:.4f}"
+
+            summary = pd.get("policy_summary", "")
+            if summary:
+                print(f"       Summary   : {summary[:160]}...")
+                result += f"\n   Summary   : {summary[:160]}..."
+            benefits = id_.get("benefits") or {}
+            if benefits:
+                benefit_str = "; ".join(f"{k}: {v}" for k, v in benefits.items())
+                print(f"       Benefits  : {benefit_str[:160]}")
+                result += f"\n   Benefits  : {benefit_str[:160]}"
+        results.append(result)
+    results_str = "\n\n".join(results)
+    with open("retrieval_results.txt", 'w', encoding='utf-8') as f:
+        f.write(results_str)
     print()
