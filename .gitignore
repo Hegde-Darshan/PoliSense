@@ -49,7 +49,7 @@ untracked/
 #Claude
 .claude/
 
-.env
+.env/
 .env.secrets
 backup.sql
 postgres_data/
