@@ -50,5 +50,6 @@ untracked/
 .claude/
 
 .env
+.env.secrets
 backup.sql
 postgres_data/
