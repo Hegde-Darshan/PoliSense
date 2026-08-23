@@ -1,7 +1,7 @@
 from typing import List, Dict, Any
 
-from RetrievalPipeline.preprocessor import preprocess_query, build_metadata_filter, build_chroma_where_filter
-from RetrievalPipeline.retriever import retrieve_documents
+from polisense_core.RetrievalPipeline.preprocessor import preprocess_query, build_metadata_filter, build_chroma_where_filter
+from polisense_core.RetrievalPipeline.retriever import retrieve_documents
 
 
 def retrieval_pipeline(
@@ -28,8 +28,6 @@ def retrieval_pipeline(
         }
         for doc in docs
     ]
-
-
 
 
 if __name__ == "__main__":

@@ -3,12 +3,12 @@ from pathlib import Path
 import os
 import json
 from dotenv import load_dotenv
-from IngestionPipeline.logger import LOGGING_CONFIG
+from polisense_core.IngestionPipeline.logger import LOGGING_CONFIG
 
-import IngestionPipeline.utils as utils
-import IngestionPipeline.postgres_utils as db_utils
-import IngestionPipeline.prompts as prompts
-import IngestionPipeline.llm_extractor as llm_extractor
+import polisense_core.IngestionPipeline.utils as utils
+import polisense_core.IngestionPipeline.postgres_utils as db_utils
+import polisense_core.IngestionPipeline.prompts as prompts
+import polisense_core.IngestionPipeline.llm_extractor as llm_extractor
 
 from langchain_huggingface import HuggingFaceEmbeddings
 
@@ -21,13 +21,12 @@ root_logger = logging.getLogger()
 logger = root_logger.getChild("ingestion_pipeline")
 
 
-
 # Suppress unnecessary logs
 logging.getLogger("sentence_transformers").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 # Configure global and environment variables
-ROOT_PATH = Path(__file__).parent
+from polisense_core.settings import BASE_DIR as ROOT_PATH
 
 # Initialize once outside the loop
 conn = db_utils.get_connection()
@@ -104,7 +103,7 @@ if __name__ == "__main__":
     if ingested_files is not None:
         list_of_files = list(ingested_files.values()) + curr_files
     logger.debug(f"Files processed so far: {list_of_files}")
-    json.dump(list_of_files, open(ROOT_PATH/Path(config['READ_PATH']), 'w'))
+    json.dump(list_of_files, open(ROOT_PATH/Path(config['READ_PATH']), 'w'))+
 
     all_skipped_files = json.load(open(Path(config['SKIPPED_PATH']), 'r')) if os.path.exists(Path(config['SKIPPED_PATH'])) else []
     if skipped_files is not None:
