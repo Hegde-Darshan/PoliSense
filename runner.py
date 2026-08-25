@@ -4,7 +4,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 import logging.config
-from IngestionPipeline.logger import LOGGING_CONFIG
+from polisense_core.IngestionPipeline.logger import LOGGING_CONFIG
 import yaml
 logging.config.dictConfig(LOGGING_CONFIG)
 root_logger = logging.getLogger()

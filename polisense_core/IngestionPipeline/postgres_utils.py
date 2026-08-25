@@ -166,7 +166,7 @@ if __name__ == "__main__":
     # with open(ROOT_PATH / "IngestionPipeline/example_data.json") as f:
     #     summary_dict = json.load(f)
     # print(summary_dict)
-    import utils
+    import polisense_core.IngestionPipeline.utils as utils
     import inspect
     print(inspect.getsource(utils.embed_documents))
     # embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")

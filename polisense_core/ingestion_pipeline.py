@@ -3,12 +3,12 @@ from pathlib import Path
 import os
 import json
 from dotenv import load_dotenv
-from IngestionPipeline.logger import LOGGING_CONFIG
+from polisense_core.IngestionPipeline.logger import LOGGING_CONFIG
 
-import IngestionPipeline.utils as utils
-import IngestionPipeline.postgres_utils as db_utils
-import IngestionPipeline.prompts as prompts
-import IngestionPipeline.llm_extractor as llm_extractor
+import polisense_core.IngestionPipeline.utils as utils
+import polisense_core.IngestionPipeline.postgres_utils as db_utils
+import polisense_core.IngestionPipeline.prompts as prompts
+import polisense_core.IngestionPipeline.llm_extractor as llm_extractor
 
 from langchain_huggingface import HuggingFaceEmbeddings
 
