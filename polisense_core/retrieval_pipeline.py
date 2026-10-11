@@ -1,61 +1,145 @@
+import os
+import re
+from pathlib import Path
 from typing import List, Dict, Any
 
-from polisense_core.RetrievalPipeline.preprocessor import preprocess_query, build_metadata_filter, build_chroma_where_filter
-from polisense_core.RetrievalPipeline.retriever import retrieve_documents
+from polisense_core.IngestionPipeline.postgres_utils import get_connection
+from polisense_core.RetrievalPipeline.pg_retriever import (
+    retrieve_policies,
+    write_single_result,
+    pretty_print_results,
+)
+
+_FILTER_KEYS = ("industry", "sub_industry", "geography", "business_size", "category")
+
+# Default output folder — project root / Retrievals/
+RETRIEVALS_DIR = Path(__file__).parent.parent / "Retrievals"
+
+
+def _sanitize_filename(name: str) -> str:
+    """Strip filesystem-unsafe characters and collapse whitespace to underscores."""
+    safe = re.sub(r'[^\w\s-]', '', name).strip()
+    safe = re.sub(r'\s+', '_', safe)
+    return safe[:100]
 
 
 def retrieval_pipeline(
     query: str,
     client_profile: Dict | None = None,
-    top_k: int = 5
+    top_k: int = 5,
 ) -> List[Dict[str, Any]]:
+    """
+    Retrieve relevant policies for a single query using PostgreSQL/pgvector.
 
-    clean_query = preprocess_query(query)
-    # metadata_filter = build_metadata_filter(client_profile)
-    metadata_filter = build_chroma_where_filter(client_profile)
+    Args:
+        query: Free-text search query.
+        client_profile: Optional dict with any of:
+            industry, sub_industry, geography, business_size, category.
+            All filters are matched case-insensitively (ILIKE).
+        top_k: Number of results to return.
 
-    docs = retrieve_documents(
-        query=clean_query,
-        k=top_k,
-        metadata_filter=metadata_filter,
-        use_mmr=False
-    )
+    Returns:
+        List of policy dicts — each has policy_id, parent_policy_name,
+        policy_name, incentive_name, category, industry, sub_industry,
+        business_size, geography, years, policy_details, incentive_details,
+        similarity_score.
+    """
+    query = " ".join(query.lower().strip().split())
 
-    return [
-        {
-            "content": doc.page_content,
-            "metadata": doc.metadata
-        }
-        for doc in docs
-    ]
+    filters: Dict[str, str] = {}
+    if client_profile:
+        for key in _FILTER_KEYS:
+            val = client_profile.get(key)
+            if val:
+                filters[key] = val
+
+    conn = get_connection()
+    try:
+        return retrieve_policies(query=query, conn=conn, top_k=top_k, **filters)
+    finally:
+        conn.close()
+
+
+def process_batch(
+    zoho_data: Dict[str, Dict],
+    top_k: int = 5,
+    output_dir: Path | str = RETRIEVALS_DIR,
+) -> None:
+    """
+    Process a batch of query-profile pairs injected from Zoho Sheets.
+
+    Opens one DB connection for the entire batch and writes one result file
+    per query-profile pair into output_dir.
+
+    Args:
+        zoho_data:  {query_name → {"query": str, "profile": dict}}
+                    query_name  — human-readable label; becomes the filename
+                    query       — free-text search string (provided by Zoho row)
+                    profile     — business profile dict; accepted filter keys:
+                                  industry, sub_industry, geography,
+                                  business_size, category
+        top_k:      number of results per query (default 5)
+        output_dir: folder to write .txt files (default: project_root/Retrievals/)
+    """
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    conn = get_connection()
+    try:
+        for query_name, entry in zoho_data.items():
+            try:
+                query   = entry["query"]
+                profile = entry.get("profile", {})
+                filters = {k: v for k, v in profile.items() if k in _FILTER_KEYS and v}
+
+                results = retrieve_policies(
+                    query=query, conn=conn, top_k=top_k, **filters
+                )
+
+                filename    = _sanitize_filename(query_name) + ".txt"
+                output_path = output_dir / filename
+                write_single_result(
+                    query_name=query_name,
+                    entry={
+                        "query":   query,
+                        "profile": profile,
+                        "filters": filters,
+                        "results": results,
+                    },
+                    output_path=str(output_path),
+                )
+                print(f"  ✓  {query_name}  →  {filename}  ({len(results)} result(s))")
+            except Exception as e:
+                print(f"  ✗  {query_name} failed: {e}")
+    finally:
+        conn.close()
 
 
 if __name__ == "__main__":
-
-    query = "government schemes for women startups"
-
-    client_profile_1 = {
-    "special_attribute": "Women",
-    "business_size": "Startup",
-    "state":"Karnataka",
-    "central":"True"
-}
-
-    client_profile_2 = {
-        "special_attribute": "Entrepreneurship",
-        "business_size": "Startup",
-        "state":"Karnataka",
-        "central":"True"
+    # ── Stub: replaced by Zoho Sheets polling when the poller is built ────────
+    # Shape: {query_name: {"query": str, "profile": dict}}
+    # query_name becomes the output filename (characters sanitized automatically).
+    zoho_data: Dict[str, Dict] = {
+        "MedSense_ESDM_Grants": {
+            "query": "R&D grants and subsidies for medical electronics micro enterprises in Karnataka",
+            "profile": {
+                "business_name": "MedSense Electronics Pvt Ltd",
+                "industry":      "Electronics System Design & Manufacturing (ESDM)",
+                "sub_industry":  "Medical Electronics",
+                "geography":     "Karnataka",
+                "business_size": "Micro Enterprise",
+            },
+        },
+        "VoltEdge_EV_Battery": {
+            "query": "capital subsidy for EV battery manufacturing startups in Karnataka",
+            "profile": {
+                "business_name": "VoltEdge Battery Pvt Ltd",
+                "industry":      "Automotive, Energy Storage",
+                "sub_industry":  "EV Battery Manufacturing",
+                "geography":     "Karnataka",
+                "business_size": "Startup",
+            },
+        },
     }
 
-    results = retrieval_pipeline(
-        query=query,
-        client_profile=client_profile_1,
-        top_k=5
-    )
-
-    for i, r in enumerate(results, 1):
-        print(f"\nResult {i}")
-        print("-" * 40)
-        print(r["content"][:500])
-        print("Metadata:", r["metadata"])
+    process_batch(zoho_data, top_k=5)

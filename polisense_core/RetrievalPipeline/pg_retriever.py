@@ -1,24 +1,14 @@
-# retrieval.py
 import os
 import json
 import psycopg2
-import sys
 from pathlib import Path
-
-ROOT_PATH = Path(__file__).parent.parent
-sys.path.insert(0, str(ROOT_PATH))
-
 from dotenv import load_dotenv
-# from langchain_huggingface import HuggingFaceEmbeddings
 
-from IngestionPipeline.postgres import get_connection, embed_documents
-from BusinessProfile.business_profile_filters import *
+from polisense_core.IngestionPipeline.postgres_utils import get_connection, embed_documents
 
+ROOT_PATH = Path(__file__).parent.parent.parent  # project root: PoliSense/
 load_dotenv(ROOT_PATH / ".env")
 load_dotenv(ROOT_PATH / ".env.secrets")
-
-# ── Reuse the same embedding model from ingestion ──────────────────────────────
-# embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 
 def save_results_to_file(
     all_results: list[dict],   # list of {profile, query, filters, results}
@@ -80,6 +70,69 @@ def save_results_to_file(
 
     print(f"✅ Results saved to {output_path}")
 
+
+def write_single_result(
+    query_name: str,
+    entry: dict,
+    output_path: str,
+) -> None:
+    """
+    Write retrieval results for a single query-profile pair to a text file.
+
+    Args:
+        query_name: human-readable label used in the file header.
+        entry:      {"query": str, "profile": dict, "filters": dict, "results": list[dict]}
+        output_path: full path to write the file.
+    """
+    import datetime
+
+    profile = entry.get("profile", {})
+    query   = entry.get("query", "")
+    filters = entry.get("filters", {})
+    results = entry.get("results", [])
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write("=" * 65 + "\n")
+        f.write(f"  PoliSense — {query_name}\n")
+        f.write(f"  Generated : {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write("=" * 65 + "\n\n")
+
+        f.write("▓" * 65 + "\n")
+        f.write(f"  Business : {profile.get('business_name', 'N/A')}\n")
+        f.write(f"  Query    : {query}\n")
+        f.write(f"  Filters  : {filters}\n")
+        f.write("▓" * 65 + "\n")
+
+        if not results:
+            f.write("\n  No results found.\n\n")
+            return
+
+        seen = set()
+        rank = 1
+        for r in results:
+            if r["policy_id"] in seen:
+                continue
+            seen.add(r["policy_id"])
+
+            f.write(f"\n{'═' * 60}\n")
+            f.write(f"  #{rank}  [{r['similarity_score']:.4f}]  {r['parent_policy_name']}\n")
+            f.write(f"{'═' * 60}\n")
+            f.write(f"  Policy      : {r['policy_name']}\n")
+            f.write(f"  Incentive   : {r['incentive_name']}\n")
+            f.write(f"  Category    : {r['category']}  |  Industry: {r['industry']}\n")
+            f.write(f"  Geography   : {r['geography']}  |  Size: {r['business_size']}\n")
+            summary     = (r['policy_details'].get('policy_summary') or 'N/A')[:300]
+            eligibility = (r['policy_details'].get('eligibility_criteria') or 'N/A')[:200]
+            description = (r['incentive_details'].get('description') or '')[:200]
+            f.write(f"  Summary     : {summary}\n")
+            f.write(f"  Eligibility : {eligibility}\n")
+            if description:
+                f.write(f"  Benefit     : {description}\n")
+            rank += 1
+
+        f.write("\n")
+
+
 def retrieve_policies(
     query: str,
     conn,
@@ -112,9 +165,9 @@ def retrieve_policies(
     if geography:
         filters.append("geography ILIKE %s")
         params.append(f"%{geography}%")
-    # if business_size:
-    #     filters.append("business_size ILIKE %s")
-    #     params.append(f"%{business_size}%")
+    if business_size:
+        filters.append("business_size ILIKE %s")
+        params.append(f"%{business_size}%")
     if sub_industry:                            # ← add this block
         filters.append("sub_industry ILIKE %s")
         params.append(f"%{sub_industry}%")
@@ -302,63 +355,44 @@ if __name__ == "__main__":
         },
     ]
 
-    canonical = get_canonical_values(conn)
-    validator = ProfileValidator(canonical)
+    def _query_from_profile(profile: dict) -> str:
+        parts = []
+        if profile.get("industry"):
+            parts.append(profile["industry"])
+        if profile.get("sub_industry"):
+            parts.append(profile["sub_industry"])
+        if profile.get("business_size"):
+            parts.append(f"{profile['business_size']} businesses")
+        if profile.get("geography"):
+            parts.append(f"in {profile['geography']}")
+        if profile.get("special_attributes"):
+            parts.append(f"({', '.join(profile['special_attributes'])})")
+        base = "government grants and incentives for "
+        return base + " ".join(parts) if parts else base.strip()
+
+    def _filters_from_profile(profile: dict) -> dict:
+        allowed = ("industry", "sub_industry", "geography", "business_size", "category")
+        return {k: v for k, v in profile.items() if k in allowed and v is not None}
+
     all_results = []
     for profile in SAMPLE_PROFILES:
-        try:
-            clean_profile = validator.validate(profile)
-            query   = generate_query_from_profile(clean_profile)
-            filters = extract_filters(clean_profile)
-            signals = filters.pop("_special_signals", [])
-            signal_context = " ".join(signals)
+        query   = _query_from_profile(profile)
+        filters = _filters_from_profile(profile)
 
-            print(f"\n{profile['business_name']}")
-            print(f"  query  : {query}")
-            print(f"  filters: {filters}")
+        print(f"\n{profile['business_name']}")
+        print(f"  query  : {query}")
+        print(f"  filters: {filters}")
 
-            results = retrieve_policies(
-                query=query,
-                conn=conn,
-                top_k=10,
-                **filters,
-            )
-            pretty_print_results(results)
-            # Collect for file
-            all_results.append({
-                "profile": profile,
-                "query":   query,
-                "filters": filters,
-                "signals": signals,
-                "results": results,
-            })
-        except ValueError as e:
-            print(f"\n {e}")
-            all_results.append({
-                "profile": profile,
-                "query":   "",
-                "filters": {},
-                "signals": [],
-                "results": [],
-            })
+        results = retrieve_policies(query=query, conn=conn, top_k=10, **filters)
+        pretty_print_results(results)
 
+        all_results.append({
+            "profile": profile,
+            "query":   query,
+            "filters": filters,
+            "signals": profile.get("special_attributes", []),
+            "results": results,
+        })
 
-    # for tc in test_cases:
-    #     print(f"\n\n{'▓'*65}")
-    #     print(f"  [{tc['label']}]")
-    #     print(f"  QUERY : {tc['query']}")
-    #     if tc["filters"]:
-    #         print(f"  FILTER: {tc['filters']}")
-    #     print(f"{'▓'*65}")
-
-    #     results = retrieve_policies(
-    #         query=tc["query"],
-    #         conn=conn,
-    #         top_k=3,
-    #         **tc["filters"],
-    #     )
-    #     with open("retrieval_results.txt", 'w') as r:
-    #         r.write(str(results))
-    #     pretty_print_results(results)
     save_results_to_file(all_results, output_path="retrieval_results.txt")
     conn.close()
