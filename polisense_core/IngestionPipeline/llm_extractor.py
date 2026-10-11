@@ -1,4 +1,5 @@
 from pathlib import Path
+from langchain_google_genai import ChatGoogleGenerativeAI
 from pydantic import BaseModel, Field
 from typing import Optional, List
 
@@ -31,6 +32,10 @@ class PDFSummary(BaseModel):
     PolicyInformation: Optional[List[PolicySummary]] = Field(description="Structured summary of the policy/sub-policy level information extracted from the document")
     PolicyGoals: Optional[List[str]] = Field(description="List of the main goals or objectives of the policy as extracted from the document")
 
+class PolicyQuestionnaire(BaseModel):
+    """Structured output format for policy questionnaire extraction."""
+    ParentPolicyName: str = Field(description="Name of the parent policy, if the document is a sub-policy or related to a larger policy framework")
+    Questions: List[str] = Field(description="List of questions on the policy such that the answers to these will help determine the policy's scope, applicability and quantitative details of available incentives, extracted from the document")
 
 def initialize_llm_with_config(
         model_name: str = "gemini-2.5-pro",
@@ -40,8 +45,6 @@ def initialize_llm_with_config(
         max_retries: int = 2,
         is_structured_model: bool = True
 ):
-    from langchain_google_genai import ChatGoogleGenerativeAI
-
     model = ChatGoogleGenerativeAI(model=model_name, 
                 temperature=temperature, 
                 max_tokens=max_tokens,
@@ -55,6 +58,22 @@ def initialize_llm_with_config(
     else:
         return model
 
+def cache_content(self, content: str, ttl_seconds: int = 600):
+    """Caches the given content with Gemini content cache """
+    from langchain_google_genai import create_context_cache
+    from langchain_core.messages import HumanMessage, SystemMessage
+    model = ChatGoogleGenerativeAI(model="gemini-2.5-pro")
+    cache = create_context_cache(
+        model=model,
+        ttl=f"{ttl_seconds}s",
+        messages=[
+                SystemMessage(content="You are a content caching service. Store the following content and return a unique cache key."),
+                HumanMessage(content=content)
+                ]
+            )
+    return cache # cache.name -> "cachedContents/xxxxx"
+
+
 if __name__ == "__main__":
     from dotenv import load_dotenv
     # env_vars = Path(r"C:\Users\lenovo\OneDrive\Desktop\Projects\PoliSense")
@@ -66,4 +85,5 @@ if __name__ == "__main__":
         print(f"Error loading .env file: {e}")
     #print(PDFSummary.schema_json(indent=2))
     model = initialize_llm_with_config()
+    
     

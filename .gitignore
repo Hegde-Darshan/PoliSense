@@ -42,7 +42,8 @@ postgres_data/
 # Test files (if you want to ignore them)
 untracked/
 
-#Claude
+#AI
 .claude/
+.github/
 
 postgres_data/
