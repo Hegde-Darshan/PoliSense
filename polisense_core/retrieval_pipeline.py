@@ -3,7 +3,7 @@ import re
 from pathlib import Path
 from typing import List, Dict, Any
 
-from polisense_core.IngestionPipeline.postgres_utils import get_connection
+from polisense_core.utils.postgres_utils import get_connection
 from polisense_core.RetrievalPipeline.pg_retriever import (
     retrieve_policies,
     write_single_result,

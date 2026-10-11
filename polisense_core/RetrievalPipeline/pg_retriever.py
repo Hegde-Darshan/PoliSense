@@ -4,7 +4,7 @@ import psycopg2
 from pathlib import Path
 from dotenv import load_dotenv
 
-from polisense_core.IngestionPipeline.postgres_utils import get_connection, embed_documents
+from polisense_core.utils.postgres_utils import get_connection, embed_documents
 
 ROOT_PATH = Path(__file__).parent.parent.parent  # project root: PoliSense/
 load_dotenv(ROOT_PATH / ".env")

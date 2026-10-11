@@ -7,7 +7,7 @@ from functools import partial
 
 from pathlib import Path
 from dotenv import load_dotenv
-from polisense_core.IngestionPipeline.logger import LOGGING_CONFIG
+from polisense_core.utils.logger import LOGGING_CONFIG
 import psycopg2
 import json
 import yaml
@@ -17,7 +17,7 @@ import polisense_core.IngestionPipeline.utils as utils
 import polisense_core.IngestionPipeline.prompts as prompts
 import polisense_core.IngestionPipeline.llm_extractor as llm_extractor
 from polisense_core.IngestionPipeline.utils import IngestionWorkflowState
-import polisense_core.IngestionPipeline.postgres_utils as db_utils
+import polisense_core.utils.postgres_utils as db_utils
 
 # Configure loggers
 import logging.config
