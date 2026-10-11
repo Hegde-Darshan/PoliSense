@@ -35,7 +35,7 @@ logging.getLogger("langsmith.client").setLevel(logging.WARNING)
 logging.getLogger("httpx").setLevel(logging.WARNING)
 
 # Configure global and environment variables
-ROOT_PATH = Path(__file__).parent
+ROOT_PATH = Path(__file__).parent.parent
 try:
     load_dotenv(ROOT_PATH / ".env")
     load_dotenv(ROOT_PATH / ".env.secrets")
@@ -141,7 +141,7 @@ def HITL_verification(state: IngestionWorkflowState, db_conn: psycopg2.extension
 @traceable
 def update_status_files(state: IngestionWorkflowState) -> IngestionWorkflowState:
     #update the processed files record to avoid re-processing in the future iterations
-    curr_files = json.load(open(ROOT_PATH/Path(config['READ_PATH']), 'r')) if os.path.exists(Path(config['READ_PATH'])) else []
+    curr_files = json.load(open(ROOT_PATH/Path(config['READ_PATH']), 'r')) if os.path.exists(ROOT_PATH/Path(config['READ_PATH'])) else []
     if state.policy_queried is not None:
         list_of_files = state.policy_queried + curr_files
     logger.debug(f"Files processed so far: {list_of_files}") # type: ignore

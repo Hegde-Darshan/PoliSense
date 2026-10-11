@@ -42,7 +42,7 @@ def get_new_filenames(folder_path: Path, processed_files:Path) -> List[str]:
     return files_to_read
 
 
-def get_new_filenames_for_llm(folder_path: Path, processed_files:Path) -> Dict[str, List[str]] | None:
+def get_new_filenames_for_llm(folder_path: Path, processed_files: Path) -> Dict[str, List[str]]:
     """
     Get new PDF filenames from the folder that have not been processed yet.
     From Data Directory, get all directory names (assumes each corresponds to a policy name)
@@ -50,30 +50,30 @@ def get_new_filenames_for_llm(folder_path: Path, processed_files:Path) -> Dict[s
 
     Args:
         folder_path: Path object of the folder containing PDF files.
-        processed_files (optional): Path object of the JSON file tracking processed files. if not provided, assumes no files are read in the folder
+        processed_files: Path object of the JSON file tracking processed files. If missing, all policies are treated as unprocessed.
+
+    Note: This function no longer writes back to the tracking file — callers own status
+    updates so that only successfully ingested policies are marked as done.
     """
     try:
         policy_processed = list(json.load(open(processed_files, 'r')))
         print(f"Files already processed: {policy_processed}")
-        files_to_read = {}
     except FileNotFoundError:
-        print(f"No processed files record found at '{processed_files}'. Assuming no files have been read yet.")
-        return None
-    
+        print(f"No processed files record found at '{processed_files}'. All policies will be processed.")
+        policy_processed = []
+
+    files_to_read: Dict[str, List[str]] = {}
     policy_folders = os.listdir(folder_path)
     policy_to_process = [folder for folder in policy_folders if folder not in policy_processed]
-    
+
     for policy in policy_to_process:
         policy_path = os.path.join(folder_path, policy)
         for root, _, files in os.walk(policy_path):
             for file in files:
                 if file.endswith(".pdf"):
-                    #add the path to the dictionary
                     file_path = os.path.join(root, file)
                     files_to_read.setdefault(policy, []).append(file_path)
-        policy_processed.append(policy)
-    
-    json.dump(policy_processed, open(processed_files, 'w'))
+
     return files_to_read
 
 
