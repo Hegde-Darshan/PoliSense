@@ -23,7 +23,9 @@ dependencies = [
     "rake-nltk",
     "pyyaml",
     "lark",
-    "psycopg2"]
+    "psycopg2",
+    "requests",
+    "schedule"]
 
 [tool.setuptools.packages.find]
 where = ["."]
