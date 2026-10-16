@@ -108,9 +108,9 @@ def process_batch(
                     },
                     output_path=str(output_path),
                 )
-                print(f"  ✓  {query_name}  →  {filename}  ({len(results)} result(s))")
+                print(f"  OK  {query_name}  ->  {filename}  ({len(results)} result(s))")
             except Exception as e:
-                print(f"  ✗  {query_name} failed: {e}")
+                print(f"  FAIL  {query_name}: {e}")
     finally:
         conn.close()
 
