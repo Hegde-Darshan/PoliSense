@@ -9,7 +9,7 @@ from sentence_transformers import SentenceTransformer
 
 
 load_dotenv()
-ROOT_PATH = Path(__file__).parent.parent
+ROOT_PATH = Path(__file__).parent.parent.parent  # polisense_core/utils/ -> polisense_core/ -> project root
 load_dotenv(ROOT_PATH / ".env")
 load_dotenv(ROOT_PATH / ".env.secrets")
 
@@ -173,6 +173,57 @@ def ingest_policy(summary_dict: dict,
 
     conn.commit()
     return inserted_ids
+
+
+def ingest_policy_document(
+        parent_policy_name: str,
+        pdf_paths: list[str],
+        conn: psycopg2.extensions.connection,
+) -> int | None:
+    """
+    Extract raw text from PDFs using pypdf and upsert into policy_documents.
+    One row per parent_policy_name — ON CONFLICT DO NOTHING makes re-ingestion safe.
+    Does NOT commit; the caller (db_ingestion) owns the transaction so a rollback
+    on ingestion failure also rolls back this insert.
+    Returns doc_id if a new row was inserted, None if it already existed.
+    """
+    from pypdf import PdfReader
+
+    all_pages: list[str] = []
+    for path in pdf_paths:
+        for page in PdfReader(path).pages:
+            all_pages.append(page.extract_text() or "")
+
+    raw_text   = "\n\n".join(all_pages).strip().replace('\x00', '') or None
+    page_count = len(all_pages)
+
+    if raw_text is None:
+        quality = "empty"
+    elif any(t == "" for t in all_pages):
+        quality = "partial"
+    else:
+        quality = "full"
+
+    with conn.cursor() as cur:
+        cur.execute("""
+            INSERT INTO policy_documents
+                (parent_policy_name, raw_text, extraction_method,
+                 page_count, extraction_quality, source_file_paths)
+            VALUES
+                (%(name)s, %(text)s, 'pypdf',
+                 %(pages)s, %(quality)s, %(paths)s)
+            ON CONFLICT (parent_policy_name) DO NOTHING
+            RETURNING doc_id
+        """, {
+            "name":    parent_policy_name,
+            "text":    raw_text,
+            "pages":   page_count,
+            "quality": quality,
+            "paths":   [str(p) for p in pdf_paths],
+        })
+        row = cur.fetchone()
+
+    return row[0] if row else None  # type: ignore
 
 
 def clear_policies_table(conn):

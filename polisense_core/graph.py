@@ -104,7 +104,11 @@ def db_ingestion(state: IngestionWorkflowState, db_conn: psycopg2.extensions.con
     try:
         if state.llm_response:
             summary_dict = state.llm_response
-            summary_dict['PolicyGroup'] = state.policy_current
+            db_utils.ingest_policy_document(
+                parent_policy_name=summary_dict.get("parent_policy_name"),
+                pdf_paths=state.file_paths[state.policy_current],  # type: ignore
+                conn=db_conn,
+            )
             inserted_ids = db_utils.ingest_policy(summary_dict, db_conn)
             state.uuid_ingested.extend(inserted_ids)
             logger.info(f"Ingested policy '{state.policy_current}' -> {len(inserted_ids)} row(s) inserted, IDs: {inserted_ids}")

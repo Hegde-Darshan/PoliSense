@@ -42,6 +42,26 @@ CREATE INDEX IF NOT EXISTS idx_policies_embedding
     WITH (lists = 100);
 
 
+-- One row per parent policy document — stores pypdf-extracted full text for Tier 2 deep analysis.
+-- Joined to policies table via parent_policy_name.
+CREATE TABLE IF NOT EXISTS policy_documents (
+    doc_id              SERIAL PRIMARY KEY,
+    parent_policy_name  TEXT NOT NULL UNIQUE,
+    raw_text            TEXT,          -- NULL if fully scanned (pypdf returned nothing)
+    extraction_method   TEXT NOT NULL DEFAULT 'pypdf',
+    page_count          INTEGER,
+    extraction_quality  TEXT CHECK (extraction_quality IN ('full', 'partial', 'empty')),
+    -- full    = all pages yielded text
+    -- partial = some pages empty (mixed digital/scanned PDF)
+    -- empty   = all pages empty (fully scanned, OCR not run)
+    source_file_paths   TEXT[],        -- original PDF filenames for audit
+    ingested_at         TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_policy_documents_parent
+    ON policy_documents (parent_policy_name);
+
+
 CREATE TABLE IF NOT EXISTS review_queue (
     review_id        SERIAL PRIMARY KEY,
     parent_policy_name TEXT,
