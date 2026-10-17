@@ -10,7 +10,7 @@ from polisense_core.RetrievalPipeline.pg_retriever import (
     pretty_print_results,
 )
 
-_FILTER_KEYS = ("industry", "sub_industry", "geography", "business_size", "category")
+_FILTER_KEYS = ("industry", "geography", "business_size", "category")
 
 # Default output folder — project root / Retrievals/
 RETRIEVALS_DIR = Path(__file__).parent.parent / "Retrievals"
@@ -34,15 +34,16 @@ def retrieval_pipeline(
     Args:
         query: Free-text search query.
         client_profile: Optional dict with any of:
-            industry, sub_industry, geography, business_size, category.
-            All filters are matched case-insensitively (ILIKE).
+            industry, geography, business_size, category.
+            industry and business_size use exact array containment;
+            geography uses ILIKE containment; category uses ILIKE.
         top_k: Number of results to return.
 
     Returns:
         List of policy dicts — each has policy_id, parent_policy_name,
-        policy_name, incentive_name, category, industry, sub_industry,
-        business_size, geography, years, policy_details, incentive_details,
-        similarity_score.
+        policy_name, incentive_name, category, applicable_industries,
+        applicable_geographies, applicable_business_sizes, start_year,
+        end_year, policy_details, incentive_details, similarity_score.
     """
     query = " ".join(query.lower().strip().split())
 
@@ -76,8 +77,7 @@ def process_batch(
                     query_name  — human-readable label; becomes the filename
                     query       — free-text search string (provided by Zoho row)
                     profile     — business profile dict; accepted filter keys:
-                                  industry, sub_industry, geography,
-                                  business_size, category
+                                  industry, geography, business_size, category
         top_k:      number of results per query (default 5)
         output_dir: folder to write .txt files (default: project_root/Retrievals/)
     """
@@ -124,18 +124,16 @@ if __name__ == "__main__":
             "query": "R&D grants and subsidies for medical electronics micro enterprises in Karnataka",
             "profile": {
                 "business_name": "MedSense Electronics Pvt Ltd",
-                "industry":      "Electronics System Design & Manufacturing (ESDM)",
-                "sub_industry":  "Medical Electronics",
+                "industry":      "Electronics and Hardware",
                 "geography":     "Karnataka",
-                "business_size": "Micro Enterprise",
+                "business_size": "Micro",
             },
         },
         "VoltEdge_EV_Battery": {
             "query": "capital subsidy for EV battery manufacturing startups in Karnataka",
             "profile": {
                 "business_name": "VoltEdge Battery Pvt Ltd",
-                "industry":      "Automotive, Energy Storage",
-                "sub_industry":  "EV Battery Manufacturing",
+                "industry":      "Automotive and EV",
                 "geography":     "Karnataka",
                 "business_size": "Startup",
             },

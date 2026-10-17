@@ -90,7 +90,7 @@ def extract_information(state: IngestionWorkflowState) -> IngestionWorkflowState
     #print(f"Invoking LLM with prompt: {prompt_manager.get_prompt()}")
     struct_response = llm_client.invoke(prompt_manager.get_prompt())
     # struct_response = llm_client.invoke("This is a test invocation. Return response in the same format but tailor it with empty or test string values")
-    summary = llm_extractor.PDFSummary.model_validate(struct_response)
+    summary = llm_extractor.PDFExtraction.model_validate(struct_response)
     state.llm_response = summary.model_dump()
     return state
 

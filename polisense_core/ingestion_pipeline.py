@@ -72,7 +72,7 @@ if __name__ == "__main__":
         logger.info(f"Prompt manager created for policy: {policy}")
         
         struct_response = llm_client.invoke(prompt_manager.get_prompt())
-        summary = llm_extractor.PDFSummary.model_validate(struct_response)
+        summary = llm_extractor.PDFExtraction.model_validate(struct_response)
         summary_dict = summary.model_dump()
         logger.debug(f"Structured output from LLM for policy {policy}:\n {json.dumps(summary_dict, indent=2)}")
 
