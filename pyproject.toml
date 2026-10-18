@@ -4,28 +4,23 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PoliSense"
-version = "1.0.0"
+version = "1.0.1"
 description = "RAG pipeline core: ingestion + retrieval"
 requires-python = ">=3.10"
 dependencies = [
-    "langchain-community",
-    "langchain-huggingface",
-    "langchain",
-    "langchain-chroma",
-    "langchain-openai",
+"langchain-core",
     "langchain-google-genai",
+    "langgraph",
+    "langsmith",
     "sentence-transformers",
-    "faiss-cpu",
-    "chromadb",
     "pypdf",
+    "reportlab"
     "python-dotenv",
-    "nltk",
-    "rake-nltk",
     "pyyaml",
-    "lark",
     "psycopg2",
     "requests",
-    "schedule"]
+    "schedule",
+    "numpy"]
 
 [tool.setuptools.packages.find]
 where = ["."]
