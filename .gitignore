@@ -50,6 +50,5 @@ CLAUDE.md
 
 # Excluded folders
 db/
-.github/
 
 postgres_data/
