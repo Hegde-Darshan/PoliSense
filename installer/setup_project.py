@@ -49,6 +49,7 @@ STEPS = [
     "Start PostgreSQL",
     "Wait for database",
     "Apply schema",
+    "Import data",
 ]
 
 SPINNER = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
@@ -144,6 +145,7 @@ class InstallerApp:
 
         self._q: queue.Queue = queue.Queue()
         self._secrets_ready = threading.Event()
+        self._data_imported = False
 
         self._step_icon: list[tk.Label] = []
         self._step_lbl:  list[tk.Label] = []
@@ -325,6 +327,19 @@ class InstallerApp:
     # ── Pre-check ────────────────────────────────────────────────────────────
 
     def _pre_check(self):
+        self._write("── Before you click Install ────────────────────────────────\n", "hl")
+        self._write("  Required on this machine:\n")
+        self._write("    • Python 3.10+\n")
+        self._write("    • Docker Desktop  —  installed and running\n")
+        self._write("    • .env.secrets    —  GOOGLE_API_KEY, POSTGRES_USER, POSTGRES_PASSWORD\n")
+        self._write("\n  Optional (for migrating data from another machine):\n")
+        self._write("    • exports/polisense_db.sql   DB dump from 'make db-export'\n")
+        self._write("    • exports/files_read.json    ingestion state files\n")
+        self._write("    • exports/files_skipped.json\n")
+        self._write("\n  Without exports/ the DB will be empty — run the ingestion\n")
+        self._write("  pipeline after setup to populate it.\n")
+        self._write("────────────────────────────────────────────────────────────\n\n")
+
         v = sys.version_info
         if v < (3, 10):
             self._set_step(0, "err")
@@ -543,6 +558,39 @@ class InstallerApp:
         log("  ✓ Schema applied  (policies, policy_documents, review_queue)\n", "ok")
         finish(6)
 
+        # ── Step 8: import data ───────────────────────────────────────────
+        activate(7)
+        log("\n── Import data ─────────────────────────────────────────────\n", "hl")
+        dump_path = ROOT / "exports" / "polisense_db.sql"
+        if dump_path.exists():
+            log(f"  Found exports/polisense_db.sql — importing...\n")
+            sql = dump_path.read_text("utf-8", errors="replace")
+            r = subprocess.run(
+                ["docker", "compose", "exec", "-T", "postgres",
+                 "psql", "-U", pg_user, "-d", pg_db],
+                input=sql, cwd=str(ROOT), capture_output=True, text=True,
+            )
+            if r.returncode != 0:
+                fatal("Data import failed.", r.stderr.strip())
+                return
+            for line in r.stdout.splitlines():
+                if line.strip():
+                    log(f"  {line}\n")
+            log("  ✓ Database data imported\n", "ok")
+            for fname in ("files_read.json", "files_skipped.json"):
+                src = ROOT / "exports" / fname
+                dst = ROOT / "documents" / fname
+                if src.exists():
+                    shutil.copy2(src, dst)
+                    log(f"  ✓ Restored documents/{fname}\n", "ok")
+            self._data_imported = True
+        else:
+            log("  No exports/polisense_db.sql found — skipping.\n")
+            log("  Run 'make db-export' on the source machine to create a dump,\n", "warn")
+            log("  place exports/ in the project root, then retry.\n", "warn")
+            self._data_imported = False
+        finish(7)
+
         q.put(("done", None))
 
     # ── Queue drain ──────────────────────────────────────────────────────────
@@ -658,12 +706,18 @@ class InstallerApp:
         self._write("  1. Activate the virtual environment:\n")
         self._write("       PowerShell:  .venv\\Scripts\\Activate.ps1\n")
         self._write("       Git Bash:    source .venv/Scripts/activate\n\n")
-        self._write("  2. Run the ingestion pipeline:\n")
-        self._write("       python polisense_core/ingestion_pipeline.py\n\n")
-        self._write("  3. Run the retrieval pipeline:\n")
-        self._write("       python polisense_core/retrieval_pipeline.py\n\n")
-        self._write("  4. Stop the database when done:\n")
-        self._write("       docker compose down\n")
+        if self._data_imported:
+            self._write("  2. Run the retrieval pipeline:\n")
+            self._write("       python polisense_core/retrieval_pipeline.py\n\n")
+            self._write("  3. Stop the database when done:\n")
+            self._write("       docker compose down\n")
+        else:
+            self._write("  2. Run the ingestion pipeline:\n")
+            self._write("       python polisense_core/ingestion_pipeline.py\n\n")
+            self._write("  3. Run the retrieval pipeline:\n")
+            self._write("       python polisense_core/retrieval_pipeline.py\n\n")
+            self._write("  4. Stop the database when done:\n")
+            self._write("       docker compose down\n")
         self._install_btn.config(
             state=tk.NORMAL, text="Close",
             bg=self.C_SUCCESS, command=self.root.destroy,
