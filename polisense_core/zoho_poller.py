@@ -40,31 +40,73 @@ _SHEET_NAME    = os.getenv("ZOHO_SHEET_NAME", "Entries")
 # ── Exact column headers as they appear in the Zoho sheet ────────────────────
 _COL = {
     "timestamp":     "Submitted",
-    "business_name": "Legal Name of the Enterprise",
-    "industry":      "Primary Business Sector",
-    "sub_industry":  "Detailed Business Activity",
-    "geography":     "Location of the Proposed Project / Unit",
-    "business_size": "Your Entity Registered in Startup (DPIIT Recognition)",
-    "category":      "What is the primary purpose of seeking a subsidy/incentive?",
+    "business_name": "What is the name of your business?",
+    "industry":      "Which of the following best describes your industry?",
+    "description":   "Tell us about your business and what you are hoping to achieve",
+    "geography":     "In which state are your business operations primarily located?",
+    "turnover":      "What is your approximate annual turnover?",
+    "startup":       "Is your business registered under the Government of India's Startup India programme?",
+    "category":      "What kind of support are you mainly looking for?",
+    "context":       "Is there anything else that would help us find the right schemes for you? (Optional)",
 }
 
 # ── Persistent state ──────────────────────────────────────────────────────────
 _STATE_FILE = BASE_DIR / "documents" / "zoho_poll_state.json"
 
-# ── Known Indian state names (lower-case) for geography extraction ────────────
-_INDIAN_STATES = {
-    "andhra pradesh", "arunachal pradesh", "assam", "bihar", "chhattisgarh",
-    "goa", "gujarat", "haryana", "himachal pradesh", "jharkhand", "karnataka",
-    "kerala", "madhya pradesh", "maharashtra", "manipur", "meghalaya", "mizoram",
-    "nagaland", "odisha", "punjab", "rajasthan", "sikkim", "tamil nadu",
-    "tamilnadu", "telangana", "tripura", "uttar pradesh", "uttarakhand",
-    "west bengal", "delhi", "jammu and kashmir", "ladakh",
+# ── Form option → internal tag mappings ──────────────────────────────────────
+# Keys are lower-cased form labels; None means "no filter for this dimension".
+
+_INDUSTRY_TAG: dict[str, str | None] = {
+    "manufacturing":                          "Manufacturing",
+    "information technology (it / software)": "Information Technology",
+    "electronics and hardware":               "Electronics and Hardware",
+    "agriculture / agro-processing":          "Agriculture and Agro-Processing",
+    "textiles and apparel":                   "Textile and Apparel",
+    "food processing":                        "Food Processing",
+    "pharmaceuticals and biotechnology":      "Pharmaceuticals and Biotech",
+    "automotive and electric vehicles":       "Automotive and EV",
+    "renewable energy and clean technology":  "Renewable Energy and Clean Tech",
+    "tourism and hospitality":                "Tourism and Hospitality",
+    "healthcare and medical devices":         "Healthcare and Medical Devices",
+    "education and skill development":        "Education and Skill Development",
+    "logistics and warehousing":              "Logistics and Warehousing",
+    "financial services and fintech":         "Financial Services and Fintech",
+    "defence and aerospace":                  "Defense and Aerospace",
+    "construction and real estate":           "Construction and Real Estate",
+    "retail and e-commerce":                  "Retail and E-commerce",
+    "chemicals and petrochemicals":           "Chemical and Petrochemical",
+    "mining and minerals":                    "Mining and Minerals",
+    "media and entertainment":                "Media and Entertainment",
+    "my industry is not listed here":         None,
 }
 
-# canonical display names for ambiguous / abbreviated state strings
-_STATE_CANONICAL = {
-    "tamilnadu": "Tamil Nadu",
+_BUSINESS_SIZE_TAG: dict[str, str | None] = {
+    "less than ₹1 crore":                 "Micro",
+    "₹1 crore to ₹10 crore":             "Small",
+    "₹10 crore to ₹50 crore":            "Medium",
+    "₹50 crore to ₹250 crore":           "Large",
+    "more than ₹250 crore":               "Mega",
+    "i'd prefer not to say / not sure":   None,
 }
+
+_CATEGORY_TAG: dict[str, str | None] = {
+    "funding to buy machinery, equipment, or expand my facility":          "Capital Subsidy",
+    "lower interest rates on business loans":                               "Interest Subvention",
+    "tax exemptions or tax rebates":                                        "Tax Incentive",
+    "support with infrastructure — roads, power connection, water supply":  "Infrastructure Support",
+    "funding for research, innovation, or developing new products":         "R&D and Innovation Grant",
+    "training and skill development programmes for my employees":           "Skill Development",
+    "help with exporting my products to other countries":                   "Export Promotion",
+    "access to new markets or marketing support":                           "Market Access and Marketing Support",
+    "subsidised land or help with building costs":                          "Land and Building Concession",
+    "reduced electricity tariffs or utility cost support":                  "Power and Utility Concession",
+    "support for hiring new employees":                                     "Employment Generation",
+    "working capital or short-term credit support":                         "Working Capital Assistance",
+    "collateral-free loan guarantees":                                      "Credit Guarantee",
+    "i'm not sure — just show me what's available":                        None,
+}
+
+_GEOGRAPHY_NATIONAL = "we operate across multiple states / all of india"
 
 
 def _load_last_polled() -> Optional[datetime]:
@@ -152,18 +194,21 @@ def _parse_json_array(raw: str) -> List[str]:
         return [raw]
 
 
-def _join_values(raw: str) -> str:
-    """Return a comma-joined string from a JSON-array column value."""
-    return ", ".join(p.strip() for p in _parse_json_array(raw) if p.strip())
+def _get_str(raw: str) -> str:
+    """Extract the first plain string from a Zoho column (handles JSON-array wrapping)."""
+    vals = _parse_json_array(raw)
+    return vals[0].strip() if vals else ""
 
 
-def _extract_state(location_str: str) -> str:
-    """Identify an Indian state name from a concatenated Zoho address string."""
-    lower = location_str.lower()
-    for state in _INDIAN_STATES:
-        if state in lower:
-            return _STATE_CANONICAL.get(state, state.title())
-    return ""
+def _lookup(mapping: dict, raw: str, field: str) -> str | None:
+    """Map a form label to an internal tag; log a warning on unknown values."""
+    key = _get_str(raw).lower()
+    if not key:
+        return None
+    if key not in mapping:
+        logger.warning("Unrecognised %s value: %r — filter will not be applied", field, key)
+        return None
+    return mapping[key]
 
 
 # ── Row → batch dict transformation ──────────────────────────────────────────
@@ -172,32 +217,34 @@ def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
     """Convert Zoho worksheet rows to the dict shape expected by process_batch()."""
     batch: Dict[str, Dict] = {}
     for row in rows:
-        name = (row.get(_COL["business_name"]) or "").strip() or \
+        name = _get_str(row.get(_COL["business_name"], "")) or \
                f"Row_{row.get('row_index', 'unknown')}"
 
-        industry     = _join_values(row.get(_COL["industry"], ""))
-        sub_industry = (row.get(_COL["sub_industry"]) or "").strip()
-        geography    = _extract_state(row.get(_COL["geography"], ""))
-        category     = _join_values(row.get(_COL["category"], ""))
+        industry = _lookup(_INDUSTRY_TAG, row.get(_COL["industry"], ""), "industry")
 
-        # Use "Startup" as business_size only if DPIIT-recognised
-        dpiit_raw    = _join_values(row.get(_COL["business_size"], ""))
-        business_size = "Startup" if "yes" in dpiit_raw.lower() else ""
+        geo_raw   = _get_str(row.get(_COL["geography"], ""))
+        geography = "National" if geo_raw.lower() == _GEOGRAPHY_NATIONAL else geo_raw or None
 
-        query_parts = [p for p in [
-            industry,
-            sub_industry,
-            f"company in {geography}" if geography else "",
-            category,
-            "grants subsidies and incentives",
-        ] if p]
+        # Q5 sets the base size tier; Q6 "Yes" overrides it to "Startup"
+        business_size = _lookup(_BUSINESS_SIZE_TAG, row.get(_COL["turnover"], ""), "business_size")
+        if _get_str(row.get(_COL["startup"], "")).strip().lower() == "yes":
+            business_size = "Startup"
+
+        category = _lookup(_CATEGORY_TAG, row.get(_COL["category"], ""), "category")
+
+        # Build query from Q3 (description) + optional Q8 (extra context)
+        description = _get_str(row.get(_COL["description"], "")).strip()
+        extra       = _get_str(row.get(_COL["context"], "")).strip()
+        if extra:
+            query = f"{description}. Additional context: {extra} government grants subsidies and incentives"
+        else:
+            query = f"{description} government grants subsidies and incentives"
 
         batch[name] = {
-            "query": " ".join(query_parts),
+            "query": query,
             "profile": {
                 "business_name": name,
                 "industry":      industry,
-                "sub_industry":  sub_industry,
                 "geography":     geography,
                 "business_size": business_size,
                 "category":      category,
