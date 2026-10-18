@@ -9,7 +9,8 @@ from polisense_core.RetrievalPipeline.pg_retriever import (
     retrieve_policies,
     pretty_print_results,
 )
-from polisense_core.RetrievalPipeline.pdf_generator import generate_pdf
+from polisense_core.PDF_utils.report_generator import generate_pdf
+from polisense_core.PDF_utils.teaser_generator import generate_teaser_pdf
 
 _FILTER_KEYS = ("industry", "geography", "business_size", "category")
 
@@ -124,7 +125,27 @@ def process_batch(
                     },
                     output_path=str(output_path),
                 )
-                print(f"  OK  {query_name}  ->  {filename}  ({len(results)} result(s))")
+
+                # Teaser PDF: re-retrieve without category filter for full-category scorecard
+                teaser_filters = {k: v for k, v in filters.items() if k != "category"}
+                teaser_results = retrieve_policies(
+                    query=query, conn=conn, top_k=20, **teaser_filters
+                )
+                teaser_path = output_dir / (_build_filename(entry) + "_teaser.pdf")
+                generate_teaser_pdf(
+                    query_name=query_name,
+                    entry={
+                        "query":           query,
+                        "profile":         profile,
+                        "filters":         teaser_filters,
+                        "results":         teaser_results,
+                        "submission_time": entry.get("submission_time"),
+                        "report_id":       None,
+                        "payment_link":    None,
+                    },
+                    output_path=str(teaser_path),
+                )
+                print(f"  OK  {query_name}  ->  {filename}  ({len(results)} result(s)) + teaser")
             except Exception as e:
                 print(f"  FAIL  {query_name}: {e}")
     finally:
