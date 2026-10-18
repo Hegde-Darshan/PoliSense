@@ -14,7 +14,7 @@ dependencies = [
     "langsmith",
     "sentence-transformers",
     "pypdf",
-    "reportlab"
+    "reportlab",
     "python-dotenv",
     "pyyaml",
     "psycopg2",
