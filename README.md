@@ -1,7 +1,112 @@
 # PoliSense
 This is an intelligent policy filtering and ranking system, to help you find government grants/schemes and policies based on your requirements.  
-All you have to do is give this a priliminary details about your company and what you are looking for. And, this will do the rest!
-***
+All you have to do is give this a preliminary details about your company and what you are looking for. And, this will do the rest!
+
+---
+
+## Installation
+
+### 1. Install Python 3.10+
+
+Download and install Python from [python.org/downloads](https://www.python.org/downloads/).  
+During installation on Windows, check **"Add Python to PATH"**.
+
+Verify:
+```
+python --version   # should print 3.10 or higher
+```
+
+### 2. Install Docker Desktop
+
+Download Docker Desktop from [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop) and install it.
+
+- On Windows, enable the **WSL 2** backend when prompted.
+- Start Docker Desktop and wait until the whale icon in the taskbar shows **"Engine running"** before proceeding.
+
+### 3. Fill in credentials
+
+Copy the example secrets file and open it in a text editor:
+
+```
+cp .env.secrets.example .env.secrets
+```
+
+Fill in the three required values:
+
+| Variable | Description |
+|---|---|
+| `GOOGLE_API_KEY` | Gemini API key — [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
+| `POSTGRES_USER` | Database username of your choice (e.g. `polisense`) |
+| `POSTGRES_PASSWORD` | Database password of your choice |
+
+Zoho and LangSmith credentials are optional and can be added later.
+
+### 4. Run the installer
+
+Place `PoliSense-Setup.exe` in the project root and double-click it (or run it from a terminal):
+
+```
+PoliSense-Setup.exe
+```
+
+The installer will:
+1. Create a Python virtual environment and install all dependencies
+2. Start the PostgreSQL container via Docker
+3. Wait for the database to become healthy
+4. Apply the database schema (tables, indexes, pgvector extension)
+5. **Import existing data** if `exports/polisense_db.sql` is present (see below)
+
+Click **Install →** when ready. If credentials still have placeholder values the installer will pause and prompt you to fill them in before continuing.
+
+### 5. After installation
+
+**If data was imported** — the database is already populated. Run the retrieval pipeline directly:
+```
+.venv\Scripts\python polisense_core/retrieval_pipeline.py
+```
+
+**Fresh install (no export file)** — the database is empty. Run ingestion first to process policy PDFs:
+```
+.venv\Scripts\python polisense_core/ingestion_pipeline.py
+.venv\Scripts\python polisense_core/retrieval_pipeline.py
+```
+
+---
+
+## Migrating to a new machine (skip re-ingestion)
+
+Re-running ingestion on a new machine costs Gemini API calls and time. Export the already-processed data instead.
+
+**On the source machine:**
+```
+make db-export
+```
+This creates `exports/polisense_db.sql` and copies the ingestion state files into `exports/`.
+
+**On the new machine:**
+1. Clone the repo and fill in `.env.secrets`
+2. Copy the `exports/` folder into the project root
+3. Run the installer — it detects the dump and imports it automatically, then restores the ingestion state
+
+---
+
+## Manual setup (no GUI installer)
+
+For Linux/macOS or development use, the Makefile covers all the same steps:
+
+```bash
+make install        # create .venv and install dependencies
+make db-up          # start PostgreSQL
+make db-schema      # apply schema
+make db-import      # load exports/polisense_db.sql  (if migrating)
+make run-ingestion  # ingest PDFs  (fresh install only)
+make run-retrieval  # run retrieval
+make db-down        # stop the database
+```
+
+Run `make help` to see all available targets.
+
+---
 
 ## Extraction Schema
 
@@ -149,73 +254,3 @@ Press `Ctrl+C` in the terminal.
 
 To reset the poll state (re-process all rows on next start), delete `documents/zoho_poll_state.json`.
 
----
-
-## Running the Zoho poller (retrieval pipeline trigger)
-
-The poller is a long-running process that checks Zoho Sheets for new form submissions every 2 hours and automatically runs the retrieval pipeline against each new row.
-
-### 1. Configure environment variables
-
-Copy `.env.examples` to `.env` (if not already done) and fill in the Zoho credentials:
-
-```
-ZOHO_DC=com                   # data-centre your Zoho account is on: com | in | eu | au
-ZOHO_CLIENT_ID=<client_id>
-ZOHO_CLIENT_SECRET=<client_secret>
-ZOHO_REFRESH_TOKEN=<refresh_token>
-ZOHO_WORKBOOK_ID=<numeric workbook ID from the sheet URL>
-ZOHO_SHEET_NAME=Sheet1        # exact name of the worksheet tab
-```
-
-To get these values:
-- Go to [Zoho API Console](https://api-console.zoho.com/) → Self Client → create OAuth credentials with scope `ZohoSheet.dataAPI.UPDATE`
-- Generate a refresh token from the self-client grant flow
-- The workbook ID is the number in the Zoho Sheet URL: `https://sheet.zoho.com/sheet/open/**{workbook_id}**/...`
-
-### 2. Install dependencies
-
-```bash
-pip install -r requirements.txt
-# or, if using the venv:
-.venv/Scripts/pip install requests schedule
-```
-
-### 3. Start the poller
-
-```bash
-python polisense_core/zoho_poller.py
-```
-
-On startup it runs one poll immediately, then repeats every 2 hours.
-
-**What happens each cycle:**
-- Fetches all rows from the configured sheet
-- Filters to rows with `form_submission_timestamp` newer than the last successful poll
-- Builds a query + business profile from each row
-- Runs the retrieval pipeline and writes results to `Retrievals/{business_name}.txt`
-- Saves the poll timestamp to `documents/zoho_poll_state.json`
-
-If a poll cycle fails (network error, bad token, etc.) it logs the error and retries at the next scheduled interval without crashing.
-
-### 4. Stop the poller
-
-Press `Ctrl+C` in the terminal.
-
-To reset the poll state (re-process all rows on next start), delete `documents/zoho_poll_state.json`.
-
----
-
-## Running ChromaDB for the first time
-- [ ] Install ChromaDB and make sure docker-compose.yml has chromadb service
-- [ ] From project root, run - <docker compose up -d>
-- [ ] To verify it's running, run - <docker ps> or check health with - <curl http://localhost:8000/api/v2/heartbeat>
-
-## Booting up again or to restart
-- [ ] To restart service, run - <docker compose down>
-- [ ] To start service, run - <docker compose up -d>
-
-## Using Makefile to run services
-- [ ] Ensure Makefile exists and WSL is installed, and has <make> installed in it
-- [ ] Docker Desktop is enabled with WSL2 engine
-- [ ] Run <make help> to view available commands
