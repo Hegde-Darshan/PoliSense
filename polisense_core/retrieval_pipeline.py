@@ -1,14 +1,15 @@
 import os
 import re
+import datetime
 from pathlib import Path
 from typing import List, Dict, Any
 
 from polisense_core.utils.postgres_utils import get_connection
 from polisense_core.RetrievalPipeline.pg_retriever import (
     retrieve_policies,
-    write_single_result,
     pretty_print_results,
 )
+from polisense_core.RetrievalPipeline.pdf_generator import generate_pdf
 
 _FILTER_KEYS = ("industry", "geography", "business_size", "category")
 
@@ -20,7 +21,21 @@ def _sanitize_filename(name: str) -> str:
     """Strip filesystem-unsafe characters and collapse whitespace to underscores."""
     safe = re.sub(r'[^\w\s-]', '', name).strip()
     safe = re.sub(r'\s+', '_', safe)
-    return safe[:100]
+    return safe[:80]
+
+
+def _build_filename(entry: dict) -> str:
+    """Build output filename from business name and Zoho submission time."""
+    profile = entry.get("profile", {})
+    business_name = profile.get("business_name") or entry.get("query", "Unnamed")[:40]
+
+    sub_time = entry.get("submission_time")
+    if sub_time:
+        ts_str = sub_time.strftime("%d%m%Y_%H%M")
+    else:
+        ts_str = datetime.datetime.now().strftime("%d%m%Y_%H%M")
+
+    return _sanitize_filename(business_name) + "_" + ts_str
 
 
 def retrieval_pipeline(
@@ -96,15 +111,16 @@ def process_batch(
                     query=query, conn=conn, top_k=top_k, **filters
                 )
 
-                filename    = _sanitize_filename(query_name) + ".txt"
+                filename    = _build_filename(entry) + ".pdf"
                 output_path = output_dir / filename
-                write_single_result(
+                generate_pdf(
                     query_name=query_name,
                     entry={
-                        "query":   query,
-                        "profile": profile,
-                        "filters": filters,
-                        "results": results,
+                        "query":           query,
+                        "profile":         profile,
+                        "filters":         filters,
+                        "results":         results,
+                        "submission_time": entry.get("submission_time"),
                     },
                     output_path=str(output_path),
                 )

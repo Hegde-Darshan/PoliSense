@@ -240,8 +240,15 @@ def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
         else:
             query = f"{description} government grants subsidies and incentives"
 
+        raw_ts = row.get(_COL["timestamp"], "")
+        try:
+            submission_time = _parse_zoho_ts(raw_ts) if raw_ts else None
+        except ValueError:
+            submission_time = None
+
         batch[name] = {
-            "query": query,
+            "query":           query,
+            "submission_time": submission_time,
             "profile": {
                 "business_name": name,
                 "industry":      industry,
