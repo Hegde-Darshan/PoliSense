@@ -1,16 +1,17 @@
 import os
 import re
+import datetime
 from pathlib import Path
 from typing import List, Dict, Any
 
 from polisense_core.utils.postgres_utils import get_connection
 from polisense_core.RetrievalPipeline.pg_retriever import (
     retrieve_policies,
-    write_single_result,
     pretty_print_results,
 )
+from polisense_core.RetrievalPipeline.pdf_generator import generate_pdf
 
-_FILTER_KEYS = ("industry", "sub_industry", "geography", "business_size", "category")
+_FILTER_KEYS = ("industry", "geography", "business_size", "category")
 
 # Default output folder — project root / Retrievals/
 RETRIEVALS_DIR = Path(__file__).parent.parent / "Retrievals"
@@ -20,7 +21,21 @@ def _sanitize_filename(name: str) -> str:
     """Strip filesystem-unsafe characters and collapse whitespace to underscores."""
     safe = re.sub(r'[^\w\s-]', '', name).strip()
     safe = re.sub(r'\s+', '_', safe)
-    return safe[:100]
+    return safe[:80]
+
+
+def _build_filename(entry: dict) -> str:
+    """Build output filename from business name and Zoho submission time."""
+    profile = entry.get("profile", {})
+    business_name = profile.get("business_name") or entry.get("query", "Unnamed")[:40]
+
+    sub_time = entry.get("submission_time")
+    if sub_time:
+        ts_str = sub_time.strftime("%d%m%Y_%H%M")
+    else:
+        ts_str = datetime.datetime.now().strftime("%d%m%Y_%H%M")
+
+    return _sanitize_filename(business_name) + "_" + ts_str
 
 
 def retrieval_pipeline(
@@ -34,15 +49,16 @@ def retrieval_pipeline(
     Args:
         query: Free-text search query.
         client_profile: Optional dict with any of:
-            industry, sub_industry, geography, business_size, category.
-            All filters are matched case-insensitively (ILIKE).
+            industry, geography, business_size, category.
+            industry and business_size use exact array containment;
+            geography uses ILIKE containment; category uses ILIKE.
         top_k: Number of results to return.
 
     Returns:
         List of policy dicts — each has policy_id, parent_policy_name,
-        policy_name, incentive_name, category, industry, sub_industry,
-        business_size, geography, years, policy_details, incentive_details,
-        similarity_score.
+        policy_name, incentive_name, category, applicable_industries,
+        applicable_geographies, applicable_business_sizes, start_year,
+        end_year, policy_details, incentive_details, similarity_score.
     """
     query = " ".join(query.lower().strip().split())
 
@@ -76,8 +92,7 @@ def process_batch(
                     query_name  — human-readable label; becomes the filename
                     query       — free-text search string (provided by Zoho row)
                     profile     — business profile dict; accepted filter keys:
-                                  industry, sub_industry, geography,
-                                  business_size, category
+                                  industry, geography, business_size, category
         top_k:      number of results per query (default 5)
         output_dir: folder to write .txt files (default: project_root/Retrievals/)
     """
@@ -96,21 +111,22 @@ def process_batch(
                     query=query, conn=conn, top_k=top_k, **filters
                 )
 
-                filename    = _sanitize_filename(query_name) + ".txt"
+                filename    = _build_filename(entry) + ".pdf"
                 output_path = output_dir / filename
-                write_single_result(
+                generate_pdf(
                     query_name=query_name,
                     entry={
-                        "query":   query,
-                        "profile": profile,
-                        "filters": filters,
-                        "results": results,
+                        "query":           query,
+                        "profile":         profile,
+                        "filters":         filters,
+                        "results":         results,
+                        "submission_time": entry.get("submission_time"),
                     },
                     output_path=str(output_path),
                 )
-                print(f"  ✓  {query_name}  →  {filename}  ({len(results)} result(s))")
+                print(f"  OK  {query_name}  ->  {filename}  ({len(results)} result(s))")
             except Exception as e:
-                print(f"  ✗  {query_name} failed: {e}")
+                print(f"  FAIL  {query_name}: {e}")
     finally:
         conn.close()
 
@@ -124,18 +140,16 @@ if __name__ == "__main__":
             "query": "R&D grants and subsidies for medical electronics micro enterprises in Karnataka",
             "profile": {
                 "business_name": "MedSense Electronics Pvt Ltd",
-                "industry":      "Electronics System Design & Manufacturing (ESDM)",
-                "sub_industry":  "Medical Electronics",
+                "industry":      "Electronics and Hardware",
                 "geography":     "Karnataka",
-                "business_size": "Micro Enterprise",
+                "business_size": "Micro",
             },
         },
         "VoltEdge_EV_Battery": {
             "query": "capital subsidy for EV battery manufacturing startups in Karnataka",
             "profile": {
                 "business_name": "VoltEdge Battery Pvt Ltd",
-                "industry":      "Automotive, Energy Storage",
-                "sub_industry":  "EV Battery Manufacturing",
+                "industry":      "Automotive and EV",
                 "geography":     "Karnataka",
                 "business_size": "Startup",
             },

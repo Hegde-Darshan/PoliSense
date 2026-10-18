@@ -1,25 +1,26 @@
 # Requirements for the PoliSense project
 
-# langchain and related libraries
-langchain-community
-langchain-huggingface
-langchain
-langchain-chroma
-langchain-openai
+# LangChain / LangGraph / LangSmith
+langchain-core
 langchain-google-genai
+langgraph
+langsmith
 
-# Hugging Face embeddings and transformers
+# Embeddings
 sentence-transformers
-faiss-cpu
-chromadb
 
 # PDF processing
 pypdf
+reportlab
 
-# Other dependencies
-python-dotenv
-nltk
-rake-nltk
-pyyaml
-lark
+# Database
 psycopg2
+
+# HTTP / scheduling (Zoho poller)
+requests
+schedule
+
+# Utilities
+numpy
+python-dotenv
+pyyaml

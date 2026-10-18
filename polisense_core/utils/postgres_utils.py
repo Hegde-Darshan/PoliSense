@@ -5,180 +5,229 @@ from dotenv import load_dotenv
 import os
 import json
 
-from pathlib import Path
 from sentence_transformers import SentenceTransformer
 
 
 load_dotenv()
-ROOT_PATH = Path(__file__).parent.parent
+ROOT_PATH = Path(__file__).parent.parent.parent  # polisense_core/utils/ -> polisense_core/ -> project root
 load_dotenv(ROOT_PATH / ".env")
 load_dotenv(ROOT_PATH / ".env.secrets")
 
+# Module-level singleton — loaded once per process, not once per call
+_embedding_model: SentenceTransformer | None = None
+
+def _get_embedding_model() -> SentenceTransformer:
+    global _embedding_model
+    if _embedding_model is None:
+        _embedding_model = SentenceTransformer("BAAI/bge-small-en-v1.5")
+    return _embedding_model
+
+
 def embed_documents(text: str) -> list[float]:
-    """
-    Generate embedding using sentence-transformers directly.
-    embedding_model param kept for backward compatibility but ignored.
-    """
-    model = SentenceTransformer("BAAI/bge-small-en-v1.5")  # fresh every time, no cache
-    result = model.encode(text, normalize_embeddings=True).tolist()
-    print(f"Input len: {len(text)}, vec[:3]: {result[:3]}")
-    return result
+    model = _get_embedding_model()
+    return model.encode(text, normalize_embeddings=True).tolist()
 
 
 def get_connection():
-    """Create and return a psycopg2 connection using env variables."""
-    conn = psycopg2.connect(
+    return psycopg2.connect(
         host=os.getenv("POSTGRES_HOST", "localhost"),
         port=os.getenv("POSTGRES_PORT", 5432),
         dbname=os.getenv("POSTGRES_DB", "PoliSense_dev"),
         user=os.getenv("POSTGRES_USER"),
         password=os.getenv("POSTGRES_PASSWORD"),
     )
-    return conn
 
 
 def ingest_into_review_queue(summary_dict: dict,
         conn: psycopg2.extensions.connection):
-    """Ingests the structured policy summary into a review queue table in Postgres for HITL verification."""
-    pi_name = summary_dict.get("ParentPolicyName") or None
-    if pi_name is not None:
-        with conn.cursor() as cur:
-            cur.execute("""
-                INSERT INTO review_queue (
-                    parent_policy_name, policy_summary, policy_goals
-                ) VALUES (
-                    %(parent_policy_name)s, %(policy_summary)s, %(policy_goals)s
-                )
-                RETURNING review_id
-            """, {
-                "parent_policy_name":   pi_name,
-                "policy_summary":       summary_dict.get("PolicyInformation", {}).get("PolicySummary"),
-                "policy_goals":         summary_dict.get("PolicyGoals") or [],
-                })
+    """Ingests the structured policy summary into a review queue table for HITL verification."""
+    parent_name = summary_dict.get("parent_policy_name") or None
+    if parent_name is None:
+        return None
 
-            review_id = cur.fetchone()[0] # type: ignore
-        conn.commit()
-        return review_id
+    policies = summary_dict.get("policies") or []
+    policy_summary = policies[0].get("policy_summary") if policies else None
+
+    with conn.cursor() as cur:
+        cur.execute("""
+            INSERT INTO review_queue (
+                parent_policy_name, policy_summary, policy_goals
+            ) VALUES (
+                %(parent_policy_name)s, %(policy_summary)s, %(policy_goals)s
+            )
+            RETURNING review_id
+        """, {
+            "parent_policy_name": parent_name,
+            "policy_summary":     policy_summary,
+            "policy_goals":       summary_dict.get("policy_goals") or [],
+        })
+        review_id = cur.fetchone()[0]  # type: ignore
+    conn.commit()
+    return review_id
 
 
-def ingest_policy(summary_dict: dict, 
+def ingest_policy(summary_dict: dict,
         conn: psycopg2.extensions.connection):
     """
-    Ingests the structured policy summary into the Postgres database. 
-    Handles multiple subpolicies and incentives by inserting a row for each incentive under a policy.
-    If no incentives are present, inserts a single row with empty incentive fields.
+    Ingests a PDFExtraction dict into the policies table.
+    Inserts one row per incentive per policy. Policies with no incentives
+    get a single row with empty incentive fields.
     """
+    inserted_ids = []
+
     with conn.cursor() as cur:
-        pi = summary_dict.get("PolicyInformation") or []
-        
-        for p in pi:
+        for p in (summary_dict.get("policies") or []):
+            validity    = p.get("validity") or {}
+            eligibility = p.get("eligibility_criteria") or {}
+
             policy_details = {
-            "policy_goals":         summary_dict.get("PolicyGoals") or [],
-            "special_attributes":   p.get("SpecialAttributes") or [],
-            "keywords":             p.get("Keywords") or [],
-            "policy_summary":       p.get("PolicySummary"),
-            "eligibility_criteria": p.get("EligibilityCriteria"),
+                "policy_goals":         summary_dict.get("policy_goals") or [],
+                "special_focus_areas":  p.get("special_focus_areas") or [],
+                "keywords":             p.get("keywords") or [],
+                "policy_summary":       p.get("policy_summary"),
+                "eligibility_criteria": eligibility,
+                "benefit_headline":     p.get("benefit_headline"),
+                "issuing_authority":    summary_dict.get("issuing_authority"),
+                "document_type":        summary_dict.get("document_type"),
             }
-            incentives = p.get("IncentivesAndBenefits") or []
-            # If no incentives extracted, insert one row with empty incentive fields
+
+            incentives = p.get("incentives") or []
             if not incentives:
                 incentives = [{}]
-            inserted_ids = []
-            parts = [
-            f"Summary: {p.get('PolicySummary', '')}",
-            f"Eligibility: {p.get('EligibilityCriteria', '')}",
-            f"Keywords: {', '.join(p.get('Keywords') or [])}",
-            f"SpecialAttributes: {', '.join(p.get('SpecialAttributes') or [])}",
-            f"Goals: {', '.join(summary_dict.get('PolicyGoals') or [])}",
+
+            # Embedding base: all policy-level semantic signals
+            base_parts = [
+                f"Policy: {p.get('policy_name', '')}",
+                f"Industry: {', '.join(p.get('applicable_industries') or [])}",
+                f"Category: {p.get('category', '')}",
+                f"Size: {', '.join(p.get('applicable_business_sizes') or [])}",
+                f"Geography: {', '.join(p.get('applicable_geographies') or [])}",
+                f"Headline: {p.get('benefit_headline', '')}",
+                f"Summary: {p.get('policy_summary', '')}",
+                f"Eligibility: {eligibility.get('raw_text', '')}",
+                f"Keywords: {', '.join(p.get('keywords') or [])}",
+                f"Goals: {', '.join(summary_dict.get('policy_goals') or [])}",
             ]
+
             for inc in incentives:
-                parts_i = parts[:]
-                # print(parts_i)
                 incentive_details = {
-                "description": inc.get("Description"),
-                "benefits":    inc.get("Benefits") or {},
+                    "description":                    inc.get("description"),
+                    "incentive_type":                 inc.get("incentive_type"),
+                    "benefit_headline":               inc.get("benefit_headline"),
+                    "quantified_benefits":            inc.get("quantified_benefits") or [],
+                    "application_authority":          inc.get("application_authority"),
+                    "application_process":            inc.get("application_process"),
+                    "application_deadline":           inc.get("application_deadline"),
+                    "incentive_specific_eligibility": inc.get("incentive_specific_eligibility"),
                 }
-                parts_i.append(
-                    f"Incentive: {inc.get('IncentiveName', '')} - {inc.get('Description', '')}"
+
+                inc_parts = base_parts[:]
+                if inc.get("incentive_name"):
+                    inc_parts.append(f"Incentive: {inc['incentive_name']}")
+                if inc.get("benefit_headline"):
+                    inc_parts.append(f"Benefit: {inc['benefit_headline']}")
+                if inc.get("description"):
+                    inc_parts.append(f"Description: {inc['description']}")
+                for qb in (inc.get("quantified_benefits") or []):
+                    if qb.get("description"):
+                        inc_parts.append(f"Benefit detail: {qb['description']}")
+
+                embedding_document = "\n".join(
+                    part for part in inc_parts if part.split(": ", 1)[-1].strip()
                 )
-                parts_i.append(
-                    f"Benefits: {json.dumps(inc.get('Benefits', {}))}"
-                )
-            
-                # Build shared values across all rows for this policy
-                embedding_document  = "\n".join(p for p in parts_i if p.split(": ", 1)[-1].strip())
-                # embedding_vector = get_embedding(embedding_document, embedding_model)
                 embedding_vector = embed_documents(embedding_document)
-                
-                print(f"\n--- Incentive: {inc.get('IncentiveName')} ---")
-                print(f"Embedding doc (first 200 chars): {embedding_document[:200]}")
-                print(f"Embedding vector (first 5 dims): {embedding_vector[:5]}")
-                print(f"Embedding doc FULL length: {len(embedding_document)}")
-                print(f"Last 300 chars: {embedding_document[-300:]}")       
+
                 cur.execute("""
                     INSERT INTO policies (
                         parent_policy_name, policy_name, incentive_name,
-                        category, industry, sub_industry,
-                        business_size, geography, years,
+                        category,
+                        applicable_industries, applicable_geographies, applicable_business_sizes,
+                        start_year, end_year,
                         policy_details, incentive_details,
                         embedding
                     ) VALUES (
                         %(parent_policy_name)s, %(policy_name)s, %(incentive_name)s,
-                        %(category)s, %(industry)s, %(sub_industry)s,
-                        %(business_size)s, %(geography)s, %(years)s,
+                        %(category)s,
+                        %(applicable_industries)s, %(applicable_geographies)s, %(applicable_business_sizes)s,
+                        %(start_year)s, %(end_year)s,
                         %(policy_details)s, %(incentive_details)s,
                         %(embedding)s
                     )
                     RETURNING policy_id
                 """, {
-                    "parent_policy_name":   summary_dict.get("ParentPolicyName"),
-                    "policy_name":          p.get("PolicyName"),
-                    "incentive_name":       inc.get("IncentiveName"),
-                    "category":             p.get("Category"),
-                    "industry":             p.get("Industry"),
-                    "sub_industry":         p.get("SubIndustry"),
-                    "business_size":        p.get("BusinessSize"),
-                    "geography":            p.get("Geography"),
-                    "years":                p.get("Year") or [],
-                    "policy_details":       json.dumps(policy_details),
-                    "incentive_details":    json.dumps(incentive_details),
-                    "embedding":            embedding_vector,
+                    "parent_policy_name":        summary_dict.get("parent_policy_name"),
+                    "policy_name":               p.get("policy_name"),
+                    "incentive_name":            inc.get("incentive_name"),
+                    "category":                  p.get("category"),
+                    "applicable_industries":     p.get("applicable_industries") or [],
+                    "applicable_geographies":    p.get("applicable_geographies") or [],
+                    "applicable_business_sizes": p.get("applicable_business_sizes") or [],
+                    "start_year":                validity.get("start_year"),
+                    "end_year":                  validity.get("end_year"),
+                    "policy_details":            json.dumps(policy_details),
+                    "incentive_details":         json.dumps(incentive_details),
+                    "embedding":                 embedding_vector,
                 })
 
-                inserted_ids.append(cur.fetchone()[0]) # type: ignore
+                inserted_ids.append(cur.fetchone()[0])  # type: ignore
 
     conn.commit()
-    return inserted_ids # type: ignore
+    return inserted_ids
+
+
+def ingest_policy_document(
+        parent_policy_name: str,
+        pdf_paths: list[str],
+        conn: psycopg2.extensions.connection,
+) -> int | None:
+    """
+    Extract raw text from PDFs using pypdf and upsert into policy_documents.
+    One row per parent_policy_name — ON CONFLICT DO NOTHING makes re-ingestion safe.
+    Does NOT commit; the caller (db_ingestion) owns the transaction so a rollback
+    on ingestion failure also rolls back this insert.
+    Returns doc_id if a new row was inserted, None if it already existed.
+    """
+    from pypdf import PdfReader
+
+    all_pages: list[str] = []
+    for path in pdf_paths:
+        for page in PdfReader(path).pages:
+            all_pages.append(page.extract_text() or "")
+
+    raw_text   = "\n\n".join(all_pages).strip().replace('\x00', '') or None
+    page_count = len(all_pages)
+
+    if raw_text is None:
+        quality = "empty"
+    elif any(t == "" for t in all_pages):
+        quality = "partial"
+    else:
+        quality = "full"
+
+    with conn.cursor() as cur:
+        cur.execute("""
+            INSERT INTO policy_documents
+                (parent_policy_name, raw_text, extraction_method,
+                 page_count, extraction_quality, source_file_paths)
+            VALUES
+                (%(name)s, %(text)s, 'pypdf',
+                 %(pages)s, %(quality)s, %(paths)s)
+            ON CONFLICT (parent_policy_name) DO NOTHING
+            RETURNING doc_id
+        """, {
+            "name":    parent_policy_name,
+            "text":    raw_text,
+            "pages":   page_count,
+            "quality": quality,
+            "paths":   [str(p) for p in pdf_paths],
+        })
+        row = cur.fetchone()
+
+    return row[0] if row else None  # type: ignore
 
 
 def clear_policies_table(conn):
-    """Truncates the policies (and optionally review_queue) table."""
     with conn.cursor() as cur:
         cur.execute("TRUNCATE TABLE policies RESTART IDENTITY CASCADE;")
-        # Uncomment if you also want to clear the review queue:
-        # cur.execute("TRUNCATE TABLE review_queue RESTART IDENTITY CASCADE;")
     conn.commit()
-    print("✅ policies table cleared.")
-
-
-if __name__ == "__main__":
-    # summary_dict = {}
-    # with open(ROOT_PATH / "IngestionPipeline/example_data.json") as f:
-    #     summary_dict = json.load(f)
-    # print(summary_dict)
-    import utils
-    import inspect
-    print(inspect.getsource(utils.embed_documents))
-    # embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
-    policies = utils.load_policy_data()
-    # print(policies)
-    print("Acuired data")
-    try:
-        conn = get_connection()
-        print("success")
-    except Exception as e:
-        print("Error: ",e)
-    clear_policies_table(conn) # type: ignore
-    for policy in policies:
-        ids = ingest_policy(policy, conn) # type: ignore
-        print(ids)
+    print("policies table cleared.")
