@@ -15,7 +15,6 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 import requests
-import schedule
 from dotenv import load_dotenv
 
 from polisense_core.retrieval_pipeline import process_batch
@@ -304,8 +303,3 @@ def poll_and_process() -> None:
 
 if __name__ == "__main__":
     poll_and_process()
-    schedule.every(2).hours.do(poll_and_process)
-    logger.info("Zoho poller running — polls every 2 hours. Press Ctrl+C to stop.")
-    while True:
-        schedule.run_pending()
-        time.sleep(60)

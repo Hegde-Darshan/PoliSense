@@ -9,7 +9,6 @@ from polisense_core.RetrievalPipeline.pg_retriever import (
     retrieve_policies,
     pretty_print_results,
 )
-from polisense_core.PDF_utils.report_generator import generate_pdf
 from polisense_core.PDF_utils.teaser_generator import generate_teaser_pdf
 
 _FILTER_KEYS = ("industry", "geography", "business_size", "category")
@@ -108,25 +107,7 @@ def process_batch(
                 profile = entry.get("profile", {})
                 filters = {k: v for k, v in profile.items() if k in _FILTER_KEYS and v}
 
-                results = retrieve_policies(
-                    query=query, conn=conn, top_k=top_k, **filters
-                )
-
-                filename    = _build_filename(entry) + ".pdf"
-                output_path = output_dir / filename
-                generate_pdf(
-                    query_name=query_name,
-                    entry={
-                        "query":           query,
-                        "profile":         profile,
-                        "filters":         filters,
-                        "results":         results,
-                        "submission_time": entry.get("submission_time"),
-                    },
-                    output_path=str(output_path),
-                )
-
-                # Teaser PDF: re-retrieve without category filter for full-category scorecard
+                # Teaser PDF: retrieve without category filter for full-category scorecard
                 teaser_filters = {k: v for k, v in filters.items() if k != "category"}
                 teaser_results = retrieve_policies(
                     query=query, conn=conn, top_k=20, **teaser_filters
@@ -145,7 +126,7 @@ def process_batch(
                     },
                     output_path=str(teaser_path),
                 )
-                print(f"  OK  {query_name}  ->  {filename}  ({len(results)} result(s)) + teaser")
+                print(f"  OK  {query_name}  ->  {teaser_path.name}  ({len(teaser_results)} result(s))")
             except Exception as e:
                 print(f"  FAIL  {query_name}: {e}")
     finally:
