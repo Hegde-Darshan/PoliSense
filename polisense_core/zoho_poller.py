@@ -9,6 +9,7 @@ import json
 import logging
 import logging.config
 import os
+import re
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -17,7 +18,7 @@ from typing import Dict, List, Optional
 import requests
 from dotenv import load_dotenv
 
-from polisense_core.retrieval_pipeline import process_batch
+from polisense_core.teaser_pipeline import process_batch
 from polisense_core.settings import BASE_DIR
 from polisense_core.utils.logger import LOGGING_CONFIG
 
@@ -39,14 +40,14 @@ _SHEET_NAME    = os.getenv("ZOHO_SHEET_NAME", "Entries")
 # ── Exact column headers as they appear in the Zoho sheet ────────────────────
 _COL = {
     "timestamp":     "Submitted",
-    "business_name": "What is the name of your business?",
-    "industry":      "Which of the following best describes your industry?",
-    "description":   "Tell us about your business and what you are hoping to achieve",
-    "geography":     "In which state are your business operations primarily located?",
-    "turnover":      "What is your approximate annual turnover?",
-    "startup":       "Is your business registered under the Government of India's Startup India programme?",
-    "category":      "What kind of support are you mainly looking for?",
-    "context":       "Is there anything else that would help us find the right schemes for you? (Optional)",
+    "business_name": "Legal Name of the Enterprise",
+    "industry":      "Primary Business Sector",
+    "description":   "Detailed Business Activity",
+    "geography":     "Location of the Proposed Project / Unit",
+    "turnover":      "Annual Turnover for the Last Financial Year",
+    "startup":       "Your Entity Registered in Startup (DPIIT Recognition)",
+    "category":      "What is the primary purpose of seeking a subsidy/incentive?",
+    "context":       "We know list of eligible Subsidy, Scheme, Grants and Incentives eligible through general source.",
 }
 
 # ── Persistent state ──────────────────────────────────────────────────────────
@@ -58,8 +59,10 @@ _STATE_FILE = BASE_DIR / "documents" / "zoho_poll_state.json"
 _INDUSTRY_TAG: dict[str, str | None] = {
     "manufacturing":                          "Manufacturing",
     "information technology (it / software)": "Information Technology",
+    "it & ites (information technology)":     "Information Technology",
     "electronics and hardware":               "Electronics and Hardware",
     "agriculture / agro-processing":          "Agriculture and Agro-Processing",
+    "agri-business & food processing":        "Agriculture and Agro-Processing",
     "textiles and apparel":                   "Textile and Apparel",
     "food processing":                        "Food Processing",
     "pharmaceuticals and biotechnology":      "Pharmaceuticals and Biotech",
@@ -76,6 +79,7 @@ _INDUSTRY_TAG: dict[str, str | None] = {
     "chemicals and petrochemicals":           "Chemical and Petrochemical",
     "mining and minerals":                    "Mining and Minerals",
     "media and entertainment":                "Media and Entertainment",
+    "services":                               None,
     "my industry is not listed here":         None,
 }
 
@@ -89,23 +93,73 @@ _BUSINESS_SIZE_TAG: dict[str, str | None] = {
 }
 
 _CATEGORY_TAG: dict[str, str | None] = {
-    "funding to buy machinery, equipment, or expand my facility":          "Capital Subsidy",
-    "lower interest rates on business loans":                               "Interest Subvention",
-    "tax exemptions or tax rebates":                                        "Tax Incentive",
-    "support with infrastructure — roads, power connection, water supply":  "Infrastructure Support",
-    "funding for research, innovation, or developing new products":         "R&D and Innovation Grant",
-    "training and skill development programmes for my employees":           "Skill Development",
-    "help with exporting my products to other countries":                   "Export Promotion",
-    "access to new markets or marketing support":                           "Market Access and Marketing Support",
-    "subsidised land or help with building costs":                          "Land and Building Concession",
-    "reduced electricity tariffs or utility cost support":                  "Power and Utility Concession",
-    "support for hiring new employees":                                     "Employment Generation",
-    "working capital or short-term credit support":                         "Working Capital Assistance",
-    "collateral-free loan guarantees":                                      "Credit Guarantee",
-    "i'm not sure — just show me what's available":                        None,
+    # Keys are lower-cased option labels from the "purpose of subsidy" question.
+    # Add new entries here as unknown-value warnings appear in the logs.
+    "developing a new technology/product (r&d)":            "R&D and Innovation Grant",
+    "expanding into export markets":                        "Export Promotion",
+    "constructing a factory building or shed":              "Capital Subsidy",
+    "purchasing plant & machinery or equipment":            "Capital Subsidy",
+    "hiring new employees":                                 "Employment Generation",
+    "training or upskilling employees":                     "Skill Development",
+    "reducing electricity or utility costs":                "Power and Utility Concession",
+    "interest subsidy on business loan":                    "Interest Subvention",
+    "working capital support":                              "Working Capital Assistance",
+    "tax exemptions or rebates":                            "Tax Incentive",
+    "market access or marketing support":                   "Market Access and Marketing Support",
+    "land or infrastructure support":                       "Land and Building Concession",
+    "credit guarantee or collateral-free loan":             "Credit Guarantee",
+    "purchasing new plant & machinery":                    "Capital Subsidy",
+    "setting up a new manufacturing facility":             "Capital Subsidy",
+    "implementing green technology (e.g., solar, etp)":   "Capital Subsidy",
+    "working capital requirement":                         "Working Capital Assistance",
+    "i'm not sure — just show me what's available":        None,
 }
 
-_GEOGRAPHY_NATIONAL = "we operate across multiple states / all of india"
+# Known Indian states and UTs for address-based geography extraction.
+_INDIA_STATES: frozenset[str] = frozenset({
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand",
+    "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
+    "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
+    "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
+    "Uttar Pradesh", "Uttarakhand", "West Bengal",
+    "Andaman and Nicobar Islands", "Chandigarh",
+    "Dadra and Nagar Haveli and Daman and Diu",
+    "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry",
+})
+
+# Fallback: major city name → state, used when the state isn't written out in the address.
+_CITY_TO_STATE: dict[str, str] = {
+    "bangalore": "Karnataka",   "bengaluru": "Karnataka",
+    "mysore": "Karnataka",      "hubli": "Karnataka",
+    "mumbai": "Maharashtra",    "pune": "Maharashtra",
+    "nagpur": "Maharashtra",    "nashik": "Maharashtra",
+    "delhi": "Delhi",           "new delhi": "Delhi",
+    "hyderabad": "Telangana",   "warangal": "Telangana",
+    "chennai": "Tamil Nadu",    "coimbatore": "Tamil Nadu",   "madurai": "Tamil Nadu",
+    "kolkata": "West Bengal",   "howrah": "West Bengal",
+    "ahmedabad": "Gujarat",     "surat": "Gujarat",           "vadodara": "Gujarat",
+    "jaipur": "Rajasthan",      "jodhpur": "Rajasthan",
+    "lucknow": "Uttar Pradesh", "kanpur": "Uttar Pradesh",    "agra": "Uttar Pradesh",
+    "bhopal": "Madhya Pradesh", "indore": "Madhya Pradesh",
+    "patna": "Bihar",
+    "bhubaneswar": "Odisha",    "cuttack": "Odisha",
+    "thiruvananthapuram": "Kerala", "kochi": "Kerala",        "kozhikode": "Kerala",
+    "guwahati": "Assam",
+    "raipur": "Chhattisgarh",
+    "dehradun": "Uttarakhand",
+    "ranchi": "Jharkhand",
+    "shimla": "Himachal Pradesh",
+    "chandigarh": "Chandigarh",
+    "panaji": "Goa",
+    "visakhapatnam": "Andhra Pradesh", "vizag": "Andhra Pradesh", "vijayawada": "Andhra Pradesh",
+    "amaravati": "Andhra Pradesh",
+    "dispur": "Assam",
+    "imphal": "Manipur",        "shillong": "Meghalaya",
+    "aizawl": "Mizoram",        "kohima": "Nagaland",
+    "agartala": "Tripura",      "gangtok": "Sikkim",
+    "itanagar": "Arunachal Pradesh",
+}
 
 
 def _load_last_polled() -> Optional[datetime]:
@@ -199,15 +253,42 @@ def _get_str(raw: str) -> str:
     return vals[0].strip() if vals else ""
 
 
-def _lookup(mapping: dict, raw: str, field: str) -> str | None:
-    """Map a form label to an internal tag; log a warning on unknown values."""
-    key = _get_str(raw).lower()
-    if not key:
+def _lookup_all(mapping: dict, raw: str, field: str) -> list[str] | None:
+    """Return all matched internal tags for a (possibly multi-select) form field.
+
+    Logs a warning for unrecognised values. Values that map to None in the mapping
+    table (e.g. 'My industry is not listed here') are skipped so other selections
+    still contribute to the filter. Returns None when nothing maps (no filter applied).
+    """
+    tags = []
+    for raw_val in _parse_json_array(raw):
+        key = raw_val.strip().lower()
+        if not key:
+            continue
+        if key not in mapping:
+            logger.warning("Unrecognised %s value: %r — skipping", field, raw_val)
+            continue
+        if mapping[key] is not None:
+            tags.append(mapping[key])
+    return tags if tags else None
+
+
+def _extract_state_from_address(raw: str) -> str | None:
+    """Return the Indian state/UT name found in a full address string, or None.
+
+    First tries direct state-name matching; falls back to major-city lookup
+    for addresses that mention a city but omit the state name.
+    """
+    if not raw:
         return None
-    if key not in mapping:
-        logger.warning("Unrecognised %s value: %r — filter will not be applied", field, key)
-        return None
-    return mapping[key]
+    raw_lower = raw.lower()
+    for state in _INDIA_STATES:
+        if re.search(r'\b' + re.escape(state.lower()) + r'\b', raw_lower):
+            return state
+    for city, state in _CITY_TO_STATE.items():
+        if re.search(r'\b' + re.escape(city) + r'\b', raw_lower):
+            return state
+    return None
 
 
 # ── Row → batch dict transformation ──────────────────────────────────────────
@@ -219,17 +300,18 @@ def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
         name = _get_str(row.get(_COL["business_name"], "")) or \
                f"Row_{row.get('row_index', 'unknown')}"
 
-        industry = _lookup(_INDUSTRY_TAG, row.get(_COL["industry"], ""), "industry")
+        industry = _lookup_all(_INDUSTRY_TAG, row.get(_COL["industry"], ""), "industry")
 
-        geo_raw   = _get_str(row.get(_COL["geography"], ""))
-        geography = "National" if geo_raw.lower() == _GEOGRAPHY_NATIONAL else geo_raw or None
+        geography = _extract_state_from_address(row.get(_COL["geography"], ""))
 
-        # Q5 sets the base size tier; Q6 "Yes" overrides it to "Startup"
-        business_size = _lookup(_BUSINESS_SIZE_TAG, row.get(_COL["turnover"], ""), "business_size")
-        if _get_str(row.get(_COL["startup"], "")).strip().lower() == "yes":
+        # Turnover band sets the base size tier; DPIIT registration overrides to "Startup"
+        business_size_list = _lookup_all(_BUSINESS_SIZE_TAG, row.get(_COL["turnover"], ""), "business_size")
+        business_size = business_size_list[0] if business_size_list else None
+        startup_vals = _parse_json_array(row.get(_COL["startup"], ""))
+        if any("yes" in v.lower() for v in startup_vals):
             business_size = "Startup"
 
-        category = _lookup(_CATEGORY_TAG, row.get(_COL["category"], ""), "category")
+        category = _lookup_all(_CATEGORY_TAG, row.get(_COL["category"], ""), "category")
 
         # Build query from Q3 (description) + optional Q8 (extra context)
         description = _get_str(row.get(_COL["description"], "")).strip()

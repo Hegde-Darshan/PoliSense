@@ -436,7 +436,8 @@ def generate_pdf(query_name: str, entry: dict, output_path: str) -> None:
             # Tier 2 callout
             story.append(Spacer(1, 4))
             story.append(_callout(
-                "Detailed Eligibility Check & Benefit Quantum Analysis will be conducted in the next stage."
+                "Detailed eligibility breakdown and calculated benefit quantum are available "
+                "in the accompanying Full Eligibility & Benefit Report."
             ))
 
             # Divider between recommendations (not after the last one)
