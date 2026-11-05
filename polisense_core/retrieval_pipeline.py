@@ -63,6 +63,10 @@ def retrieval_pipeline(
             val = client_profile.get(key)
             if val:
                 filters[key] = val
+        if "enquiry_purpose" in client_profile and "category" not in filters:
+            val = client_profile["enquiry_purpose"]
+            if val:
+                filters["category"] = val
 
     conn = get_connection()
     try:

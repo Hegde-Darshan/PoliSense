@@ -45,6 +45,8 @@ def process_batch(
                 query   = entry["query"]
                 profile = entry.get("profile", {})
                 filters = {k: v for k, v in profile.items() if k in _FILTER_KEYS and v}
+                if "enquiry_purpose" in profile and profile["enquiry_purpose"] and "category" not in filters:
+                    filters["category"] = profile["enquiry_purpose"]
 
                 # Retrieve without category filter so the scorecard covers all categories
                 teaser_filters = {k: v for k, v in filters.items() if k != "category"}

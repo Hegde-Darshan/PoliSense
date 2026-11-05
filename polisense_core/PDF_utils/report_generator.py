@@ -371,7 +371,7 @@ def generate_pdf(query_name: str, entry: dict, output_path: str) -> None:
         ("Industry",          profile.get("industry")      or "Not specified"),
         ("Location",          profile.get("geography")     or "Not specified"),
         ("Business Size",     profile.get("business_size") or "Not specified"),
-        ("Support Category",  profile.get("category")      or "Not specified"),
+        ("Support Category",  profile.get("enquiry_purpose") or profile.get("category") or "Not specified"),
         ("Business Focus",    query                         or "Not specified"),
     ]
     story.append(_two_col_table(brief_rows))

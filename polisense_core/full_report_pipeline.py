@@ -64,6 +64,8 @@ def generate_full_report(
                 query   = entry["query"]
                 profile = entry.get("profile", {})
                 filters = {k: v for k, v in profile.items() if k in _FILTER_KEYS and v}
+                if "enquiry_purpose" in profile and profile["enquiry_purpose"] and "category" not in filters:
+                    filters["category"] = profile["enquiry_purpose"]
 
                 results = retrieve_policies(
                     query=query, conn=conn, top_k=top_k, **filters

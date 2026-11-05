@@ -46,8 +46,8 @@ _COL = {
     "geography":     "Location of the Proposed Project / Unit",
     "turnover":      "Annual Turnover for the Last Financial Year",
     "startup":       "Your Entity Registered in Startup (DPIIT Recognition)",
-    "category":      "What is the primary purpose of seeking a subsidy/incentive?",
-    "context":       "We know list of eligible Subsidy, Scheme, Grants and Incentives eligible through general source.",
+    "enquiry_purpose": "What is the primary purpose of seeking a subsidy/incentive?",
+    "context":         "does the enterprise have a majority stake-",
 }
 
 # ── Persistent state ──────────────────────────────────────────────────────────
@@ -311,7 +311,7 @@ def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
         if any("yes" in v.lower() for v in startup_vals):
             business_size = "Startup"
 
-        category = _lookup_all(_CATEGORY_TAG, row.get(_COL["category"], ""), "category")
+        category = _lookup_all(_CATEGORY_TAG, row.get(_COL["enquiry_purpose"], ""), "enquiry_purpose")
 
         # Build query from Q3 (description) + optional Q8 (extra context)
         description = _get_str(row.get(_COL["description"], "")).strip()
@@ -335,7 +335,7 @@ def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
                 "industry":      industry,
                 "geography":     geography,
                 "business_size": business_size,
-                "category":      category,
+                "enquiry_purpose": category,
             },
         }
     return batch
