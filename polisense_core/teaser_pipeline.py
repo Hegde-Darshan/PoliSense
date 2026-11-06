@@ -1,10 +1,8 @@
-"""Teaser report pipeline — free, runs immediately on every Zoho submission.
+"""Teaser report pipeline — free, triggered by zoho_poller on every new submission.
 
 Generates a quick-scan scorecard PDF (no LLM calls) for each submitted
-business profile.
-
-Run standalone (manual test):
-    python polisense_core/teaser_pipeline.py
+business profile. Called by zoho_poller.poll_and_process(); not a standalone
+entry point.
 """
 from pathlib import Path
 from typing import Dict
@@ -72,26 +70,3 @@ def process_batch(
                 print(f"  FAIL  {query_name}: {e}")
     finally:
         conn.close()
-
-
-if __name__ == "__main__":
-    zoho_data: Dict[str, Dict] = {
-        "SuperServices_IT_Karnataka": {
-            "query": "skill development programmes and incentives for IT small enterprises in Karnataka",
-            "profile": {
-                "business_name":           "Super Services Pvt Ltd",
-                "industry":                "Information Technology",
-                "geography":               "Karnataka",
-                "business_size":           "Small",
-                "enterprise_type":         "Existing",
-                "investment_amount_lakhs": 25,
-                "employee_count":          45,
-                "annual_turnover_lakhs":   256,
-                "loan_amount_lakhs":       95,
-                "special_attributes":      [],
-                "registration_details":    "",
-            },
-        },
-    }
-
-    process_batch(zoho_data, top_k=5)

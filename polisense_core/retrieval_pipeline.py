@@ -73,17 +73,3 @@ def retrieval_pipeline(
         return retrieve_policies(query=query, conn=conn, top_k=top_k, **filters)
     finally:
         conn.close()
-
-
-if __name__ == "__main__":
-    results = retrieval_pipeline(
-        query="skill development programmes for IT enterprises in Karnataka",
-        client_profile={
-            "industry":      "Information Technology",
-            "geography":     "Karnataka",
-            "business_size": "Small",
-        },
-        top_k=5,
-    )
-    for r in results:
-        print(r["incentive_name"], r["similarity_score"])
