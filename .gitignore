@@ -35,6 +35,7 @@ models/
 Subsidies Schemes Grants and Incentives/
 Retrievals/
 IngestionPipeline/__pycache__/
+PoliSense.egg-info/
 
 
 # Test files (if you want to ignore them)
