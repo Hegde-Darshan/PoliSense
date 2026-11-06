@@ -327,7 +327,11 @@ def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
         except ValueError:
             submission_time = None
 
-        batch[name] = {
+        # Key by name + timestamp so duplicate business names don't overwrite each other.
+        ts_key = submission_time.strftime("%d%m%Y_%H%M%S") if submission_time else f"row_{row.get('row_index', 'unknown')}"
+        query_name = f"{name}_{ts_key}"
+
+        batch[query_name] = {
             "query":           query,
             "submission_time": submission_time,
             "profile": {
