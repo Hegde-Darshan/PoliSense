@@ -294,11 +294,45 @@ def _extract_state_from_address(raw: str) -> str | None:
 # ── Row → batch dict transformation ──────────────────────────────────────────
 
 def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
-    """Convert Zoho worksheet rows to the dict shape expected by process_batch()."""
-    batch: Dict[str, Dict] = {}
+    """Convert Zoho worksheet rows to the dict shape expected by process_batch().
+
+    Deduplication rule: if the same business submits multiple times on the same
+    calendar date, only the latest submission is kept. Submissions on different
+    dates each get their own teaser report.
+    """
+    # Pass 1: parse name + timestamp for every row so we can find the latest
+    # submission per (name, date) group.
+    parsed = []
     for row in rows:
         name = _get_str(row.get(_COL["business_name"], "")) or \
                f"Row_{row.get('row_index', 'unknown')}"
+        raw_ts = row.get(_COL["timestamp"], "")
+        try:
+            submission_time = _parse_zoho_ts(raw_ts) if raw_ts else None
+        except ValueError:
+            submission_time = None
+        parsed.append((name, submission_time, row))
+
+    # Build (name, date) → latest submission_time map.
+    latest_ts: dict[tuple, datetime] = {}
+    for name, submission_time, _ in parsed:
+        if submission_time is None:
+            continue
+        key = (name, submission_time.date())
+        if key not in latest_ts or submission_time > latest_ts[key]:
+            latest_ts[key] = submission_time
+
+    # Pass 2: build batch entries, skipping earlier same-day duplicates.
+    batch: Dict[str, Dict] = {}
+    for name, submission_time, row in parsed:
+        if submission_time is not None:
+            key = (name, submission_time.date())
+            if latest_ts.get(key) != submission_time:
+                logger.info(
+                    "Skipping earlier same-day submission for %s at %s (keeping %s)",
+                    name, submission_time, latest_ts[key],
+                )
+                continue
 
         industry = _lookup_all(_INDUSTRY_TAG, row.get(_COL["industry"], ""), "industry")
 
@@ -313,7 +347,6 @@ def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
 
         category = _lookup_all(_CATEGORY_TAG, row.get(_COL["enquiry_purpose"], ""), "enquiry_purpose")
 
-        # Build query from Q3 (description) + optional Q8 (extra context)
         description = _get_str(row.get(_COL["description"], "")).strip()
         extra       = _get_str(row.get(_COL["context"], "")).strip()
         if extra:
@@ -321,13 +354,6 @@ def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
         else:
             query = f"{description} government grants subsidies and incentives"
 
-        raw_ts = row.get(_COL["timestamp"], "")
-        try:
-            submission_time = _parse_zoho_ts(raw_ts) if raw_ts else None
-        except ValueError:
-            submission_time = None
-
-        # Key by name + timestamp so duplicate business names don't overwrite each other.
         ts_key = submission_time.strftime("%d%m%Y_%H%M%S") if submission_time else f"row_{row.get('row_index', 'unknown')}"
         query_name = f"{name}_{ts_key}"
 
