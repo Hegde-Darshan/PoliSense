@@ -1,11 +1,25 @@
 import os
 import json
 import psycopg2
-import numpy as np
 from pathlib import Path
 from dotenv import load_dotenv
 
-from polisense_core.utils.postgres_utils import get_connection, embed_documents
+from polisense_core.utils.postgres_utils import get_connection, embed_documents, rerank_with_cross_encoder
+
+_SELECT_COLUMNS = """
+    policy_id,
+    parent_policy_name,
+    policy_name,
+    incentive_name,
+    category,
+    applicable_industries,
+    applicable_geographies,
+    applicable_business_sizes,
+    start_year,
+    end_year,
+    policy_details,
+    incentive_details
+"""
 
 
 def _build_incentive_text(row: dict) -> str:
@@ -21,9 +35,41 @@ def _build_incentive_text(row: dict) -> str:
     return " ".join(parts)
 
 
-def _cosine_sim(a: list[float], b: list[float]) -> float:
-    """Dot product of two L2-normalized vectors = cosine similarity."""
-    return float(np.dot(a, b))
+def _rrf_merge(
+    bm25_rows: list[dict],
+    vec_rows: list[dict],
+    top_k: int,
+    k: int = 60,
+) -> list[dict]:
+    """
+    Merge two ranked result lists with Reciprocal Rank Fusion.
+
+    Each result scores 1/(k+rank) per list it appears in. Results absent from
+    one list simply receive no score from that list (the standard RRF formula).
+    Returns the top_k rows, preferring the vector row's data (which carries cosine
+    similarity_score) for items that appear in both lists.
+    """
+    bm25_map = {r["policy_id"]: r for r in bm25_rows}
+    vec_map  = {r["policy_id"]: r for r in vec_rows}
+    rrf_scores: dict[int, float] = {}
+
+    for rank, row in enumerate(bm25_rows, 1):
+        pid = row["policy_id"]
+        rrf_scores[pid] = rrf_scores.get(pid, 0.0) + 1.0 / (k + rank)
+
+    for rank, row in enumerate(vec_rows, 1):
+        pid = row["policy_id"]
+        rrf_scores[pid] = rrf_scores.get(pid, 0.0) + 1.0 / (k + rank)
+
+    ranked_ids = sorted(rrf_scores, key=lambda pid: -rrf_scores[pid])[:top_k]
+    results = []
+    for pid in ranked_ids:
+        # Prefer vector row (has cosine similarity_score); fall back to BM25-only row
+        row = vec_map.get(pid) or bm25_map[pid]
+        if pid not in vec_map:
+            row["similarity_score"] = 0.0
+        results.append(row)
+    return results
 
 ROOT_PATH = Path(__file__).parent.parent.parent
 load_dotenv(ROOT_PATH / ".env")
@@ -156,31 +202,13 @@ def _write_result_block(f, rank: int, r: dict) -> None:
         f.write(f"  {'Eligibility':>13} : {eligibility_raw}\n")
 
 
-def retrieve_policies(
-    query: str,
-    conn,
-    top_k: int = 5,
-    industry: str | list[str] = None,
-    category: str | list[str] = None,
-    geography: str = None,
-    business_size: str = None,
-    rerank: bool = True,
-) -> list[dict]:
-    """
-    Retrieve the most relevant policies using vector similarity with optional metadata filters.
-
-    Filters use array containment on applicable_industries, applicable_business_sizes,
-    applicable_geographies. Policies tagged 'All Sectors', 'All', or 'National' always
-    pass the corresponding filter so universally-applicable policies are never excluded.
-
-    When rerank=True (default), each result is scored against the query using incentive-level
-    text from incentive_details JSONB. Results are sorted by (similarity_score DESC,
-    incentive_score DESC) so siblings from the same parent are ordered by relevance rather
-    than arbitrarily.
-    """
-    prefixed_query = f"Represent this sentence for searching relevant passages: {query}"
-    query_vector = embed_documents(prefixed_query)
-
+def _build_filter_clause(
+    industry: "str | list[str] | None",
+    category: "str | list[str] | None",
+    geography: "str | None",
+    business_size: "str | None",
+) -> tuple[str, list]:
+    """Return (WHERE clause string, params list) for the shared metadata filters."""
     filters = []
     params  = []
 
@@ -218,50 +246,124 @@ def retrieve_policies(
             params.append(f"%{category}%")
 
     where_clause = ("WHERE " + " AND ".join(filters)) if filters else ""
+    return where_clause, params
 
-    sql = f"""
+
+def retrieve_policies(
+    query: str,
+    conn,
+    top_k: int = 5,
+    industry: str | list[str] = None,
+    category: str | list[str] = None,
+    geography: str = None,
+    business_size: str = None,
+    rerank: bool = True,
+) -> list[dict]:
+    """
+    Retrieve the most relevant policies using hybrid BM25+vector search with RRF merging.
+
+    Runs both a pgvector cosine query and a PostgreSQL full-text (BM25) query against the
+    same metadata filters, then merges the two ranked lists with Reciprocal Rank Fusion.
+    This fixes the blind spot where exact scheme names and legal terms score poorly in
+    pure vector search.
+
+    Filters use array containment on applicable_industries, applicable_business_sizes,
+    applicable_geographies. Policies tagged 'All Sectors', 'All', or 'National' always
+    pass the corresponding filter so universally-applicable policies are never excluded.
+
+    When rerank=True (default), the merged candidates are reranked with a cross-encoder
+    (BAAI/bge-reranker-base) that jointly scores query+incentive text for token-level
+    relevance matching.
+    """
+    prefixed_query = f"Represent this sentence for searching relevant passages: {query}"
+    query_vector = embed_documents(prefixed_query)
+
+    where_clause, filter_params = _build_filter_clause(industry, category, geography, business_size)
+
+    fetch_n = top_k * 2  # fetch more from each source so RRF has a full candidate pool
+
+    # ── Vector query ──────────────────────────────────────────────────────────
+    vec_sql = f"""
         SELECT
-            policy_id,
-            parent_policy_name,
-            policy_name,
-            incentive_name,
-            category,
-            applicable_industries,
-            applicable_geographies,
-            applicable_business_sizes,
-            start_year,
-            end_year,
-            policy_details,
-            incentive_details,
+            {_SELECT_COLUMNS},
             1 - (embedding <=> %s::vector) AS similarity_score
         FROM policies
         {where_clause}
         ORDER BY embedding <=> %s::vector
         LIMIT %s;
     """
-
-    # query_vector is used twice: once for the SELECT score, once for ORDER BY
-    all_params = [query_vector] + params + [query_vector, top_k]
+    vec_params = [query_vector] + filter_params + [query_vector, fetch_n]
 
     with conn.cursor() as cur:
-        cur.execute(sql, all_params)
-        rows    = cur.fetchall()
+        cur.execute(vec_sql, vec_params)
+        vec_rows_raw = cur.fetchall()
         columns = [desc[0] for desc in cur.description]
 
-    results = []
-    for row in rows:
+    vec_rows = []
+    for row in vec_rows_raw:
         record = dict(zip(columns, row))
         record["policy_details"]    = record["policy_details"]    or {}
         record["incentive_details"] = record["incentive_details"] or {}
-        results.append(record)
+        vec_rows.append(record)
 
+    # ── BM25 query (only when search_vector column is populated) ──────────────
+    bm25_rows: list[dict] = []
+    bm25_where_parts = ["search_vector @@ plainto_tsquery('english', %s)"]
+    bm25_filter_params = [query] + filter_params[:]  # BM25 uses raw query, not prefixed
+
+    if where_clause:
+        extra = where_clause.replace("WHERE ", "", 1)
+        bm25_where_parts.append(extra)
+
+    bm25_sql = f"""
+        SELECT
+            {_SELECT_COLUMNS},
+            ts_rank_cd(search_vector, plainto_tsquery('english', %s)) AS similarity_score
+        FROM policies
+        WHERE {' AND '.join(bm25_where_parts)}
+        ORDER BY similarity_score DESC
+        LIMIT %s;
+    """
+    # ts_rank_cd needs the query twice: once in WHERE, once in SELECT
+    bm25_params = [query] + bm25_filter_params + [fetch_n]
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute(bm25_sql, bm25_params)
+            bm25_rows_raw = cur.fetchall()
+            bm25_columns  = [desc[0] for desc in cur.description]
+
+        for row in bm25_rows_raw:
+            record = dict(zip(bm25_columns, row))
+            record["policy_details"]    = record["policy_details"]    or {}
+            record["incentive_details"] = record["incentive_details"] or {}
+            bm25_rows.append(record)
+    except Exception:
+        # search_vector column missing (pre-migration) — degrade gracefully to vector-only
+        conn.rollback()
+
+    # ── RRF merge ─────────────────────────────────────────────────────────────
+    if bm25_rows:
+        results = _rrf_merge(bm25_rows, vec_rows, top_k)
+    else:
+        results = vec_rows[:top_k]
+
+    # ── Cross-encoder rerank ───────────────────────────────────────────────────
     if rerank and results:
-        query_vec = query_vector  # already a list[float], L2-normalized
-        for record in results:
-            incentive_text = _build_incentive_text(record)
-            incentive_vec  = embed_documents(incentive_text)
-            record["incentive_score"] = _cosine_sim(query_vec, incentive_vec)
-        results.sort(key=lambda r: (-r["similarity_score"], -r["incentive_score"]))
+        # Strip Zoho boilerplate before cross-encoder: for short business descriptions
+        # the appended suffix is a large fraction of the query and pulls scores toward
+        # generic MSME-scheme space instead of the actual business activity.
+        clean_query = query.replace(" government grants subsidies and incentives", "").strip()
+        texts = [_build_incentive_text(r) for r in results]
+        scores = rerank_with_cross_encoder(clean_query, texts)
+        for r, score in zip(results, scores):
+            r["incentive_score"] = float(score)
+        # Only reorder when the cross-encoder has genuine signal: logit > -3.0 means
+        # sigmoid > 5% for the best candidate. With raw logits the range is always 3-5
+        # units regardless of relevance, so range-based thresholds always fire — use
+        # max instead.
+        if max(scores) > -3.0:
+            results.sort(key=lambda r: r["incentive_score"], reverse=True)
 
     return results
 
@@ -290,9 +392,9 @@ def pretty_print_results(results: list[dict]):
         if r.get("incentive_score") is not None:
             score_line += f"  |  Incentive: {r['incentive_score']:.4f}"
 
-        print(f"\n{'═'*60}")
+        print(f"\n{'=' * 60}")
         print(f"  #{i}  {score_line}")
-        print(f"{'═'*60}")
+        print(f"{'=' * 60}")
         print(f"  {'Parent Policy':>13} : {r['parent_policy_name']}")
         print(f"  {'Scheme':>13} : {r['policy_name']}")
         print(f"  {'Incentive':>13} : {r['incentive_name']}")

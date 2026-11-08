@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 import json
 
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer, CrossEncoder
 
 
 load_dotenv()
@@ -13,8 +13,10 @@ ROOT_PATH = Path(__file__).parent.parent.parent  # polisense_core/utils/ -> poli
 load_dotenv(ROOT_PATH / ".env")
 load_dotenv(ROOT_PATH / ".env.secrets")
 
-# Module-level singleton — loaded once per process, not once per call
+# Module-level singletons — loaded once per process, not once per call
 _embedding_model: SentenceTransformer | None = None
+_reranker_model: CrossEncoder | None = None
+
 
 def _get_embedding_model() -> SentenceTransformer:
     global _embedding_model
@@ -23,9 +25,28 @@ def _get_embedding_model() -> SentenceTransformer:
     return _embedding_model
 
 
+def _get_reranker_model() -> CrossEncoder:
+    global _reranker_model
+    if _reranker_model is None:
+        _reranker_model = CrossEncoder("BAAI/bge-reranker-base")
+    return _reranker_model
+
+
 def embed_documents(text: str) -> list[float]:
     model = _get_embedding_model()
     return model.encode(text, normalize_embeddings=True).tolist()
+
+
+def rerank_with_cross_encoder(query: str, texts: list[str]) -> list[float]:
+    """Score (query, text) pairs; returns raw logits (higher = more relevant).
+
+    Raw logits are used instead of sigmoid so that domain-specific text (where most
+    pairs are mildly relevant) retains dynamic range.  Sigmoid would compress all
+    low-relevance scores near zero, making tiny floating-point differences the sort key.
+    """
+    import torch
+    pairs = [(query, t) for t in texts]
+    return _get_reranker_model().predict(pairs, activation_fn=torch.nn.Identity()).tolist()
 
 
 def get_connection():
@@ -144,14 +165,14 @@ def ingest_policy(summary_dict: dict,
                         applicable_industries, applicable_geographies, applicable_business_sizes,
                         start_year, end_year,
                         policy_details, incentive_details,
-                        embedding
+                        search_vector, embedding
                     ) VALUES (
                         %(parent_policy_name)s, %(policy_name)s, %(incentive_name)s,
                         %(category)s,
                         %(applicable_industries)s, %(applicable_geographies)s, %(applicable_business_sizes)s,
                         %(start_year)s, %(end_year)s,
                         %(policy_details)s, %(incentive_details)s,
-                        %(embedding)s
+                        to_tsvector('english', %(search_text)s), %(embedding)s
                     )
                     RETURNING policy_id
                 """, {
@@ -166,6 +187,7 @@ def ingest_policy(summary_dict: dict,
                     "end_year":                  validity.get("end_year"),
                     "policy_details":            json.dumps(policy_details),
                     "incentive_details":         json.dumps(incentive_details),
+                    "search_text":               embedding_document,
                     "embedding":                 embedding_vector,
                 })
 

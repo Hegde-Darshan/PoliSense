@@ -417,6 +417,15 @@ def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
         category = _lookup_all(_CATEGORY_TAG, row.get(_COL["enquiry_purpose"], ""), "enquiry_purpose")
 
         description = _get_str(row.get(_COL["description"], "")).strip()
+        if not description:
+            parts = []
+            if industry:
+                parts.append(", ".join(industry) if isinstance(industry, list) else industry)
+            if geography:
+                parts.append(f"in {geography}")
+            if business_size:
+                parts.append(f"{business_size} business")
+            description = " ".join(parts)
         # majority_stake is now parsed as special_attributes (not appended to query)
         query = f"{description} government grants subsidies and incentives"
 
