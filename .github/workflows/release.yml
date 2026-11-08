@@ -7,7 +7,7 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/package_version'
+    if: github.ref == 'refs/heads/main'
 
     permissions:
       contents: write
