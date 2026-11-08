@@ -1,6 +1,6 @@
-"""Teaser report pipeline — free, triggered by zoho_poller on every new submission.
+"""Discovery pipeline — free, triggered by zoho_poller on every new submission.
 
-Generates a quick-scan scorecard PDF (no LLM calls) for each submitted
+Generates a quick-scan discovery scorecard PDF (no LLM calls) for each submitted
 business profile. Called by zoho_poller.poll_and_process(); not a standalone
 entry point.
 """
@@ -9,7 +9,7 @@ from typing import Dict
 
 from polisense_core.utils.postgres_utils import get_connection
 from polisense_core.RetrievalPipeline.pg_retriever import retrieve_policies
-from polisense_core.PDF_utils.teaser_generator import generate_teaser_pdf
+from polisense_core.PDF_utils.discovery_report import generate_discovery_pdf
 from polisense_core.retrieval_pipeline import _FILTER_KEYS, RETRIEVALS_DIR, _build_filename
 
 
@@ -51,8 +51,8 @@ def process_batch(
                 teaser_results = retrieve_policies(
                     query=query, conn=conn, top_k=20, **teaser_filters
                 )
-                teaser_path = output_dir / (_build_filename(entry) + "_teaser.pdf")
-                generate_teaser_pdf(
+                teaser_path = output_dir / (_build_filename(entry) + "_discovery.pdf")
+                generate_discovery_pdf(
                     query_name=query_name,
                     entry={
                         "query":           query,
