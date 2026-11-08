@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PoliSense"
+version = "1.0.4"
+description = "RAG pipeline core: ingestion + retrieval"
+requires-python = ">=3.10"
+dependencies = [
+"langchain-core",
+    "langchain-google-genai",
+    "langgraph",
+    "langsmith",
+    "sentence-transformers",
+    "pypdf",
+    "reportlab",
+    "python-dotenv",
+    "pyyaml",
+    "psycopg2",
+    "requests",
+    "schedule",
+    "numpy"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["polisense_core*"]

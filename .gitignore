@@ -12,6 +12,7 @@ __pycache__/
 venv/
 ENV/
 env/
+.env
 
 # IDE
 .idea/
@@ -32,12 +33,10 @@ TestDocuments/
 archive/
 models/
 Subsidies Schemes Grants and Incentives/
+Retrievals/
 IngestionPipeline/__pycache__/
-# Vector stores and databases
-vectorstore/
-chroma/
-chroma_data/
-postgres_data/
+PoliSense.egg-info/
+
 
 # Test files (if you want to ignore them)
 untracked/
@@ -48,3 +47,9 @@ CLAUDE.md
 
 # Excluded folders
 db/
+postgres_data/
+
+# PyInstaller build output
+dist/
+build/
+*.spec.bak
