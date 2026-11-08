@@ -56,9 +56,26 @@ class PoliSensePrompts:
 
         return ChatPromptTemplate.from_messages([system_message, human_message])
 
+    def get_policy_questionaire_prompt(self) -> TextContentBlock:
+        """Returns a TextContentBlock for policy questionaire extraction."""
+        text_block = TextContentBlock(type="text", 
+                        text = """You are an expert in summarization and details extraction of relevant information from any text PDF files. 
+                        The document outlines one main policy, its details and guideline, and it may or may not contain sub policies. 
+                        Summarize the document while following the given output schema. It is crucial to extract every detail available in the document. 
+                        Some pointers to performing the task is below -\n
+                        1) The first task is to classify the document type. The document can be of type Policy Operational Guidelines, Policy Details or Policy related Text Dump. This information will be apparent in the first two pages if not in the document title itself.\n
+                        2) Summarization should be exhaustive, and include every detail from the document\n
+                        3) This document is heavy on tables and cross-references to different sections within the document, upon encountering them, handle as follows:\n 
+                            (a) Tables - extract relavent information by staying true to the structure. Wherever possible, interpret the table into plain text without compromising the semantics between rows and columns before summarizing\n 
+                            (b) Cross reference - At each occurance of a cross reference, resolve it before summarizing. For example, if it says refer Section-A, include the necessary Section-A information inline.""")
+        return text_block
+
 
     def get_form_extract_prompt(self):
         pass
+
+    
+
 
 
 if __name__ == "__main__":
