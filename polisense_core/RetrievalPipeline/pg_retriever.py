@@ -160,8 +160,8 @@ def retrieve_policies(
     query: str,
     conn,
     top_k: int = 5,
-    industry: str = None,
-    category: str = None,
+    industry: str | list[str] = None,
+    category: str | list[str] = None,
     geography: str = None,
     business_size: str = None,
     rerank: bool = True,
@@ -185,10 +185,16 @@ def retrieve_policies(
     params  = []
 
     if industry:
-        filters.append(
-            "(%s = ANY(applicable_industries) OR 'All Sectors' = ANY(applicable_industries))"
-        )
-        params.append(industry)
+        if isinstance(industry, list):
+            filters.append(
+                "(applicable_industries && %s OR 'All Sectors' = ANY(applicable_industries))"
+            )
+            params.append(industry)
+        else:
+            filters.append(
+                "(%s = ANY(applicable_industries) OR 'All Sectors' = ANY(applicable_industries))"
+            )
+            params.append(industry)
 
     if business_size:
         filters.append(
@@ -204,8 +210,12 @@ def retrieve_policies(
         params.append(f"%{geography}%")
 
     if category:
-        filters.append("category ILIKE %s")
-        params.append(f"%{category}%")
+        if isinstance(category, list):
+            filters.append("(category ILIKE ANY(%s))")
+            params.append([f"%{c}%" for c in category])
+        else:
+            filters.append("category ILIKE %s")
+            params.append(f"%{category}%")
 
     where_clause = ("WHERE " + " AND ".join(filters)) if filters else ""
 
