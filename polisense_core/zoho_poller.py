@@ -18,7 +18,7 @@ from typing import Dict, List, Optional
 import requests
 from dotenv import load_dotenv
 
-from polisense_core.teaser_pipeline import process_batch
+from polisense_core.discovery_pipeline import process_batch
 from polisense_core.settings import BASE_DIR
 from polisense_core.utils.logger import LOGGING_CONFIG
 
@@ -38,16 +38,26 @@ _WORKBOOK_ID   = os.getenv("ZOHO_WORKBOOK_ID")
 _SHEET_NAME    = os.getenv("ZOHO_SHEET_NAME", "Entries")
 
 # ── Exact column headers as they appear in the Zoho sheet ────────────────────
+# NOTE: Headers below must exactly match Zoho Sheet API column names.
+# Verify any new field against an actual Zoho row before shipping.
 _COL = {
-    "timestamp":     "Submitted",
-    "business_name": "Legal Name of the Enterprise",
-    "industry":      "Primary Business Sector",
-    "description":   "Detailed Business Activity",
-    "geography":     "Location of the Proposed Project / Unit",
-    "turnover":      "Annual Turnover for the Last Financial Year",
-    "startup":       "Your Entity Registered in Startup (DPIIT Recognition)",
-    "enquiry_purpose": "What is the primary purpose of seeking a subsidy/incentive?",
-    "context":         "does the enterprise have a majority stake-",
+    "timestamp":        "Submitted",
+    "business_name":    "Legal Name of the Enterprise",
+    "industry":         "Primary Business Sector",
+    "description":      "Tell us about your business and what you are hoping to achieve",
+    "geography":        "Location of the Proposed Project / Unit",
+    "turnover":         "What is your approximate annual turnover?",
+    "startup":          "Your Entity Registered in Startup (DPIIT Recognition)",
+    "enquiry_purpose":  "What is the primary purpose of seeking a subsidy/incentive?",
+    "majority_stake":   "Does the enterprise have a majority stake (more than 51%) held by any of the following special categories?",
+    # Tier-2 extended fields (already in Zoho form; used for full report only)
+    "business_stage":     "Business Stage",
+    "investment_pm":      "Investment in Plant & Machinery",
+    "total_project_cost": "Estimated Total Project Cost",
+    "cost_breakup":       "Break-up of Project Cost (Approximate)",
+    "entity_type":        "Type of Entity",
+    "udyam_number":       "Udyam Registration Number",
+    "prior_subsidy":      "Have you availed any Central or State Government subsidy in the past?",
 }
 
 # ── Persistent state ──────────────────────────────────────────────────────────
@@ -113,6 +123,42 @@ _CATEGORY_TAG: dict[str, str | None] = {
     "implementing green technology (e.g., solar, etp)":   "Capital Subsidy",
     "working capital requirement":                         "Working Capital Assistance",
     "i'm not sure — just show me what's available":        None,
+}
+
+_ENTERPRISE_TYPE_TAG: dict[str, str | None] = {
+    "new enterprise":                     "New",
+    "new":                                "New",
+    "new unit":                           "New",
+    "setting up a new unit":              "New",
+    "greenfield":                         "New",
+    "existing enterprise":                "Existing",
+    "existing":                           "Existing",
+    "existing unit":                      "Existing",
+    "established enterprise":             "Existing",
+    "expansion":                          "Expansion",
+    "expansion of existing unit":         "Expansion",
+    "expansion project":                  "Expansion",
+    "diversification":                    "Expansion",
+}
+
+_SPECIAL_ATTRIBUTES_TAG: dict[str, str | None] = {
+    "women":                              "Women-led",
+    "women-led":                          "Women-led",
+    "women entrepreneur":                 "Women-led",
+    "sc":                                 "SC/ST-led",
+    "st":                                 "SC/ST-led",
+    "sc/st":                              "SC/ST-led",
+    "scheduled caste":                    "SC/ST-led",
+    "scheduled tribe":                    "SC/ST-led",
+    "differently abled":                  "Differently-abled",
+    "persons with disabilities":          "Differently-abled",
+    "pwd":                                "Differently-abled",
+    "ex-servicemen":                      "Ex-Servicemen",
+    "ex servicemen":                      "Ex-Servicemen",
+    "defence personnel":                  "Ex-Servicemen",
+    "none":                               None,
+    "none of the above":                  None,
+    "not applicable":                     None,
 }
 
 # Known Indian states and UTs for address-based geography extraction.
@@ -273,6 +319,29 @@ def _lookup_all(mapping: dict, raw: str, field: str) -> list[str] | None:
     return tags if tags else None
 
 
+def _parse_inr_field(raw: str) -> float | None:
+    """Parse a raw INR numeric string from a Zoho form field to lakhs.
+
+    Handles plain integers ('2000000'), formatted strings ('20,00,000'),
+    and values already expressed in lakhs ('20').  Treats values > 100 000
+    as absolute INR and converts to lakhs; smaller values assumed to be
+    already in lakhs (consistent with how the form labels say "INR").
+    """
+    if not raw:
+        return None
+    cleaned = _get_str(raw).replace(",", "").replace("₹", "").strip()
+    try:
+        value = float(cleaned)
+    except ValueError:
+        return None
+    if value <= 0:
+        return None
+    # If value looks like absolute INR (> 1 lakh threshold), convert to lakhs
+    if value > 1_00_000:
+        return value / 1_00_000
+    return value
+
+
 def _extract_state_from_address(raw: str) -> str | None:
     """Return the Indian state/UT name found in a full address string, or None.
 
@@ -348,11 +417,25 @@ def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
         category = _lookup_all(_CATEGORY_TAG, row.get(_COL["enquiry_purpose"], ""), "enquiry_purpose")
 
         description = _get_str(row.get(_COL["description"], "")).strip()
-        extra       = _get_str(row.get(_COL["context"], "")).strip()
-        if extra:
-            query = f"{description}. Additional context: {extra} government grants subsidies and incentives"
-        else:
-            query = f"{description} government grants subsidies and incentives"
+        # majority_stake is now parsed as special_attributes (not appended to query)
+        query = f"{description} government grants subsidies and incentives"
+
+        # ── Tier-2 extended fields ─────────────────────────────────────────────
+        enterprise_type_list = _lookup_all(
+            _ENTERPRISE_TYPE_TAG, row.get(_COL["business_stage"], ""), "business_stage"
+        )
+        enterprise_type = enterprise_type_list[0] if enterprise_type_list else None
+
+        investment_pm_lakhs = _parse_inr_field(row.get(_COL["investment_pm"], ""))
+        total_project_cost_lakhs = _parse_inr_field(row.get(_COL["total_project_cost"], ""))
+
+        special_attributes = _lookup_all(
+            _SPECIAL_ATTRIBUTES_TAG, row.get(_COL["majority_stake"], ""), "majority_stake"
+        )
+
+        cost_breakup = _get_str(row.get(_COL["cost_breakup"], "")).strip() or None
+        entity_type  = _get_str(row.get(_COL["entity_type"], "")).strip() or None
+        udyam_number = _get_str(row.get(_COL["udyam_number"], "")).strip() or None
 
         ts_key = submission_time.strftime("%d%m%Y_%H%M%S") if submission_time else f"row_{row.get('row_index', 'unknown')}"
         query_name = f"{name}_{ts_key}"
@@ -361,11 +444,20 @@ def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
             "query":           query,
             "submission_time": submission_time,
             "profile": {
-                "business_name": name,
-                "industry":      industry,
-                "geography":     geography,
-                "business_size": business_size,
-                "enquiry_purpose": category,
+                # Tier-1 filter fields (unchanged)
+                "business_name":    name,
+                "industry":         industry,
+                "geography":        geography,
+                "business_size":    business_size,
+                "enquiry_purpose":  category,
+                # Tier-2 extended fields
+                "enterprise_type":           enterprise_type,
+                "investment_pm_lakhs":        investment_pm_lakhs,
+                "total_project_cost_lakhs":   total_project_cost_lakhs,
+                "special_attributes":         special_attributes,
+                "entity_type":               entity_type,
+                "udyam_number":              udyam_number,
+                "project_cost_breakup":      cost_breakup,
             },
         }
     return batch

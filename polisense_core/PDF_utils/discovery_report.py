@@ -811,9 +811,9 @@ def _make_doc(output_path: str, business_name: str, generated: str):
 
 # ── Public API ─────────────────────────────────────────────────────────────────
 
-def generate_teaser_pdf(query_name: str, entry: dict, output_path: str) -> None:
+def generate_discovery_pdf(query_name: str, entry: dict, output_path: str) -> None:
     """
-    Generate a one-page Eligibility Teaser (scorecard) PDF.
+    Generate a one-page Discovery scorecard PDF.
 
     Args:
         query_name:  Human-readable label for this query.
