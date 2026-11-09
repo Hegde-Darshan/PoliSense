@@ -89,6 +89,24 @@ STYLES = {
         spaceAfter=4,
         leading=26,
     ),
+    "report_title_teal": ParagraphStyle(
+        "report_title_teal",
+        fontName="Helvetica-Bold",
+        fontSize=22,
+        textColor=TEAL,
+        spaceAfter=4,
+        spaceBefore=0,
+        leading=26,
+    ),
+    "scheme_headline": ParagraphStyle(
+        "scheme_headline",
+        fontName="Helvetica-Bold",
+        fontSize=18,
+        textColor=SCORE_MED,
+        spaceAfter=4,
+        spaceBefore=4,
+        leading=22,
+    ),
     "info_label": ParagraphStyle(
         "info_label",
         fontName="Helvetica-Bold",
@@ -180,6 +198,22 @@ STYLES = {
         textColor=colors.HexColor("#333333"),
         spaceAfter=6,
         leading=13,
+    ),
+    "top_match_name": ParagraphStyle(
+        "top_match_name",
+        fontName="Helvetica-Bold",
+        fontSize=10,
+        textColor=NAVY,
+        spaceAfter=2,
+        leading=13,
+    ),
+    "top_match_headline": ParagraphStyle(
+        "top_match_headline",
+        fontName="Helvetica",
+        fontSize=9,
+        textColor=colors.HexColor("#555555"),
+        spaceAfter=0,
+        leading=12,
     ),
     "gap_label": ParagraphStyle(
         "gap_label",
@@ -316,9 +350,11 @@ def _compute_overall_score(results: list, filters: dict) -> int:
 def _compute_category_breakdown(results: list) -> list[dict]:
     """Group results by category and compute per-category match metrics."""
     groups: dict[str, list] = {}
+    parent_groups: dict[str, set] = {}
     for r in results:
         cat = r.get("category") or "Other"
         groups.setdefault(cat, []).append(r["similarity_score"])
+        parent_groups.setdefault(cat, set()).add(r.get("parent_policy_name") or "")
 
     breakdown = []
     for cat, scores in groups.items():
@@ -334,7 +370,7 @@ def _compute_category_breakdown(results: list) -> list[dict]:
             color = SCORE_LOW
         breakdown.append({
             "category": cat,
-            "count": len(scores),
+            "count": len(parent_groups[cat]),
             "avg_score": avg,
             "match_level": level,
             "color": color,
@@ -344,18 +380,6 @@ def _compute_category_breakdown(results: list) -> list[dict]:
     breakdown.sort(key=lambda x: x["avg_score"], reverse=True)
     return breakdown
 
-
-def _count_eligibility_conditions(results: list) -> int:
-    """Proxy for gap count: number of results with non-empty eligibility criteria."""
-    count = 0
-    for r in results:
-        pd = r.get("policy_details") or {}
-        ec = pd.get("eligibility_criteria")
-        if ec:
-            raw = ec.get("raw_text") if isinstance(ec, dict) else ec
-            if raw and str(raw).strip():
-                count += 1
-    return count
 
 
 # ── Custom Flowables ───────────────────────────────────────────────────────────
@@ -449,6 +473,7 @@ class ProgressBar(Flowable):
 
 def _header_section(profile: dict, report_id: str, generated: str) -> list:
     business_name = profile.get("business_name") or "—"
+    person_name   = profile.get("person_name") or business_name
     flowables = []
 
     # Brand row: name + logo placeholder
@@ -482,15 +507,14 @@ def _header_section(profile: dict, report_id: str, generated: str) -> list:
     )
     flowables.append(brand_table)
 
-    # Badge + title
-    flowables.append(_p("ELIGIBILITY TEASER REPORT", "badge"))
-    flowables.append(_p("Your Eligibility Scorecard", "report_title"))
+    # Title
+    flowables.append(_p("ELIGIBILITY TEASER REPORT", "report_title_teal"))
     flowables.append(HRFlowable(width=TEXT_W, thickness=1.5, color=NAVY, spaceAfter=8))
 
     # Client info bar (4 columns)
     col_w = TEXT_W / 4
     info_data = [[
-        [_p("PREPARED FOR", "info_label"), _p(business_name, "info_value")],
+        [_p("PREPARED FOR", "info_label"), _p(person_name, "info_value")],
         [_p("COMPANY", "info_label"), _p(business_name, "info_value")],
         [_p("REPORT DATE", "info_label"), _p(generated, "info_value")],
         [_p("REPORT ID", "info_label"), _p(report_id, "info_value")],
@@ -513,21 +537,25 @@ def _header_section(profile: dict, report_id: str, generated: str) -> list:
     return flowables
 
 
-def _intro_text(profile: dict) -> list:
+def _intro_text(profile: dict, results: list) -> list:
     business_name = profile.get("business_name") or "Your Business"
-    industry = profile.get("industry") or "your sector"
-    geography = profile.get("geography") or "your location"
+    person_name   = profile.get("person_name") or business_name
 
     safe_name = business_name.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-    return [
+    scheme_count = len(set(r.get("parent_policy_name") for r in results if r.get("parent_policy_name")))
+
+    items = [
         Spacer(1, 4),
-        _p(f"Dear {business_name},", "intro_salutation"),
-        _ph(
-            f"We scored <b>{safe_name}</b> against every scheme category relevant to your "
-            f"sector, location and investment. Here is how strongly you match.",
-            "intro_body",
-        ),
+        _p(f"Dear {person_name},", "intro_salutation"),
     ]
+    if scheme_count:
+        items.append(_ph(f"<b>{scheme_count}</b> schemes matched your profile.", "scheme_headline"))
+    items.append(_ph(
+        f"We scored <b>{safe_name}</b> against every scheme category relevant to your "
+        f"sector, location and investment. Here is how strongly you match.",
+        "intro_body",
+    ))
+    return items
 
 
 def _score_section(overall_score: int, category_breakdown: list[dict]) -> list:
@@ -612,27 +640,61 @@ def _score_section(overall_score: int, category_breakdown: list[dict]) -> list:
     return [Spacer(1, 4), outer]
 
 
-def _gap_section(gap_count: int) -> list:
-    gap_count = max(1, gap_count)  # always show at least 1 gap
+def _top_match_section(results: list) -> list:
+    """Show the top-matching scheme name + benefit headline; lock the rest."""
+    if not results:
+        return []
 
-    header = _p("What is pulling your score down?", "gap_header")
-    body = _ph(
-        f"We found <b>{gap_count}</b> conditions you do not fully meet yet. "
-        "Closing them could unlock additional benefit.*",
-        "gap_body",
+    top = results[0]
+    policy_name = top.get("parent_policy_name") or top.get("policy_name") or "—"
+    benefit_headline = (
+        (top.get("incentive_details") or {}).get("benefit_headline")
+        or (top.get("policy_details") or {}).get("benefit_headline")
+        or ""
     )
+    hidden_count = len(set(r.get("parent_policy_name") for r in results[1:] if r.get("parent_policy_name")))
+
+    rows = [
+        [_p("TOP MATCH PREVIEW", "badge")],
+        [_p(policy_name, "top_match_name")],
+    ]
+    if benefit_headline:
+        safe_headline = benefit_headline.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+        rows.append([_ph(f"<i>{safe_headline}</i>", "top_match_headline")])
+    if hidden_count > 0:
+        rows.append([_ph(f"\U0001F512  +{hidden_count} more scheme details locked — unlock in full report", "locked_badge")])
+
+    callout = Table(
+        rows,
+        colWidths=[TEXT_W - 22],
+        style=TableStyle([
+            ("BACKGROUND", (0, 0), (-1, -1), TEAL_LIGHT),
+            ("BOX", (0, 0), (-1, -1), 1, TEAL),
+            ("LINEBEFORE", (0, 0), (0, -1), 4, TEAL),
+            ("TOPPADDING", (0, 0), (-1, -1), 4),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+            ("LEFTPADDING", (0, 0), (-1, -1), 12),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 12),
+            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ]),
+    )
+    return [Spacer(1, 6), callout]
+
+
+def _gap_section() -> list:
+    header = _p("What is pulling your score down?", "gap_header")
 
     # LOCKED gap bars
     locked_rows = []
-    for i in range(1, min(gap_count + 1, 4)):  # show up to 3 locked bars
-        bar = ProgressBar(0.55, GRAY_BAR, width=TEXT_W * 0.50, height=8)
+    for i in range(1, 4):  # always show 3 locked bars
+        bar = ProgressBar(0.55, GRAY_BAR, width=TEXT_W * 0.50, height=6)
         locked_badge = Table(
             [[_p("\U0001F512 LOCKED", "locked_badge")]],
             style=TableStyle([
                 ("BACKGROUND", (0, 0), (-1, -1), GRAY_BG),
                 ("BOX", (0, 0), (-1, -1), 0.5, GRAY_LOCKED),
-                ("TOPPADDING", (0, 0), (-1, -1), 3),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+                ("TOPPADDING", (0, 0), (-1, -1), 2),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
                 ("LEFTPADDING", (0, 0), (-1, -1), 6),
                 ("RIGHTPADDING", (0, 0), (-1, -1), 6),
             ]),
@@ -649,14 +711,14 @@ def _gap_section(gap_count: int) -> list:
         colWidths=[50, gap_inner_w * 0.55, gap_inner_w * 0.30],
         style=TableStyle([
             ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-            ("TOPPADDING", (0, 0), (-1, -1), 5),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+            ("TOPPADDING", (0, 0), (-1, -1), 3),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
             ("LEFTPADDING", (0, 0), (-1, -1), 0),
             ("RIGHTPADDING", (0, 0), (-1, -1), 0),
         ]),
     )
 
-    content = [[header], [body], [gaps_table]]
+    content = [[header], [gaps_table]]
     callout = Table(
         content,
         colWidths=[TEXT_W - 22],
@@ -664,8 +726,8 @@ def _gap_section(gap_count: int) -> list:
             ("BACKGROUND", (0, 0), (-1, -1), AMBER_LIGHT),
             ("BOX", (0, 0), (-1, -1), 1.5, AMBER_BORDER),
             ("LINEBEFORE", (0, 0), (0, -1), 4, AMBER_BORDER),
-            ("TOPPADDING", (0, 0), (-1, -1), 4),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+            ("TOPPADDING", (0, 0), (-1, -1), 3),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
             ("LEFTPADDING", (0, 0), (-1, -1), 12),
             ("RIGHTPADDING", (0, 0), (-1, -1), 12),
             ("VALIGN", (0, 0), (-1, -1), "TOP"),
@@ -839,15 +901,15 @@ def generate_discovery_pdf(query_name: str, entry: dict, output_path: str) -> No
 
     overall_score = _compute_overall_score(results, filters)
     category_breakdown = _compute_category_breakdown(results)
-    gap_count = _count_eligibility_conditions(results)
 
     doc = _make_doc(output_path, business_name, generated)
     story = []
 
     story.extend(_header_section(profile, report_id, generated))
-    story.extend(_intro_text(profile))
+    story.extend(_intro_text(profile, results))
     story.extend(_score_section(overall_score, category_breakdown))
-    story.extend(_gap_section(gap_count))
+    story.extend(_top_match_section(results))
+    story.extend(_gap_section())
     story.extend(_unlock_section())
     story.extend(_cta_section(payment_link))
 

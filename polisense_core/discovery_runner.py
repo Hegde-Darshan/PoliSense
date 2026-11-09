@@ -42,6 +42,7 @@ _SHEET_NAME    = os.getenv("ZOHO_SHEET_NAME", "Entries")
 # Verify any new field against an actual Zoho row before shipping.
 _COL = {
     "timestamp":        "Submitted",
+    "person_name":      "Person Name",
     "business_name":    "Legal Name of the Enterprise",
     "industry":         "Primary Business Sector",
     "description":      "Tell us about your business and what you are hoping to achieve",
@@ -263,7 +264,8 @@ def fetch_all_rows(access_token: str) -> List[dict]:
     data = resp.json()
     if data.get("status") != "success":
         raise RuntimeError(f"Zoho API returned error: {data}")
-    return data.get("records", [])
+    # Strip whitespace from column keys — Zoho occasionally includes trailing spaces
+    return [{k.strip(): v for k, v in row.items()} for row in data.get("records", [])]
 
 
 def _parse_zoho_ts(raw: str) -> datetime:
@@ -452,6 +454,7 @@ def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
         )
 
         cost_breakup = _get_str(row.get(_COL["cost_breakup"], "")).strip() or None
+        person_name  = _get_str(row.get(_COL["person_name"], "")).strip() or None
         entity_type  = _get_str(row.get(_COL["entity_type"], "")).strip() or None
         udyam_number = _get_str(row.get(_COL["udyam_number"], "")).strip() or None
 
@@ -463,6 +466,7 @@ def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
             "submission_time": submission_time,
             "profile": {
                 # Tier-1 filter fields (unchanged)
+                "person_name":      person_name,
                 "business_name":    name,
                 "industry":         industry,
                 "geography":        geography,
