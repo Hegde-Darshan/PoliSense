@@ -234,7 +234,7 @@ pip install -r requirements.txt
 ### 3. Start the poller
 
 ```bash
-python polisense_core/zoho_poller.py
+python polisense_core/discovery_runner.py
 ```
 
 On startup it runs one poll immediately, then repeats every 2 hours.

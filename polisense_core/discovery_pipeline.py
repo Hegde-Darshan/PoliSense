@@ -1,7 +1,7 @@
-"""Discovery pipeline — free, triggered by zoho_poller on every new submission.
+"""Discovery pipeline — free, triggered by discovery_runner on every new submission.
 
 Generates a quick-scan discovery scorecard PDF (no LLM calls) for each submitted
-business profile. Called by zoho_poller.poll_and_process(); not a standalone
+business profile. Called by discovery_runner.poll_and_process(); not a standalone
 entry point.
 """
 from pathlib import Path
