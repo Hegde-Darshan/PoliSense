@@ -250,7 +250,7 @@ def generate_assessment(
 
     Args:
         zoho_data:  {query_name → {"query": str, "profile": dict, "submission_time": ...}}
-                    profile should include the extended tier-2 fields parsed by zoho_poller.py.
+                    profile should include the extended tier-2 fields parsed by discovery_runner.py.
         top_k:      Number of policies per query (default 20).
         output_dir: Output folder (default: project_root/Retrievals/).
     """

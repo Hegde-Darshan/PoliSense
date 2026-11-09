@@ -3,7 +3,7 @@
 Fetches new form submissions every 2 hours and runs the retrieval pipeline
 against each new row. Run this as the 24/7 entry point:
 
-    python polisense_core/zoho_poller.py
+    python polisense_core/discovery_runner.py
 """
 import json
 import logging
@@ -126,7 +126,8 @@ _CATEGORY_TAG: dict[str, str | None] = {
 }
 
 _ENTERPRISE_TYPE_TAG: dict[str, str | None] = {
-    "new enterprise":                     "New",
+    "new enterprise":                                       "New",
+    "new enterprise (pre-incorporation or just incorporated)": "New",
     "new":                                "New",
     "new unit":                           "New",
     "setting up a new unit":              "New",
@@ -135,16 +136,20 @@ _ENTERPRISE_TYPE_TAG: dict[str, str | None] = {
     "existing":                           "Existing",
     "existing unit":                      "Existing",
     "established enterprise":             "Existing",
+    "existing enterprise - modernization (upgrading technology/machinery)": "Existing",
     "expansion":                          "Expansion",
     "expansion of existing unit":         "Expansion",
     "expansion project":                  "Expansion",
     "diversification":                    "Expansion",
+    "existing enterprise - expansion (adding new capacity/products)": "Expansion",
+    "startup (innovative, tech-enabled, scalable business model)": "New",
 }
 
 _SPECIAL_ATTRIBUTES_TAG: dict[str, str | None] = {
     "women":                              "Women-led",
     "women-led":                          "Women-led",
     "women entrepreneur":                 "Women-led",
+    "woman entrepreneur":                 "Women-led",
     "sc":                                 "SC/ST-led",
     "st":                                 "SC/ST-led",
     "sc/st":                              "SC/ST-led",
@@ -152,10 +157,12 @@ _SPECIAL_ATTRIBUTES_TAG: dict[str, str | None] = {
     "scheduled tribe":                    "SC/ST-led",
     "differently abled":                  "Differently-abled",
     "persons with disabilities":          "Differently-abled",
+    "person with disability (pwd)":       "Differently-abled",
     "pwd":                                "Differently-abled",
     "ex-servicemen":                      "Ex-Servicemen",
     "ex servicemen":                      "Ex-Servicemen",
     "defence personnel":                  "Ex-Servicemen",
+    "minority community entrepreneur":    None,
     "none":                               None,
     "none of the above":                  None,
     "not applicable":                     None,
@@ -282,10 +289,12 @@ def _parse_zoho_ts(raw: str) -> datetime:
 
 # ── Value helpers ─────────────────────────────────────────────────────────────
 
-def _parse_json_array(raw: str) -> List[str]:
+def _parse_json_array(raw) -> List[str]:
     """Parse a JSON-array string like '["A","B"]' into a list of strings."""
-    if not raw:
+    if not raw and raw != 0:
         return []
+    if not isinstance(raw, str):
+        return [str(raw)]
     try:
         val = json.loads(raw)
         return val if isinstance(val, list) else [str(val)]
@@ -293,10 +302,10 @@ def _parse_json_array(raw: str) -> List[str]:
         return [raw]
 
 
-def _get_str(raw: str) -> str:
+def _get_str(raw) -> str:
     """Extract the first plain string from a Zoho column (handles JSON-array wrapping)."""
     vals = _parse_json_array(raw)
-    return vals[0].strip() if vals else ""
+    return str(vals[0]).strip() if vals else ""
 
 
 def _lookup_all(mapping: dict, raw: str, field: str) -> list[str] | None:
