@@ -2,6 +2,9 @@
 .env
 .env.secrets
 
+# Service account keys
+keys/
+
 # Python
 __pycache__/
 *.py[cod]
