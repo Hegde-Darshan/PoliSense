@@ -17,7 +17,7 @@ PG_USER   := $(or $(PG_USER),postgres)
 PG_DB     := $(or $(PG_DB),polisense_db_dev)
 DUMP_FILE ?= exports/polisense_db.sql
 
-.PHONY: help install db-up db-down db-schema db-export db-import run-ingestion run-retrieval build-installer clean
+.PHONY: help install db-up db-down db-schema db-export db-import run-ingestion run-retrieval run-server build-installer clean
 
 .DEFAULT_GOAL := help
 
@@ -33,6 +33,7 @@ help:
 	@echo "  make db-import        Load exports/ into running DB"
 	@echo "  make run-ingestion    Run the ingestion pipeline"
 	@echo "  make run-retrieval    Run the retrieval pipeline"
+	@echo "  make run-server       Start the API server (port 8000)"
 	@echo "  make build-installer  Build dist/PoliSense-Setup.exe"
 	@echo "  make clean            Remove .venv, dist/, postgres_data/*"
 	@echo ""
@@ -82,6 +83,9 @@ run-ingestion:
 
 run-retrieval:
 	$(VENV_PYTHON) polisense_core/retrieval_pipeline.py
+
+run-server:
+	$(VENV_PYTHON) server.py
 
 build-installer:
 	pip install pyinstaller -q
