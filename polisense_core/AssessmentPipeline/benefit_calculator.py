@@ -229,7 +229,6 @@ def _rule_calc_slab(qb: dict, profile: dict) -> Optional[BenefitSlabResult]:
         slab_description=description,
         value_raw=value_raw,
         source_text=source_text,
-        is_applicable=True,
     )
 
     # ── fixed_grant / fee_waiver / loan ───────────────────────────────────────
@@ -239,6 +238,7 @@ def _rule_calc_slab(qb: dict, profile: dict) -> Optional[BenefitSlabResult]:
             effective, capped = _apply_cap(amount_lk, cap_lk)
             return BenefitSlabResult(
                 **base,
+                is_applicable=True,
                 calculated_amount_lakhs=amount_lk,
                 effective_amount_lakhs=effective,
                 cap_applied=capped,
@@ -268,6 +268,7 @@ def _rule_calc_slab(qb: dict, profile: dict) -> Optional[BenefitSlabResult]:
             steps += f", capped at {_fmt(cap_lk)}"
         return BenefitSlabResult(
             **base,
+            is_applicable=True,
             calculated_amount_lakhs=raw,
             effective_amount_lakhs=effective,
             cap_applied=capped,
@@ -293,6 +294,7 @@ def _rule_calc_slab(qb: dict, profile: dict) -> Optional[BenefitSlabResult]:
             steps += f", capped at {_fmt(cap_lk)}"
         return BenefitSlabResult(
             **base,
+            is_applicable=True,
             calculated_amount_lakhs=raw,
             effective_amount_lakhs=effective,
             cap_applied=capped,
@@ -316,6 +318,7 @@ def _rule_calc_slab(qb: dict, profile: dict) -> Optional[BenefitSlabResult]:
         effective, capped = _apply_cap(raw, cap_lk)
         return BenefitSlabResult(
             **base,
+            is_applicable=True,
             calculated_amount_lakhs=raw,
             effective_amount_lakhs=effective,
             cap_applied=capped,

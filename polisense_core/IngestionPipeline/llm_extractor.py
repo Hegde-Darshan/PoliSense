@@ -329,13 +329,14 @@ class PDFExtraction(BaseModel):
 # ── LLM initialisation ─────────────────────────────────────────────────────────
 
 def initialize_llm_with_config(
-        model_name: str = "gemini-2.5-pro",
+        model_name: str = "gemini-4-argon",
         temperature: float = 0,
         max_tokens: int | None = None,
         timeout: float | None = None,
         max_retries: int = 2,
         is_structured_model: bool = True,
 ):
+    import os
     from langchain_google_genai import ChatGoogleGenerativeAI
 
     model = ChatGoogleGenerativeAI(
@@ -344,6 +345,10 @@ def initialize_llm_with_config(
         max_tokens=max_tokens,
         timeout=timeout,
         max_retries=max_retries,
+        vertexai=True,
+        project=os.environ["GOOGLE_CLOUD_PROJECT"],
+        location="global",
+        api_version="v1",
     )
 
     if is_structured_model:

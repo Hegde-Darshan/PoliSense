@@ -9,11 +9,13 @@ import json
 import logging
 from typing import Any
 
+import os
+
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 logger = logging.getLogger(__name__)
 
-_FLASH_MODEL = "gemini-2.5-flash"
+_FLASH_MODEL = "gemini-3.8-flash"
 
 
 def make_gemini_flash(schema: dict) -> Any:
@@ -22,6 +24,10 @@ def make_gemini_flash(schema: dict) -> Any:
         model=_FLASH_MODEL,
         temperature=0,
         max_retries=2,
+        vertexai=True,
+        project=os.environ["GOOGLE_CLOUD_PROJECT"],
+        location="global",
+        api_version="v1",
     ).with_structured_output(schema=schema, method="json_schema")
 
 
