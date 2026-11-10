@@ -20,11 +20,11 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from polisense_core.AssessmentPipeline.models import (
+from polisense_core.RetrievalPipeline.models import (
     BenefitSlabResult,
     IncentiveResult,
 )
-from polisense_core.AssessmentPipeline.prompts import build_incentive_prompt, make_gemini_flash
+from polisense_core.RetrievalPipeline.prompts import build_incentive_prompt, make_gemini_flash
 
 logger = logging.getLogger(__name__)
 
@@ -172,7 +172,7 @@ def extract_cost_breakup(profile: dict) -> dict:
 
     if not all_found:
         # LLM fallback
-        from polisense_core.AssessmentPipeline.prompts import make_gemini_flash
+        from polisense_core.RetrievalPipeline.prompts import make_gemini_flash
 
         class _BreakupSchema(BaseModel):
             land_cost_lakhs: Optional[float] = None

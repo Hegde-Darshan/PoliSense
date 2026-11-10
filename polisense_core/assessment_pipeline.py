@@ -20,12 +20,12 @@ from polisense_core.utils.postgres_utils import get_connection
 from polisense_core.utils.logger import LOGGING_CONFIG
 from polisense_core.RetrievalPipeline.pg_retriever import retrieve_policies
 from polisense_core.retrieval_pipeline import _FILTER_KEYS, RETRIEVALS_DIR, _build_filename
-from polisense_core.AssessmentPipeline.models import (
+from polisense_core.RetrievalPipeline.models import (
     FullPolicyResult,
     Tier2Report,
 )
-from polisense_core.AssessmentPipeline.eligibility_checker import check_policy_eligibility
-from polisense_core.AssessmentPipeline.benefit_calculator import (
+from polisense_core.RetrievalPipeline.eligibility_checker import check_policy_eligibility
+from polisense_core.RetrievalPipeline.benefit_calculator import (
     check_and_calculate_incentive,
     extract_cost_breakup,
 )
