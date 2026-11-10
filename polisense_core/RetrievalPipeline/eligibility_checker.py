@@ -14,11 +14,11 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from polisense_core.AssessmentPipeline.models import (
+from polisense_core.RetrievalPipeline.models import (
     CriterionCheck,
     PolicyEligibilityResult,
 )
-from polisense_core.AssessmentPipeline.prompts import build_eligibility_prompt, make_gemini_flash
+from polisense_core.RetrievalPipeline.prompts import build_eligibility_prompt, make_gemini_flash
 
 logger = logging.getLogger(__name__)
 

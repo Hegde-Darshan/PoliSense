@@ -32,7 +32,7 @@ from reportlab.platypus import (
     TableStyle,
 )
 
-from polisense_core.AssessmentPipeline.models import FullPolicyResult, Tier2Report
+from polisense_core.RetrievalPipeline.models import FullPolicyResult, Tier2Report
 
 # ── Colours ────────────────────────────────────────────────────────────────────
 NAVY        = colors.HexColor("#1B3A6B")
