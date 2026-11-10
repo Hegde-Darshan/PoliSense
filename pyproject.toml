@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PoliSense"
-version = "1.0.5"
-description = "RAG pipeline core: ingestion + retrieval"
+version = "1.1.0"
+description = "Policy match & evaluation engine"
 requires-python = ">=3.10"
 dependencies = [
 "langchain-core",
