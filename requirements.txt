@@ -6,6 +6,9 @@ langchain-google-genai
 langgraph
 langsmith
 
+# Google Cloud (required for vertexai=True in ChatGoogleGenerativeAI)
+google-cloud-aiplatform
+
 # Embeddings
 sentence-transformers
 

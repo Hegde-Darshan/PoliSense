@@ -20,7 +20,8 @@ dependencies = [
     "psycopg2",
     "requests",
     "schedule",
-    "numpy"]
+    "numpy",
+    "google-cloud-aiplatform"]
 
 [tool.setuptools.packages.find]
 where = ["."]
