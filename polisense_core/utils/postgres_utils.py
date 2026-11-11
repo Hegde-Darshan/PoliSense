@@ -88,7 +88,8 @@ def ingest_into_review_queue(summary_dict: dict,
 
 
 def ingest_policy(summary_dict: dict,
-        conn: psycopg2.extensions.connection):
+        conn: psycopg2.extensions.connection,
+        source_folder: str | None = None):
     """
     Ingests a PDFExtraction dict into the policies table.
     Inserts one row per incentive per policy. Policies with no incentives
@@ -165,14 +166,16 @@ def ingest_policy(summary_dict: dict,
                         applicable_industries, applicable_geographies, applicable_business_sizes,
                         start_year, end_year,
                         policy_details, incentive_details,
-                        search_vector, embedding
+                        search_vector, embedding,
+                        source_folder, ingested_at
                     ) VALUES (
                         %(parent_policy_name)s, %(policy_name)s, %(incentive_name)s,
                         %(category)s,
                         %(applicable_industries)s, %(applicable_geographies)s, %(applicable_business_sizes)s,
                         %(start_year)s, %(end_year)s,
                         %(policy_details)s, %(incentive_details)s,
-                        to_tsvector('english', %(search_text)s), %(embedding)s
+                        to_tsvector('english', %(search_text)s), %(embedding)s,
+                        %(source_folder)s, NOW()
                     )
                     RETURNING policy_id
                 """, {
@@ -189,6 +192,7 @@ def ingest_policy(summary_dict: dict,
                     "incentive_details":         json.dumps(incentive_details),
                     "search_text":               embedding_document,
                     "embedding":                 embedding_vector,
+                    "source_folder":             source_folder,
                 })
 
                 inserted_ids.append(cur.fetchone()[0])  # type: ignore
