@@ -880,11 +880,11 @@ def generate_discovery_pdf(query_name: str, entry: dict, output_path: str) -> No
     Args:
         query_name:  Human-readable label for this query.
         entry:       Dict with keys:
-                       profile (dict) — business_name, industry, geography, business_size, category
+                       profile (dict) — business_name, industry, geography, business_size
                        query (str)
-                       results (list[dict]) — from retrieve_policies() with NO category filter, top_k=20
+                       results (list[dict]) — from retrieve_policies(), top_k=20
                        submission_time (datetime | None)
-                       filters (dict) — filters applied (ideally without category key)
+                       filters (dict) — filters applied (industry, geography, business_size)
                        report_id (str | None)
                        payment_link (str | None)
         output_path: Absolute or relative path for the output .pdf file.
