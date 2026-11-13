@@ -39,5 +39,5 @@ jobs:
           tag_name: ${{ steps.version.outputs.tag }}
           name: ${{ steps.version.outputs.tag }}
           generate_release_notes: true
-          target_commitish: package_version
+          target_commitish: main
           make_latest: true
