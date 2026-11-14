@@ -7,11 +7,9 @@ from functools import partial
 
 from pathlib import Path
 from dotenv import load_dotenv
-<<<<<<<< HEAD:polisense_core/ingestion_pipeline.py
+
 from polisense_core.utils.logger import LOGGING_CONFIG
-========
-from polisense_core.IngestionPipeline.logger import LOGGING_CONFIG
->>>>>>>> main:polisense_core/graph.py
+
 import psycopg2
 import json
 import yaml
@@ -21,11 +19,8 @@ import polisense_core.IngestionPipeline.utils as utils
 import polisense_core.IngestionPipeline.prompts as prompts
 import polisense_core.IngestionPipeline.llm_extractor as llm_extractor
 from polisense_core.IngestionPipeline.utils import IngestionWorkflowState
-<<<<<<<< HEAD:polisense_core/ingestion_pipeline.py
 import polisense_core.utils.postgres_utils as db_utils
-========
-import polisense_core.IngestionPipeline.postgres_utils as db_utils
->>>>>>>> main:polisense_core/graph.py
+
 
 # Configure loggers
 import logging.config
@@ -95,11 +90,19 @@ def extract_information(state: IngestionWorkflowState) -> IngestionWorkflowState
                             policy_name=state.policy_to_query[state.policy_current_idx])  #type: ignore
     llm_client = llm_extractor.initialize_llm_with_config(is_structured_model=True)
     state.llm_config = dict(llm_client.__dict__)
+    # The model sometimes degenerates into a runaway-digit number at temperature 0 (same input -> same failure),
+    # so retries use a slightly higher temperature.
+    retry_clients = [llm_extractor.initialize_llm_with_config(temperature=t, is_structured_model=True) for t in (0.3, 0.6)]
     #print(f"Invoking LLM with prompt: {prompt_manager.get_prompt()}")
-    struct_response = llm_client.invoke(prompt_manager.get_prompt())
-    # struct_response = llm_client.invoke("This is a test invocation. Return response in the same format but tailor it with empty or test string values")
-    summary = llm_extractor.PDFExtraction.model_validate(struct_response)
-    state.llm_response = summary.model_dump()
+    state.llm_response = None  # don't let a failed extraction reuse the previous policy's response
+    for attempt, client in enumerate([llm_client, *retry_clients], start=1):
+        try:
+            struct_response = client.invoke(prompt_manager.get_prompt())
+            summary = llm_extractor.PDFExtraction.model_validate(struct_response)
+            state.llm_response = summary.model_dump()
+            break
+        except Exception as e:  # one bad policy must not abort the whole run; db_ingestion records it as failed
+            logger.error(f"Extraction attempt {attempt} failed for '{state.policy_current}': {e}")
     return state
 
 
@@ -122,6 +125,10 @@ def db_ingestion(state: IngestionWorkflowState, db_conn: psycopg2.extensions.con
             logger.info(f"Ingested policy '{state.policy_current}' -> {len(inserted_ids)} row(s) inserted, IDs: {inserted_ids}")
             #append to policy_queried list
             state.policy_queried.append(state.policy_current) #type: ignore
+            # persist progress now so a crash/hang doesn't lose track of what is already in the DB
+            read_path = ROOT_PATH / Path(config['READ_PATH'])
+            done = json.load(open(read_path)) if read_path.exists() else []
+            json.dump([state.policy_current] + done, open(read_path, 'w'))
         else:
             logger.warning(f"No LLM response to ingest for policy '{state.policy_current}'")
             #append to policy_failed list
@@ -155,7 +162,7 @@ def update_status_files(state: IngestionWorkflowState) -> IngestionWorkflowState
     #update the processed files record to avoid re-processing in the future iterations
     curr_files = json.load(open(ROOT_PATH/Path(config['READ_PATH']), 'r')) if os.path.exists(ROOT_PATH/Path(config['READ_PATH'])) else []
     if state.policy_queried is not None:
-        list_of_files = state.policy_queried + curr_files
+        list_of_files = list(dict.fromkeys(state.policy_queried + curr_files))
     logger.debug(f"Files processed so far: {list_of_files}") # type: ignore
     json.dump(list_of_files, open(ROOT_PATH/Path(config['READ_PATH']), 'w')) # type: ignore
 

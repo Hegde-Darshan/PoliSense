@@ -56,3 +56,16 @@ postgres_data/
 dist/
 build/
 *.spec.bak
+
+# Vector stores and DB dumps (generated / may hold private data)
+vectorstore/
+chroma_data/
+*.sql
+
+# OS / tooling junk
+.DS_Store
+Thumbs.db
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
