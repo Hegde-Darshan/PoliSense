@@ -108,6 +108,12 @@ class NumericThreshold(BaseModel):
     value: float
     unit: str = Field(description="Unit of the threshold, e.g. 'employees', 'sq ft', 'MW', 'acres'")
     comparator: Literal["min", "max", "exact"]
+    raw_text: Optional[str] = Field(
+        default=None,
+        description="Verbatim text from the document for slab-based or compound thresholds "
+                    "where a single numeric value cannot capture the full criteria. Required when "
+                    "the threshold varies by investment size, project type, or any other dimension."
+    )
 
 
 class ValidityPeriod(BaseModel):
