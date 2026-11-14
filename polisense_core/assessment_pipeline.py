@@ -195,16 +195,12 @@ def run_assessment(
     # Step 1 — enrich profile with cost break-up extraction
     profile = extract_cost_breakup(profile)
 
-    # Step 2 — tier-1 retrieval (unchanged)
+    # Step 2 — tier-1 retrieval
     filters: dict = {}
     for key in _FILTER_KEYS:
         val = profile.get(key)
         if val:
             filters[key] = val
-    if "enquiry_purpose" in profile and "category" not in filters:
-        val = profile["enquiry_purpose"]
-        if val:
-            filters["category"] = val
 
     tier1_results = retrieve_policies(query=query, conn=conn, top_k=top_k, **filters)
     logger.info("Tier-1 returned %d rows for %s", len(tier1_results), profile.get("business_name"))

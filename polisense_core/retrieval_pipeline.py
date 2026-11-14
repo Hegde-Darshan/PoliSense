@@ -6,7 +6,7 @@ from typing import List, Dict, Any
 from polisense_core.utils.postgres_utils import get_connection
 from polisense_core.RetrievalPipeline.pg_retriever import retrieve_policies
 
-_FILTER_KEYS = ("industry", "geography", "business_size", "category")
+_FILTER_KEYS = ("industry", "geography", "business_size")
 
 # Default output folder — project root / Retrievals/
 RETRIEVALS_DIR = Path(__file__).parent.parent / "Retrievals"
@@ -44,9 +44,9 @@ def retrieval_pipeline(
     Args:
         query: Free-text search query.
         client_profile: Optional dict with any of:
-            industry, geography, business_size, category.
-            industry and business_size use exact array containment;
-            geography uses ILIKE containment; category uses ILIKE.
+            industry, geography, business_size.
+            geography is a hard filter (ILIKE + 'National' fallback).
+            industry and business_size apply as post-retrieval score boosts.
         top_k: Number of results to return.
 
     Returns:
@@ -63,10 +63,6 @@ def retrieval_pipeline(
             val = client_profile.get(key)
             if val:
                 filters[key] = val
-        if "enquiry_purpose" in client_profile and "category" not in filters:
-            val = client_profile["enquiry_purpose"]
-            if val:
-                filters["category"] = val
 
     conn = get_connection()
     try:
