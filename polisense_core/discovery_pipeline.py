@@ -29,7 +29,7 @@ def process_batch(
                     query_name  — human-readable label; becomes the filename
                     query       — free-text search string
                     profile     — business profile dict; accepted filter keys:
-                                  industry, geography, business_size, category
+                                  industry, geography, business_size
         top_k:      number of results per query (default 5)
         output_dir: folder to write PDFs (default: project_root/Retrievals/)
     """
@@ -43,13 +43,9 @@ def process_batch(
                 query   = entry["query"]
                 profile = entry.get("profile", {})
                 filters = {k: v for k, v in profile.items() if k in _FILTER_KEYS and v}
-                if "enquiry_purpose" in profile and profile["enquiry_purpose"] and "category" not in filters:
-                    filters["category"] = profile["enquiry_purpose"]
 
-                # Retrieve without category filter so the scorecard covers all categories
-                teaser_filters = {k: v for k, v in filters.items() if k != "category"}
-                teaser_results = retrieve_policies(
-                    query=query, conn=conn, top_k=20, **teaser_filters
+                results = retrieve_policies(
+                    query=query, conn=conn, top_k=20, **filters
                 )
                 teaser_path = output_dir / (_build_filename(entry) + "_discovery.pdf")
                 generate_discovery_pdf(
@@ -57,15 +53,15 @@ def process_batch(
                     entry={
                         "query":           query,
                         "profile":         profile,
-                        "filters":         teaser_filters,
-                        "results":         teaser_results,
+                        "filters":         filters,
+                        "results":         results,
                         "submission_time": entry.get("submission_time"),
                         "report_id":       None,
                         "payment_link":    None,
                     },
                     output_path=str(teaser_path),
                 )
-                print(f"  OK  {query_name}  ->  {teaser_path.name}  ({len(teaser_results)} result(s))")
+                print(f"  OK  {query_name}  ->  {teaser_path.name}  ({len(results)} result(s))")
             except Exception as e:
                 print(f"  FAIL  {query_name}: {e}")
     finally:

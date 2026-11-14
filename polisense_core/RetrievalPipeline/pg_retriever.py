@@ -202,51 +202,41 @@ def _write_result_block(f, rank: int, r: dict) -> None:
         f.write(f"  {'Eligibility':>13} : {eligibility_raw}\n")
 
 
-def _build_filter_clause(
-    industry: "str | list[str] | None",
-    category: "str | list[str] | None",
-    geography: "str | None",
-    business_size: "str | None",
-) -> tuple[str, list]:
-    """Return (WHERE clause string, params list) for the shared metadata filters."""
-    filters = []
-    params  = []
+def _build_filter_clause(geography: "str | None") -> tuple[str, list]:
+    """Return (WHERE clause string, params list) for the geography hard filter."""
+    if not geography:
+        return "", []
+    clause = (
+        "(EXISTS (SELECT 1 FROM unnest(applicable_geographies) g WHERE g ILIKE %s)"
+        " OR 'National' = ANY(applicable_geographies))"
+    )
+    return f"WHERE {clause}", [f"%{geography}%"]
 
+
+_INDUSTRY_BOOST = 1.0
+_SIZE_BOOST = 0.5
+
+
+def _compute_metadata_boost(
+    row: dict,
+    industry: "str | list[str] | None" = None,
+    business_size: "str | None" = None,
+) -> float:
+    """
+    Soft boost added to the final ranking score for industry and business_size matches.
+    Never excludes a policy — only shifts its rank relative to mismatches.
+    """
+    boost = 0.0
     if industry:
-        if isinstance(industry, list):
-            filters.append(
-                "(applicable_industries && %s OR 'All Sectors' = ANY(applicable_industries))"
-            )
-            params.append(industry)
-        else:
-            filters.append(
-                "(%s = ANY(applicable_industries) OR 'All Sectors' = ANY(applicable_industries))"
-            )
-            params.append(industry)
-
+        industries = row.get("applicable_industries") or []
+        targets = industry if isinstance(industry, list) else [industry]
+        if any(t in industries for t in targets) or "All Sectors" in industries:
+            boost += _INDUSTRY_BOOST
     if business_size:
-        filters.append(
-            "(%s = ANY(applicable_business_sizes) OR 'All' = ANY(applicable_business_sizes))"
-        )
-        params.append(business_size)
-
-    if geography:
-        filters.append(
-            "(EXISTS (SELECT 1 FROM unnest(applicable_geographies) g WHERE g ILIKE %s)"
-            " OR 'National' = ANY(applicable_geographies))"
-        )
-        params.append(f"%{geography}%")
-
-    if category:
-        if isinstance(category, list):
-            filters.append("(category ILIKE ANY(%s))")
-            params.append([f"%{c}%" for c in category])
-        else:
-            filters.append("category ILIKE %s")
-            params.append(f"%{category}%")
-
-    where_clause = ("WHERE " + " AND ".join(filters)) if filters else ""
-    return where_clause, params
+        sizes = row.get("applicable_business_sizes") or []
+        if business_size in sizes or "All" in sizes:
+            boost += _SIZE_BOOST
+    return boost
 
 
 def retrieve_policies(
@@ -254,7 +244,6 @@ def retrieve_policies(
     conn,
     top_k: int = 5,
     industry: str | list[str] = None,
-    category: str | list[str] = None,
     geography: str = None,
     business_size: str = None,
     rerank: bool = True,
@@ -267,9 +256,12 @@ def retrieve_policies(
     This fixes the blind spot where exact scheme names and legal terms score poorly in
     pure vector search.
 
-    Filters use array containment on applicable_industries, applicable_business_sizes,
-    applicable_geographies. Policies tagged 'All Sectors', 'All', or 'National' always
-    pass the corresponding filter so universally-applicable policies are never excluded.
+    Hard filter: geography — only policies matching the state or tagged 'National' are
+    returned. National policies always pass regardless of the submitted state.
+
+    Soft boost (post-retrieval): industry (+1.0) and business_size (+0.5) are added to
+    the final ranking score for matching rows. Mismatches are never excluded, only ranked
+    lower. Stored as metadata_boost on each result dict.
 
     When rerank=True (default), the merged candidates are reranked with a cross-encoder
     (BAAI/bge-reranker-base) that jointly scores query+incentive text for token-level
@@ -278,7 +270,7 @@ def retrieve_policies(
     prefixed_query = f"Represent this sentence for searching relevant passages: {query}"
     query_vector = embed_documents(prefixed_query)
 
-    where_clause, filter_params = _build_filter_clause(industry, category, geography, business_size)
+    where_clause, filter_params = _build_filter_clause(geography)
 
     fetch_n = top_k * 2  # fetch more from each source so RRF has a full candidate pool
 
@@ -358,12 +350,16 @@ def retrieve_policies(
         scores = rerank_with_cross_encoder(clean_query, texts)
         for r, score in zip(results, scores):
             r["incentive_score"] = float(score)
-        # Only reorder when the cross-encoder has genuine signal: logit > -3.0 means
-        # sigmoid > 5% for the best candidate. With raw logits the range is always 3-5
-        # units regardless of relevance, so range-based thresholds always fire — use
-        # max instead.
-        if max(scores) > -3.0:
-            results.sort(key=lambda r: r["incentive_score"], reverse=True)
+
+    # ── Metadata boost + final sort ───────────────────────────────────────────
+    # industry and business_size never hard-filter results — matching policies
+    # receive a score boost so they rank above semantically similar mismatches.
+    for r in results:
+        r["metadata_boost"] = _compute_metadata_boost(r, industry, business_size)
+    results.sort(
+        key=lambda r: r.get("incentive_score", r["similarity_score"]) + r.get("metadata_boost", 0.0),
+        reverse=True,
+    )
 
     return results
 
@@ -495,7 +491,7 @@ if __name__ == "__main__":
         return base + " ".join(parts) if parts else base.strip()
 
     def _filters_from_profile(profile: dict) -> dict:
-        allowed = ("industry", "geography", "business_size", "category")
+        allowed = ("industry", "geography", "business_size")
         return {k: v for k, v in profile.items() if k in allowed and v is not None}
 
     all_results = []
