@@ -8,7 +8,10 @@ from pathlib import Path
 from typing import Dict
 
 from polisense_core.utils.postgres_utils import get_connection
-from polisense_core.RetrievalPipeline.pg_retriever import retrieve_policies
+from polisense_core.RetrievalPipeline.pg_retriever import (
+    retrieve_policies,
+    geography_coverage_count,
+)
 from polisense_core.PDF_utils.discovery_report import generate_discovery_pdf
 from polisense_core.retrieval_pipeline import _FILTER_KEYS, RETRIEVALS_DIR, _build_filename
 
@@ -44,9 +47,17 @@ def process_batch(
                 profile = entry.get("profile", {})
                 filters = {k: v for k, v in profile.items() if k in _FILTER_KEYS and v}
 
-                results = retrieve_policies(
-                    query=query, conn=conn, top_k=20, **filters
-                )
+                # If the business's state has no indexed policies at all, skip retrieval
+                # and render an honest no-coverage notice instead of misleading matches.
+                geography = profile.get("geography")
+                out_of_coverage = bool(geography) and geography_coverage_count(conn, geography) == 0
+
+                if out_of_coverage:
+                    results = []
+                else:
+                    results = retrieve_policies(
+                        query=query, conn=conn, top_k=20, **filters
+                    )
                 teaser_path = output_dir / (_build_filename(entry) + "_discovery.pdf")
                 generate_discovery_pdf(
                     query_name=query_name,
@@ -58,10 +69,12 @@ def process_batch(
                         "submission_time": entry.get("submission_time"),
                         "report_id":       None,
                         "payment_link":    None,
+                        "out_of_coverage": out_of_coverage,
                     },
                     output_path=str(teaser_path),
                 )
-                print(f"  OK  {query_name}  ->  {teaser_path.name}  ({len(results)} result(s))")
+                status = "out of coverage" if out_of_coverage else f"{len(results)} result(s)"
+                print(f"  OK  {query_name}  ->  {teaser_path.name}  ({status})")
             except Exception as e:
                 print(f"  FAIL  {query_name}: {e}")
     finally:

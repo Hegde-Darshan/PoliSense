@@ -213,29 +213,82 @@ def _build_filter_clause(geography: "str | None") -> tuple[str, list]:
     return f"WHERE {clause}", [f"%{geography}%"]
 
 
-_INDUSTRY_BOOST = 1.0
-_SIZE_BOOST = 0.5
+def geography_coverage_count(conn, geography: "str | None") -> int:
+    """Number of policies specifically tagged for this state (excludes National-only rows).
+
+    Used to decide whether a business's geography is covered at all. Uses a direct COUNT
+    rather than the vector query, which under a restrictive geography filter returns 0 due
+    to HNSW post-filtering (the ANN candidate set may contain no eligible rows). The 2
+    generic 'National' cluster rows are not meaningful coverage, so they are not counted.
+    """
+    if not geography:
+        return 1  # no geography ⇒ treat as covered (national / all)
+    with conn.cursor() as cur:
+        cur.execute(
+            "SELECT COUNT(*) FROM policies "
+            "WHERE EXISTS (SELECT 1 FROM unnest(applicable_geographies) g WHERE g ILIKE %s)",
+            [f"%{geography}%"],
+        )
+        return cur.fetchone()[0]
+
+
+# Boost magnitudes are deliberately small relative to the cross-encoder's raw-logit
+# range (~-11..+10). They nudge/tie-break the semantic ranking — they must NOT
+# override it. A specific tag match (the policy names this exact industry) is stronger
+# evidence of fit than a catch-all "All Sectors" / "All" entry, which applies to every
+# business and so is weak evidence of *specific* relevance.
+_INDUSTRY_BOOST     = 1.5   # policy lists this exact industry
+_INDUSTRY_ALL_BOOST = 0.5   # policy is "All Sectors" — applies broadly, weak signal
+_SIZE_BOOST         = 0.5   # business-size match (specific or "All")
+_CATEGORY_BOOST     = 1.5   # enquiry_purpose ↔ category — strong intent signal
+
+_INDUSTRY_SPECIFICITY_PIVOT = 2   # policies listing <= this many industries earn full boost
+
+
+def _industry_specificity_factor(industries: list[str]) -> float:
+    """
+    Scale the industry boost by how focused the policy is. A policy that lists many
+    industries is weak evidence of specific fit (e.g. a Biotech policy that also tags
+    Manufacturing/Food Processing), so its boost decays with the number of industries
+    claimed. 'All Sectors' is excluded from the count (handled as a separate branch).
+    """
+    n = len([i for i in industries if i != "All Sectors"])
+    if n <= _INDUSTRY_SPECIFICITY_PIVOT:
+        return 1.0
+    return max(0.33, _INDUSTRY_SPECIFICITY_PIVOT / n)
 
 
 def _compute_metadata_boost(
     row: dict,
     industry: "str | list[str] | None" = None,
     business_size: "str | None" = None,
+    enquiry_purpose: "list[str] | None" = None,
 ) -> float:
     """
-    Soft boost added to the final ranking score for industry and business_size matches.
+    Soft boost added to the ranking score for metadata matches.
     Never excludes a policy — only shifts its rank relative to mismatches.
+    Applied twice: once before the cross-encoder to curate the candidate pool,
+    and once after to produce the final ordering.
+
+    A specific industry-tag match earns the full boost scaled by the policy's
+    specificity (fewer claimed industries ⇒ stronger signal); a generic "All Sectors"
+    policy earns a reduced flat boost so catch-all policies don't float up for every query.
     """
     boost = 0.0
     if industry:
         industries = row.get("applicable_industries") or []
         targets = industry if isinstance(industry, list) else [industry]
-        if any(t in industries for t in targets) or "All Sectors" in industries:
-            boost += _INDUSTRY_BOOST
+        if any(t in industries for t in targets):
+            boost += _INDUSTRY_BOOST * _industry_specificity_factor(industries)
+        elif "All Sectors" in industries:
+            boost += _INDUSTRY_ALL_BOOST
     if business_size:
         sizes = row.get("applicable_business_sizes") or []
         if business_size in sizes or "All" in sizes:
             boost += _SIZE_BOOST
+    if enquiry_purpose:
+        if row.get("category") in enquiry_purpose:
+            boost += _CATEGORY_BOOST
     return boost
 
 
@@ -246,6 +299,7 @@ def retrieve_policies(
     industry: str | list[str] = None,
     geography: str = None,
     business_size: str = None,
+    enquiry_purpose: list[str] | None = None,
     rerank: bool = True,
 ) -> list[dict]:
     """
@@ -253,26 +307,23 @@ def retrieve_policies(
 
     Runs both a pgvector cosine query and a PostgreSQL full-text (BM25) query against the
     same metadata filters, then merges the two ranked lists with Reciprocal Rank Fusion.
-    This fixes the blind spot where exact scheme names and legal terms score poorly in
-    pure vector search.
 
     Hard filter: geography — only policies matching the state or tagged 'National' are
-    returned. National policies always pass regardless of the submitted state.
+    returned.
 
-    Soft boost (post-retrieval): industry (+1.0) and business_size (+0.5) are added to
-    the final ranking score for matching rows. Mismatches are never excluded, only ranked
-    lower. Stored as metadata_boost on each result dict.
-
-    When rerank=True (default), the merged candidates are reranked with a cross-encoder
-    (BAAI/bge-reranker-base) that jointly scores query+incentive text for token-level
-    relevance matching.
+    Two-stage metadata boosting: after RRF produces a 2×top_k candidate pool, metadata
+    boosts (industry, business_size, enquiry_purpose/category) are applied and the pool
+    is pre-sorted to select the top_k candidates fed to the cross-encoder. This ensures
+    metadata-relevant policies are always in the cross-encoder input rather than being
+    ranked after the fact. The same boosts are applied again post-reranking for the final
+    ordering. No policy is ever hard-excluded on these dimensions.
     """
     prefixed_query = f"Represent this sentence for searching relevant passages: {query}"
     query_vector = embed_documents(prefixed_query)
 
     where_clause, filter_params = _build_filter_clause(geography)
 
-    fetch_n = top_k * 2  # fetch more from each source so RRF has a full candidate pool
+    fetch_n = top_k * 4  # larger pool so RRF has ample candidates before metadata pre-sort
 
     # ── Vector query ──────────────────────────────────────────────────────────
     vec_sql = f"""
@@ -287,6 +338,11 @@ def retrieve_policies(
     vec_params = [query_vector] + filter_params + [query_vector, fetch_n]
 
     with conn.cursor() as cur:
+        # Raise HNSW search breadth so restrictive geography filters still surface their
+        # eligible rows. With the default ef_search (40) and a filter matching only a few
+        # rows, the ANN candidate set may contain none of them and the query returns 0
+        # even though matching rows exist (pgvector post-filters after the index scan).
+        cur.execute("SET hnsw.ef_search = 200")
         cur.execute(vec_sql, vec_params)
         vec_rows_raw = cur.fetchall()
         columns = [desc[0] for desc in cur.description]
@@ -334,11 +390,28 @@ def retrieve_policies(
         # search_vector column missing (pre-migration) — degrade gracefully to vector-only
         conn.rollback()
 
-    # ── RRF merge ─────────────────────────────────────────────────────────────
+    # ── RRF merge → generous candidate pool ──────────────────────────────────
     if bm25_rows:
-        results = _rrf_merge(bm25_rows, vec_rows, top_k)
+        candidates = _rrf_merge(bm25_rows, vec_rows, top_k * 3)
     else:
-        results = vec_rows[:top_k]
+        candidates = vec_rows[:top_k * 3]
+
+    # ── Metadata pre-sort: curate the cross-encoder input pool ───────────────
+    # Compute boost for every candidate and pre-sort so that industry/category/
+    # size-matching policies are pulled into the pool the cross-encoder scores.
+    # This guards against metadata matches being ranked out of the pool by a
+    # generic query. The pool is kept larger than top_k (rerank_n) so that
+    # semantically strong policies that lack a tag match (e.g. a broad industrial
+    # policy for a generic manufacturer) are still scored by the cross-encoder
+    # and can win on semantic relevance. No policy is excluded on metadata.
+    for r in candidates:
+        r["metadata_boost"] = _compute_metadata_boost(r, industry, business_size, enquiry_purpose)
+    candidates.sort(
+        key=lambda r: r["similarity_score"] + r["metadata_boost"],
+        reverse=True,
+    )
+    rerank_n = top_k * 2
+    results = candidates[:rerank_n]
 
     # ── Cross-encoder rerank ───────────────────────────────────────────────────
     if rerank and results:
@@ -351,17 +424,13 @@ def retrieve_policies(
         for r, score in zip(results, scores):
             r["incentive_score"] = float(score)
 
-    # ── Metadata boost + final sort ───────────────────────────────────────────
-    # industry and business_size never hard-filter results — matching policies
-    # receive a score boost so they rank above semantically similar mismatches.
-    for r in results:
-        r["metadata_boost"] = _compute_metadata_boost(r, industry, business_size)
+    # ── Final sort: cross-encoder score (dominant) + small metadata nudge ────
     results.sort(
         key=lambda r: r.get("incentive_score", r["similarity_score"]) + r.get("metadata_boost", 0.0),
         reverse=True,
     )
 
-    return results
+    return results[:top_k]
 
 
 def pretty_print_results(results: list[dict]):

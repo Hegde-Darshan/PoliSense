@@ -46,6 +46,8 @@ _COL = {
     "business_name":    "Legal Name of the Enterprise",
     "industry":         "Primary Business Sector",
     "description":      "Tell us about your business and what you are hoping to achieve",
+    "detailed_activity": "Detailed Business Activity",
+    "additional_info":   "Is there anything else that \nwould help us find the\n right schemes for you?",
     "geography":        "Location of the Proposed Project / Unit",
     "turnover":         "What is your approximate annual turnover?",
     "startup":          "Your Entity Registered in Startup (DPIIT Recognition)",
@@ -427,7 +429,17 @@ def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
 
         category = _lookup_all(_CATEGORY_TAG, row.get(_COL["enquiry_purpose"], ""), "enquiry_purpose")
 
+        # Primary description column; fall back to Detailed Business Activity if the
+        # primary free-text question was left blank (the form moved content there).
         description = _get_str(row.get(_COL["description"], "")).strip()
+        if not description:
+            description = _get_str(row.get(_COL["detailed_activity"], "")).strip()
+
+        # Append the optional "anything else" free-text note when the user filled it in.
+        additional_info = _get_str(row.get(_COL["additional_info"], "")).strip()
+        if additional_info:
+            description = f"{description} {additional_info}".strip()
+
         if not description:
             parts = []
             if industry:
@@ -436,6 +448,8 @@ def transform_rows_to_batch(rows: List[dict]) -> Dict[str, Dict]:
                 parts.append(f"in {geography}")
             if business_size:
                 parts.append(f"{business_size} business")
+            if category:
+                parts.append(", ".join(category))
             description = " ".join(parts)
         # majority_stake is now parsed as special_attributes (not appended to query)
         query = f"{description} government grants subsidies and incentives"

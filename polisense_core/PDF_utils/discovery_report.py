@@ -736,6 +736,38 @@ def _gap_section() -> list:
     return [Spacer(1, 6), callout]
 
 
+def _no_coverage_section(state: str, covered_label: str) -> list:
+    """Honest notice shown when the business's state has no indexed policies."""
+    state_safe = (state or "your state").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    header = _p("We don't cover your region yet", "gap_header")
+    body = _ph(
+        f"GetSchemes currently indexes schemes for <b>{covered_label}</b>. "
+        f"We don't yet have subsidies, schemes or incentives on file for <b>{state_safe}</b>, "
+        f"so we can't score your eligibility right now.",
+        "gap_body",
+    )
+    body2 = _ph(
+        "We're actively expanding coverage to more states. Leave your details and we'll "
+        "notify you the moment schemes for your region go live.",
+        "gap_body",
+    )
+    callout = Table(
+        [[header], [body], [body2]],
+        colWidths=[TEXT_W - 22],
+        style=TableStyle([
+            ("BACKGROUND", (0, 0), (-1, -1), AMBER_LIGHT),
+            ("BOX", (0, 0), (-1, -1), 1.5, AMBER_BORDER),
+            ("LINEBEFORE", (0, 0), (0, -1), 4, AMBER_BORDER),
+            ("TOPPADDING", (0, 0), (-1, -1), 6),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+            ("LEFTPADDING", (0, 0), (-1, -1), 12),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 12),
+            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ]),
+    )
+    return [Spacer(1, 10), callout]
+
+
 def _unlock_section() -> list:
     label = _p("YOUR FULL REPORT UNLOCKS", "unlock_label")
     divider = HRFlowable(width=TEXT_W, thickness=0.5, color=colors.HexColor("#CCCCCC"), spaceAfter=6)
@@ -906,6 +938,15 @@ def generate_discovery_pdf(query_name: str, entry: dict, output_path: str) -> No
     story = []
 
     story.extend(_header_section(profile, report_id, generated))
+
+    if entry.get("out_of_coverage"):
+        # Honest no-coverage path: skip the score/category/top-match sections, which would
+        # be empty or misleading, and show a clear notice instead.
+        story.extend(_no_coverage_section(profile.get("geography"), covered_label="Karnataka"))
+        story.extend(_cta_section(payment_link))
+        doc.build(story)
+        return
+
     story.extend(_intro_text(profile, results))
     story.extend(_score_section(overall_score, category_breakdown))
     story.extend(_top_match_section(results))
