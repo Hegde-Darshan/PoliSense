@@ -79,17 +79,29 @@ def get_relavent_files(state: IngestionWorkflowState) -> IngestionWorkflowState:
     return state
 
 
+def _write_json_atomic(path: Path, data: object) -> None:
+    """Write JSON atomically — write to .tmp then rename so a mid-write crash leaves the old file intact."""
+    tmp = path.with_suffix(".tmp")
+    tmp.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    os.replace(tmp, path)
+
+
+def _persist_policy_success(policy_name: str, read_path: Path) -> None:
+    """Immediately record one successfully-ingested policy so progress survives a crash."""
+    existing: list = json.loads(read_path.read_text(encoding="utf-8")) if read_path.exists() else []
+    if policy_name not in existing:
+        existing.append(policy_name)
+    _write_json_atomic(read_path, existing)
+
+
 @traceable
 def extract_information(state: IngestionWorkflowState) -> IngestionWorkflowState:
-    #evaluate one policy at a time
-    #get the current policy to query on
+    state.llm_response = None  # clear previous iteration's data before extraction
     prompt_manager = prompts.PoliSensePrompts(pdf_paths=state.file_paths[state.policy_to_query[state.policy_current_idx]],  #type: ignore
                             policy_name=state.policy_to_query[state.policy_current_idx])  #type: ignore
     llm_client = llm_extractor.initialize_llm_with_config(is_structured_model=True)
     state.llm_config = dict(llm_client.__dict__)
-    #print(f"Invoking LLM with prompt: {prompt_manager.get_prompt()}")
     struct_response = llm_client.invoke(prompt_manager.get_prompt())
-    # struct_response = llm_client.invoke("This is a test invocation. Return response in the same format but tailor it with empty or test string values")
     summary = llm_extractor.PDFExtraction.model_validate(struct_response)
     state.llm_response = summary.model_dump()
     return state
@@ -112,15 +124,14 @@ def db_ingestion(state: IngestionWorkflowState, db_conn: psycopg2.extensions.con
             inserted_ids = db_utils.ingest_policy(summary_dict, db_conn, source_folder=state.policy_current)
             state.uuid_ingested.extend(inserted_ids)
             logger.info(f"Ingested policy '{state.policy_current}' -> {len(inserted_ids)} row(s) inserted, IDs: {inserted_ids}")
-            #append to policy_queried list
-            state.policy_queried.append(state.policy_current) #type: ignore
+            state.policy_queried.append(state.policy_current)  # type: ignore
+            _persist_policy_success(state.policy_current, ROOT_PATH / Path(config["READ_PATH"]))  # type: ignore
         else:
             logger.warning(f"No LLM response to ingest for policy '{state.policy_current}'")
             #append to policy_failed list
             state.policy_failed.append(state.policy_current) #type: ignore
     except Exception as e:
-        #append to policy_failed list
-        state.policy_failed.append(state.policy_current) #type: ignore
+        state.policy_failed.append(state.policy_current)  # type: ignore
         logger.error(f"Error during database ingestion: {e}")
         db_conn.rollback()
     return state
@@ -144,15 +155,14 @@ def HITL_verification(state: IngestionWorkflowState, db_conn: psycopg2.extension
 
 @traceable
 def update_status_files(state: IngestionWorkflowState) -> IngestionWorkflowState:
-    #update the processed files record to avoid re-processing in the future iterations
-    curr_files = json.load(open(ROOT_PATH/Path(config['READ_PATH']), 'r')) if os.path.exists(ROOT_PATH/Path(config['READ_PATH'])) else []
-    if state.policy_queried is not None:
-        list_of_files = state.policy_queried + curr_files
-    logger.debug(f"Files processed so far: {list_of_files}") # type: ignore
-    json.dump(list_of_files, open(ROOT_PATH/Path(config['READ_PATH']), 'w')) # type: ignore
+    # Successes are already written per-policy in db_ingestion; just log the final tally.
+    logger.info(f"Run complete — succeeded: {len(state.policy_queried)}, failed: {len(state.policy_failed)}")
 
-    #also update the skipped files record with the policies that failed processing
-    json.dump(state.policy_failed, open(ROOT_PATH/Path(config['SKIPPED_PATH']), 'w'))
+    # Merge this run's failures with any failures from prior runs (never discard old failures).
+    skipped_path = ROOT_PATH / Path(config["SKIPPED_PATH"])
+    prior_skipped: list = json.loads(skipped_path.read_text(encoding="utf-8")) if skipped_path.exists() else []
+    all_skipped = list(dict.fromkeys(prior_skipped + state.policy_failed))  # preserve order, deduplicate
+    _write_json_atomic(skipped_path, all_skipped)
     return state
 
 
