@@ -213,8 +213,9 @@ def _rule_based_checks(
     if min_emp and isinstance(min_emp, dict):
         min_count = min_emp.get("value")
         unit = min_emp.get("unit", "employees")
+        raw = min_emp.get("raw_text")
         # employee_count is never in the form — always UNCERTAIN
-        desc = f"Minimum {unit}: {int(min_count) if min_count else '?'}"
+        desc = raw if raw else f"Minimum {int(min_count) if min_count else '?'} {unit}"
         if min_count is not None:
             missing.append("employee_count")
             checks.append(CriterionCheck(
