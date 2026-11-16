@@ -335,10 +335,10 @@ class PDFExtraction(BaseModel):
 # ── LLM initialisation ─────────────────────────────────────────────────────────
 
 def initialize_llm_with_config(
-        model_name: str = "gemini-4-argon",
+        model_name: str = "gemini-3.8-flash",
         temperature: float = 0,
         max_tokens: int | None = None,
-        timeout: float | None = None,
+        timeout: float | None = 300,
         max_retries: int = 2,
         is_structured_model: bool = True,
 ):
