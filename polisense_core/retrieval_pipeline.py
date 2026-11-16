@@ -6,7 +6,7 @@ from typing import List, Dict, Any
 from polisense_core.utils.postgres_utils import get_connection
 from polisense_core.RetrievalPipeline.pg_retriever import retrieve_policies
 
-_FILTER_KEYS = ("industry", "geography", "business_size")
+_FILTER_KEYS = ("industry", "geography", "business_size", "enquiry_purpose")
 
 # Default output folder — project root / Retrievals/
 RETRIEVALS_DIR = Path(__file__).parent.parent / "Retrievals"
