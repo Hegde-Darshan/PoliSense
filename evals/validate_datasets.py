@@ -1,10 +1,12 @@
-"""Validate evals/datasets/g1_profiles.jsonl and g2_relevance.jsonl against the DB and vocab.
+"""Validate golden profiles and relevance labels against the DB and vocab (default: g1 profiles + v2 labels).
 
-Usage: python -m evals.validate_datasets   (exit code 1 on any error)
+Usage: python -m evals.validate_datasets [--profiles FILE] [--labels FILE]   (exit code 1 on any error)
 Read-only: opens the DB with readonly=True and makes no LLM calls.
 """
+import argparse
 import ast
 import json
+from collections import Counter
 import sys
 from pathlib import Path
 
@@ -31,20 +33,28 @@ def _vocab():
     return out
 
 
-def _load(name):
-    return [json.loads(line) for line in (DS / name).read_text(encoding="utf-8").splitlines() if line.strip()]
+def _load(path):
+    return [json.loads(line) for line in Path(path).read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
 def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--profiles", default=str(DS / "g1_profiles.jsonl"))
+    ap.add_argument("--labels", default=str(DS / "v2" / "g2_relevance_v2.jsonl"))
+    args = ap.parse_args()
     v = _vocab()
-    g1, g2 = _load("g1_profiles.jsonl"), _load("g2_relevance.jsonl")
-    errors = []
+    g1, g2 = _load(args.profiles), _load(args.labels)
+    errors, warnings = [], []
 
     conn = get_connection()
     conn.set_session(readonly=True)
     with conn.cursor() as cur:
-        cur.execute("SELECT DISTINCT parent_policy_name, incentive_name FROM policies")
-        db_keys = {(p, i) for p, i in cur.fetchall()}
+        cur.execute("SELECT parent_policy_name, incentive_name, applicable_geographies FROM policies")
+        db_keys, national = set(), set()
+        for p, i, geos in cur.fetchall():
+            db_keys.add((p, i))
+            if "National" in (geos or []):  # works for list or string columns
+                national.add((p, i))
     conn.close()
 
     ids = [p["profile_id"] for p in g1]
@@ -69,6 +79,7 @@ def main() -> int:
         if prof.get("business_size") is not None and prof["business_size"] not in SIZES:
             errors.append(f"{pid}: bad business_size {prof['business_size']}")
 
+    prof_by_id = {p["profile_id"]: p["profile"] for p in g1}
     seen, best = set(), {}
     for r in g2:
         key = (r["parent_policy_name"], r["incentive_name"])
@@ -80,17 +91,29 @@ def main() -> int:
             errors.append(f"{r['profile_id']}: bad relevance {r['relevance']}")
         if (r["profile_id"], key) in seen:
             errors.append(f"{r['profile_id']}: duplicate label {key}")
-        if len(r["rationale"].split()) > 20:
+        geo = prof_by_id.get(r["profile_id"], {}).get("geography", "unknown")
+        if geo not in (None, "unknown", "Karnataka") and key in db_keys and key not in national:
+            errors.append(f"{r['profile_id']}: geography {geo} label on non-National row {key}")
+        if r["profile_id"] in prof_by_id and geo is None and r["relevance"] > 2:
+            errors.append(f"{r['profile_id']}: geography null but grade {r['relevance']} > 2")
+        if not isinstance(r["rationale"], str) or not r["rationale"].strip():
+            errors.append(f"{r['profile_id']}: empty rationale")
+        elif len(r["rationale"].split()) > 20:
             errors.append(f"{r['profile_id']}: rationale > 20 words")
         seen.add((r["profile_id"], key))
         best[r["profile_id"]] = max(best.get(r["profile_id"], 0), r["relevance"])
-    for p in g1:
-        if best.get(p["profile_id"], 0) < 2 and "no_relevant" not in p["tags"]:
-            errors.append(f"{p['profile_id']}: no grade>=2 label and not tagged no_relevant")
+    # v2: Supabase corpus is Karnataka-only, so some profiles legitimately have no grade>=2 label
+    missing = [p["profile_id"] for p in g1 if best.get(p["profile_id"], 0) < 2 and "no_relevant" not in p["tags"]]
+    if missing:
+        warnings.append(f"{len(missing)} profiles with no grade>=2 label and not tagged no_relevant: {', '.join(missing)}")
 
     for e in errors:
         print("ERROR", e)
-    print(f"{len(g1)} profiles, {len(g2)} labels, {len(errors)} errors")
+    for w in warnings:
+        print("WARNING", w)
+    grades = Counter(r["relevance"] for r in g2)
+    print(f"{len(g1)} profiles, {len(g2)} labels (by grade: {dict(sorted(grades.items()))}), "
+          f"{len(errors)} errors, {len(warnings)} warnings")
     return 1 if errors else 0
 
 

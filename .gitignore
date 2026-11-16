@@ -45,7 +45,8 @@ PoliSense.egg-info/
 untracked/
 
 #AI
-.claude/
+.claude/*
+!.claude/skills/
 CLAUDE.md
 
 # Excluded folders
@@ -70,3 +71,9 @@ Thumbs.db
 .ruff_cache/
 *.egg-info/
 evals/results/
+
+# Old (v1, local-DB) golden dataset and its analysis; only v2 is tracked
+evals/datasets/g2_relevance.jsonl
+evals/datasets/corpus.json
+evals/datasets/build_g2.py
+evals/retrieval_analysis.md
