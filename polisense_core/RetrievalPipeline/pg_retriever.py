@@ -22,6 +22,9 @@ _SELECT_COLUMNS = """
 """
 
 
+_ZOHO_SUFFIX = " government grants subsidies and incentives"  # appended to every Zoho query
+
+
 def _build_incentive_text(row: dict) -> str:
     """Assemble a descriptive string for an incentive row from its JSONB fields."""
     inc = row["incentive_details"]
@@ -301,6 +304,7 @@ def retrieve_policies(
     business_size: str = None,
     enquiry_purpose: list[str] | None = None,
     rerank: bool = True,
+    trace: dict | None = None,
 ) -> list[dict]:
     """
     Retrieve the most relevant policies using hybrid BM25+vector search with RRF merging.
@@ -317,7 +321,17 @@ def retrieve_policies(
     metadata-relevant policies are always in the cross-encoder input rather than being
     ranked after the fact. The same boosts are applied again post-reranking for the final
     ordering. No policy is ever hard-excluded on these dimensions.
+
+    trace: optional dict for evaluation/debugging. When given, it is filled with
+    trace["stages"] (ordered stage names), one ranked row list per stage, and
+    trace["config"]. Return value and behaviour are unchanged. When adding or
+    renaming a stage, record it with _trace() so evals keep seeing every stage.
     """
+    def _trace(stage: str, rows: list[dict]) -> None:
+        if trace is not None:
+            trace.setdefault("stages", []).append(stage)
+            trace[stage] = [dict(r) for r in rows]  # copies: later stages mutate rows
+
     prefixed_query = f"Represent this sentence for searching relevant passages: {query}"
     query_vector = embed_documents(prefixed_query)
 
@@ -356,8 +370,13 @@ def retrieve_policies(
 
     # ── BM25 query (only when search_vector column is populated) ──────────────
     bm25_rows: list[dict] = []
-    bm25_where_parts = ["search_vector @@ plainto_tsquery('english', %s)"]
-    bm25_filter_params = [query] + filter_params[:]  # BM25 uses raw query, not prefixed
+    # plainto_tsquery ANDs every word, so a long business description matches no row (0 BM25 hits).
+    # Swap & for | : any shared term matches, ts_rank_cd ranks rows by how many/close. The Zoho
+    # suffix is stripped, otherwise "government/grant/subsidy" match every row and drown real terms.
+    bm25_tsq = "replace(plainto_tsquery('english', %s)::text, ' & ', ' | ')::tsquery"
+    bm25_query = query.replace(_ZOHO_SUFFIX, "").strip()
+    bm25_where_parts = [f"search_vector @@ {bm25_tsq}"]
+    bm25_filter_params = [bm25_query] + filter_params[:]  # BM25 uses raw query, not prefixed
 
     if where_clause:
         extra = where_clause.replace("WHERE ", "", 1)
@@ -366,14 +385,14 @@ def retrieve_policies(
     bm25_sql = f"""
         SELECT
             {_SELECT_COLUMNS},
-            ts_rank_cd(search_vector, plainto_tsquery('english', %s)) AS similarity_score
+            ts_rank_cd(search_vector, {bm25_tsq}) AS similarity_score
         FROM policies
         WHERE {' AND '.join(bm25_where_parts)}
         ORDER BY similarity_score DESC
         LIMIT %s;
     """
     # ts_rank_cd needs the query twice: once in WHERE, once in SELECT
-    bm25_params = [query] + bm25_filter_params + [fetch_n]
+    bm25_params = [bm25_query] + bm25_filter_params + [fetch_n]
 
     try:
         with conn.cursor() as cur:
@@ -390,11 +409,15 @@ def retrieve_policies(
         # search_vector column missing (pre-migration) — degrade gracefully to vector-only
         conn.rollback()
 
+    _trace("vector", vec_rows)
+    _trace("bm25", bm25_rows)
+
     # ── RRF merge → generous candidate pool ──────────────────────────────────
     if bm25_rows:
         candidates = _rrf_merge(bm25_rows, vec_rows, top_k * 3)
     else:
         candidates = vec_rows[:top_k * 3]
+    _trace("rrf", candidates)
 
     # ── Metadata pre-sort: curate the cross-encoder input pool ───────────────
     # Compute boost for every candidate and pre-sort so that industry/category/
@@ -411,14 +434,16 @@ def retrieve_policies(
         reverse=True,
     )
     rerank_n = top_k * 2
+    _trace("presort", candidates)
     results = candidates[:rerank_n]
+    _trace("rerank_input", results)
 
     # ── Cross-encoder rerank ───────────────────────────────────────────────────
     if rerank and results:
         # Strip Zoho boilerplate before cross-encoder: for short business descriptions
         # the appended suffix is a large fraction of the query and pulls scores toward
         # generic MSME-scheme space instead of the actual business activity.
-        clean_query = query.replace(" government grants subsidies and incentives", "").strip()
+        clean_query = bm25_query
         texts = [_build_incentive_text(r) for r in results]
         scores = rerank_with_cross_encoder(clean_query, texts)
         for r, score in zip(results, scores):
@@ -430,6 +455,10 @@ def retrieve_policies(
         reverse=True,
     )
 
+    _trace("final", results[:top_k])
+    if trace is not None:
+        trace["config"] = {"top_k": top_k, "fetch_n": fetch_n, "candidates_n": top_k * 3,
+                           "rerank_n": rerank_n, "rerank": rerank}
     return results[:top_k]
 
 

@@ -101,9 +101,18 @@ def extract_information(state: IngestionWorkflowState) -> IngestionWorkflowState
                             policy_name=state.policy_to_query[state.policy_current_idx])  #type: ignore
     llm_client = llm_extractor.initialize_llm_with_config(is_structured_model=True)
     state.llm_config = dict(llm_client.__dict__)
-    struct_response = llm_client.invoke(prompt_manager.get_prompt())
-    summary = llm_extractor.PDFExtraction.model_validate(struct_response)
-    state.llm_response = summary.model_dump()
+    # The model sometimes degenerates into a runaway-digit number at temperature 0 (same input -> same failure),
+    # so retries use a slightly higher temperature.
+    retry_clients = [llm_extractor.initialize_llm_with_config(temperature=t, is_structured_model=True) for t in (0.3, 0.6)]
+    #print(f"Invoking LLM with prompt: {prompt_manager.get_prompt()}")
+    for attempt, client in enumerate([llm_client, *retry_clients], start=1):
+        try:
+            struct_response = client.invoke(prompt_manager.get_prompt())
+            summary = llm_extractor.PDFExtraction.model_validate(struct_response)
+            state.llm_response = summary.model_dump()
+            break
+        except Exception as e:  # one bad policy must not abort the whole run; db_ingestion records it as failed
+            logger.error(f"Extraction attempt {attempt} failed for '{state.policy_current}': {e}")
     return state
 
 
