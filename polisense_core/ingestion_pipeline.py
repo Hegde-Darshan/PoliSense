@@ -107,6 +107,31 @@ def extract_information(state: IngestionWorkflowState) -> IngestionWorkflowState
     return state
 
 
+def _flag_extraction_quality(summary_dict: dict, db_conn: psycopg2.extensions.connection) -> None:
+    """Post-insert data-quality gate (#9/#1): check source_text / eligibility raw_text
+    against the document text and flag missing required fields. Non-blocking — any
+    failure here is logged and never rolls back the ingest."""
+    try:
+        parent = summary_dict.get("parent_policy_name")
+        with db_conn.cursor() as cur:
+            cur.execute("SELECT raw_text FROM policy_documents WHERE parent_policy_name = %s", (parent,))
+            row = cur.fetchone()
+        raw_text = row[0] if row else None
+
+        flags = db_utils.validate_extraction(summary_dict, raw_text)
+        for f in flags:
+            db_utils.flag_for_review(
+                db_conn, parent, f["policy_name"], f["incentive_name"],
+                f["review_type"], f["reason"],
+            )
+        db_conn.commit()
+        if flags:
+            logger.info(f"Flagged {len(flags)} data-quality issue(s) for '{parent}' to review_queue")
+    except Exception as e:
+        logger.error(f"Extraction-quality flagging failed (non-blocking): {e}")
+        db_conn.rollback()
+
+
 @traceable
 def db_ingestion(state: IngestionWorkflowState, db_conn: psycopg2.extensions.connection) -> IngestionWorkflowState:
     """
@@ -126,6 +151,7 @@ def db_ingestion(state: IngestionWorkflowState, db_conn: psycopg2.extensions.con
             logger.info(f"Ingested policy '{state.policy_current}' -> {len(inserted_ids)} row(s) inserted, IDs: {inserted_ids}")
             state.policy_queried.append(state.policy_current)  # type: ignore
             _persist_policy_success(state.policy_current, ROOT_PATH / Path(config["READ_PATH"]))  # type: ignore
+            _flag_extraction_quality(summary_dict, db_conn)
         else:
             logger.warning(f"No LLM response to ingest for policy '{state.policy_current}'")
             #append to policy_failed list

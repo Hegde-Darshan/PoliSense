@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional, List, Literal
 
 
@@ -304,6 +304,22 @@ class PolicyExtraction(BaseModel):
         description="Any special focus groups or themes, e.g. 'Women-led enterprises', 'SC/ST entrepreneurs', "
                     "'Green manufacturing', 'Export-oriented units', 'Border area development'"
     )
+
+    @field_validator("applicable_business_sizes")
+    @classmethod
+    def _drop_all_when_specific_sizes(cls, v: List[str]) -> List[str]:
+        """'All' is redundant — and contradictory — when specific sizes are also listed."""
+        if v and len(v) > 1 and "All" in v:
+            return [s for s in v if s != "All"]
+        return v
+
+    @field_validator("applicable_industries")
+    @classmethod
+    def _drop_all_sectors_when_specific_industries(cls, v: List[str]) -> List[str]:
+        """'All Sectors' is redundant when specific industries are also listed."""
+        if v and len(v) > 1 and "All Sectors" in v:
+            return [s for s in v if s != "All Sectors"]
+        return v
 
 
 # ── Root extraction model ──────────────────────────────────────────────────────

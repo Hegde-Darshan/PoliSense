@@ -4,6 +4,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 import json
+import re
+import difflib
 
 from sentence_transformers import SentenceTransformer, CrossEncoder
 
@@ -35,6 +37,145 @@ def _get_reranker_model() -> CrossEncoder:
 def embed_documents(text: str) -> list[float]:
     model = _get_embedding_model()
     return model.encode(text, normalize_embeddings=True).tolist()
+
+
+# ── Embedding text construction ────────────────────────────────────────────────
+
+# BGE bge-small-en-v1.5 silently truncates at 512 tokens. We put incentive-specific
+# signal FIRST so sibling incentives get distinct vectors, and keep the large shared
+# policy blobs (summary, eligibility) LAST so they absorb any truncation. These are
+# also capped so policy-identity tokens always survive.
+_SHARED_BLOB_CHAR_CAP = 1000
+
+
+def build_embedding_text(policy: dict, incentive: dict, summary_dict: dict) -> str:
+    """Build the text embedded (and BM25-indexed) for one incentive row.
+
+    Shared by ingestion and the backfill script so both produce identical text.
+    `policy` is the PolicyExtraction dict, `incentive` the IncentiveExtraction dict,
+    `summary_dict` the root PDFExtraction dict (for policy_goals).
+    """
+    eligibility = policy.get("eligibility_criteria") or {}
+    summary = (policy.get("policy_summary") or "")[:_SHARED_BLOB_CHAR_CAP]
+    elig_raw = (eligibility.get("raw_text") or "")[:_SHARED_BLOB_CHAR_CAP]
+
+    parts: list[str] = []
+    # Incentive-specific signal first — this is what must survive truncation.
+    if incentive.get("incentive_name"):
+        parts.append(f"Incentive: {incentive['incentive_name']}")
+    if incentive.get("benefit_headline"):
+        parts.append(f"Benefit: {incentive['benefit_headline']}")
+    if incentive.get("description"):
+        parts.append(f"Description: {incentive['description']}")
+    for qb in (incentive.get("quantified_benefits") or []):
+        if qb.get("description"):
+            parts.append(f"Benefit detail: {qb['description']}")
+
+    # Policy identity and metadata.
+    parts.extend([
+        f"Policy: {policy.get('policy_name', '')}",
+        f"Category: {policy.get('category', '')}",
+        f"Industry: {', '.join(policy.get('applicable_industries') or [])}",
+        f"Size: {', '.join(policy.get('applicable_business_sizes') or [])}",
+        f"Geography: {', '.join(policy.get('applicable_geographies') or [])}",
+        f"Headline: {policy.get('benefit_headline', '')}",
+        f"Keywords: {', '.join(policy.get('keywords') or [])}",
+        f"Goals: {', '.join(summary_dict.get('policy_goals') or [])}",
+    ])
+
+    # Large shared blobs last — these are the ones that get truncated, not the incentive.
+    parts.append(f"Summary: {summary}")
+    parts.append(f"Eligibility: {elig_raw}")
+
+    return "\n".join(p for p in parts if p.split(": ", 1)[-1].strip())
+
+
+# ── Extraction faithfulness / completeness validation ──────────────────────────
+
+def _normalize_ws(text: str) -> str:
+    return re.sub(r"\s+", " ", (text or "")).strip().lower()
+
+
+def check_text_faithfulness(candidate: str, raw_text: str, threshold: float = 0.90) -> bool:
+    """True if `candidate` appears (near-)verbatim in `raw_text`.
+
+    Accepts: (a) exact normalized substring, (b) best-window difflib ratio >= threshold,
+    or (c) >= 90% of the candidate's sentences individually present (the "stitched from
+    verbatim sentences" case). Uses stdlib difflib — no extra dependency.
+    """
+    cand = _normalize_ws(candidate)
+    doc = _normalize_ws(raw_text)
+    if not cand or not doc:
+        return False
+    if cand in doc:
+        return True
+
+    # (b) best fuzzy window around the candidate's length.
+    matcher = difflib.SequenceMatcher(None, cand, doc)
+    if matcher.quick_ratio() >= threshold:
+        blocks = matcher.get_matching_blocks()
+        matched = sum(b.size for b in blocks)
+        if cand and matched / len(cand) >= threshold:
+            return True
+
+    # (c) sentence-level stitch.
+    sentences = [s for s in re.split(r"(?<=[.;:])\s+", cand) if len(s) > 10]
+    if sentences:
+        found = sum(1 for s in sentences if s in doc)
+        if found / len(sentences) >= threshold:
+            return True
+    return False
+
+
+def validate_extraction(summary_dict: dict, raw_text: str | None) -> list[dict]:
+    """Return a list of review flags for faithfulness + required-field problems.
+
+    Each flag: {policy_name, incentive_name, review_type, reason}. Non-blocking —
+    the caller ingests regardless and writes these to review_queue.
+    """
+    flags: list[dict] = []
+    for p in (summary_dict.get("policies") or []):
+        policy_name = p.get("policy_name")
+        eligibility = p.get("eligibility_criteria") or {}
+        elig_raw = eligibility.get("raw_text")
+
+        # Required-field checks (#1).
+        if (p.get("validity") or {}).get("start_year") is None:
+            flags.append({"policy_name": policy_name, "incentive_name": None,
+                          "review_type": "missing_field", "reason": "start_year is NULL"})
+        if not (elig_raw or "").strip():
+            flags.append({"policy_name": policy_name, "incentive_name": None,
+                          "review_type": "missing_field",
+                          "reason": "eligibility_criteria.raw_text is empty"})
+
+        # Faithfulness checks (#9).
+        if (elig_raw or "").strip():
+            if raw_text is None:
+                flags.append({"policy_name": policy_name, "incentive_name": None,
+                              "review_type": "unverifiable",
+                              "reason": "eligibility raw_text unverifiable — no document text"})
+            elif not check_text_faithfulness(elig_raw, raw_text):
+                flags.append({"policy_name": policy_name, "incentive_name": None,
+                              "review_type": "faithfulness",
+                              "reason": "eligibility raw_text not found in document"})
+
+        for inc in (p.get("incentives") or []):
+            incentive_name = inc.get("incentive_name")
+            for i, qb in enumerate(inc.get("quantified_benefits") or []):
+                src = (qb.get("source_text") or "").strip()
+                if not src:
+                    flags.append({"policy_name": policy_name, "incentive_name": incentive_name,
+                                  "review_type": "missing_field",
+                                  "reason": f"quantified_benefits[{i}].source_text is empty"})
+                elif raw_text is None:
+                    flags.append({"policy_name": policy_name, "incentive_name": incentive_name,
+                                  "review_type": "unverifiable",
+                                  "reason": f"source_text[{i}] unverifiable — no document text"})
+                elif not check_text_faithfulness(src, raw_text):
+                    flags.append({"policy_name": policy_name, "incentive_name": incentive_name,
+                                  "review_type": "faithfulness",
+                                  "reason": f"quantified_benefits[{i}].source_text not found in document"})
+    return flags
 
 
 def rerank_with_cross_encoder(query: str, texts: list[str]) -> list[float]:
@@ -87,6 +228,37 @@ def ingest_into_review_queue(summary_dict: dict,
     return review_id
 
 
+def flag_for_review(conn: psycopg2.extensions.connection,
+        parent_policy_name: str | None,
+        policy_name: str | None,
+        incentive_name: str | None,
+        review_type: str,
+        reason: str,
+        details: dict | None = None) -> int | None:
+    """Insert one data-quality flag into review_queue. Does NOT commit — the caller
+    owns the transaction. Returns the new review_id."""
+    with conn.cursor() as cur:
+        cur.execute("""
+            INSERT INTO review_queue (
+                parent_policy_name, policy_name, incentive_name,
+                review_type, review_reason, details
+            ) VALUES (
+                %(parent)s, %(policy)s, %(incentive)s,
+                %(rtype)s, %(reason)s, %(details)s
+            )
+            RETURNING review_id
+        """, {
+            "parent":    parent_policy_name,
+            "policy":    policy_name,
+            "incentive": incentive_name,
+            "rtype":     review_type,
+            "reason":    reason,
+            "details":   Json(details) if details is not None else None,
+        })
+        review_id = cur.fetchone()[0]  # type: ignore
+    return review_id
+
+
 def ingest_policy(summary_dict: dict,
         conn: psycopg2.extensions.connection,
         source_folder: str | None = None):
@@ -117,20 +289,6 @@ def ingest_policy(summary_dict: dict,
             if not incentives:
                 incentives = [{}]
 
-            # Embedding base: all policy-level semantic signals
-            base_parts = [
-                f"Policy: {p.get('policy_name', '')}",
-                f"Industry: {', '.join(p.get('applicable_industries') or [])}",
-                f"Category: {p.get('category', '')}",
-                f"Size: {', '.join(p.get('applicable_business_sizes') or [])}",
-                f"Geography: {', '.join(p.get('applicable_geographies') or [])}",
-                f"Headline: {p.get('benefit_headline', '')}",
-                f"Summary: {p.get('policy_summary', '')}",
-                f"Eligibility: {eligibility.get('raw_text', '')}",
-                f"Keywords: {', '.join(p.get('keywords') or [])}",
-                f"Goals: {', '.join(summary_dict.get('policy_goals') or [])}",
-            ]
-
             for inc in incentives:
                 incentive_details = {
                     "description":                    inc.get("description"),
@@ -143,20 +301,7 @@ def ingest_policy(summary_dict: dict,
                     "incentive_specific_eligibility": inc.get("incentive_specific_eligibility"),
                 }
 
-                inc_parts = base_parts[:]
-                if inc.get("incentive_name"):
-                    inc_parts.append(f"Incentive: {inc['incentive_name']}")
-                if inc.get("benefit_headline"):
-                    inc_parts.append(f"Benefit: {inc['benefit_headline']}")
-                if inc.get("description"):
-                    inc_parts.append(f"Description: {inc['description']}")
-                for qb in (inc.get("quantified_benefits") or []):
-                    if qb.get("description"):
-                        inc_parts.append(f"Benefit detail: {qb['description']}")
-
-                embedding_document = "\n".join(
-                    part for part in inc_parts if part.split(": ", 1)[-1].strip()
-                )
+                embedding_document = build_embedding_text(p, inc, summary_dict)
                 embedding_vector = embed_documents(embedding_document)
 
                 cur.execute("""
