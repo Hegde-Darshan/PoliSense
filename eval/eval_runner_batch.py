@@ -46,6 +46,10 @@ def normalize_profile(profile: Dict) -> Dict:
     business_size = profile.get("business_size")
     normalized["business_size"] = business_size if business_size else None
 
+    # Enquiry purpose — list or None; matches production _FILTER_KEYS (category boost)
+    enquiry_purpose = profile.get("enquiry_purpose")
+    normalized["enquiry_purpose"] = enquiry_purpose if enquiry_purpose else None
+
     return normalized
 
 
@@ -115,6 +119,7 @@ def run_evaluation(eval_input_path: Path, top_k: int = 10) -> Dict[str, Any]:
                     industry=norm_profile.get("industry"),
                     geography=norm_profile.get("geography"),
                     business_size=norm_profile.get("business_size"),
+                    enquiry_purpose=norm_profile.get("enquiry_purpose"),
                     rerank=True,
                 )
 
@@ -167,8 +172,8 @@ def main():
 
     print(f"Loading eval set from: {eval_input}")
 
-    # Run evaluation
-    output_data = run_evaluation(eval_input, top_k=10)
+    # Run evaluation — top_k=20 to match the live discovery pipeline's retrieve_policies call.
+    output_data = run_evaluation(eval_input, top_k=20)
 
     # Write output
     timestamp = output_data["run_metadata"]["timestamp"]

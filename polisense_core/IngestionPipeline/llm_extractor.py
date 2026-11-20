@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional, List, Literal
 
 
@@ -305,6 +305,22 @@ class PolicyExtraction(BaseModel):
                     "'Green manufacturing', 'Export-oriented units', 'Border area development'"
     )
 
+    @field_validator("applicable_business_sizes")
+    @classmethod
+    def _drop_all_when_specific_sizes(cls, v: List[str]) -> List[str]:
+        """'All' is redundant — and contradictory — when specific sizes are also listed."""
+        if v and len(v) > 1 and "All" in v:
+            return [s for s in v if s != "All"]
+        return v
+
+    @field_validator("applicable_industries")
+    @classmethod
+    def _drop_all_sectors_when_specific_industries(cls, v: List[str]) -> List[str]:
+        """'All Sectors' is redundant when specific industries are also listed."""
+        if v and len(v) > 1 and "All Sectors" in v:
+            return [s for s in v if s != "All Sectors"]
+        return v
+
 
 # ── Root extraction model ──────────────────────────────────────────────────────
 
@@ -335,10 +351,10 @@ class PDFExtraction(BaseModel):
 # ── LLM initialisation ─────────────────────────────────────────────────────────
 
 def initialize_llm_with_config(
-        model_name: str = "gemini-4-argon",
+        model_name: str = "gemini-3.8-flash",
         temperature: float = 0,
         max_tokens: int | None = None,
-        timeout: float | None = None,
+        timeout: float | None = 300,
         max_retries: int = 2,
         is_structured_model: bool = True,
 ):

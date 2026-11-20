@@ -101,10 +101,44 @@ def extract_information(state: IngestionWorkflowState) -> IngestionWorkflowState
                             policy_name=state.policy_to_query[state.policy_current_idx])  #type: ignore
     llm_client = llm_extractor.initialize_llm_with_config(is_structured_model=True)
     state.llm_config = dict(llm_client.__dict__)
-    struct_response = llm_client.invoke(prompt_manager.get_prompt())
-    summary = llm_extractor.PDFExtraction.model_validate(struct_response)
-    state.llm_response = summary.model_dump()
+    # The model sometimes degenerates into a runaway-digit number at temperature 0 (same input -> same failure),
+    # so retries use a slightly higher temperature.
+    retry_clients = [llm_extractor.initialize_llm_with_config(temperature=t, is_structured_model=True) for t in (0.3, 0.6)]
+    #print(f"Invoking LLM with prompt: {prompt_manager.get_prompt()}")
+    for attempt, client in enumerate([llm_client, *retry_clients], start=1):
+        try:
+            struct_response = client.invoke(prompt_manager.get_prompt())
+            summary = llm_extractor.PDFExtraction.model_validate(struct_response)
+            state.llm_response = summary.model_dump()
+            break
+        except Exception as e:  # one bad policy must not abort the whole run; db_ingestion records it as failed
+            logger.error(f"Extraction attempt {attempt} failed for '{state.policy_current}': {e}")
     return state
+
+
+def _flag_extraction_quality(summary_dict: dict, db_conn: psycopg2.extensions.connection) -> None:
+    """Post-insert data-quality gate (#9/#1): check source_text / eligibility raw_text
+    against the document text and flag missing required fields. Non-blocking — any
+    failure here is logged and never rolls back the ingest."""
+    try:
+        parent = summary_dict.get("parent_policy_name")
+        with db_conn.cursor() as cur:
+            cur.execute("SELECT raw_text FROM policy_documents WHERE parent_policy_name = %s", (parent,))
+            row = cur.fetchone()
+        raw_text = row[0] if row else None
+
+        flags = db_utils.validate_extraction(summary_dict, raw_text)
+        for f in flags:
+            db_utils.flag_for_review(
+                db_conn, parent, f["policy_name"], f["incentive_name"],
+                f["review_type"], f["reason"],
+            )
+        db_conn.commit()
+        if flags:
+            logger.info(f"Flagged {len(flags)} data-quality issue(s) for '{parent}' to review_queue")
+    except Exception as e:
+        logger.error(f"Extraction-quality flagging failed (non-blocking): {e}")
+        db_conn.rollback()
 
 
 @traceable
@@ -126,6 +160,7 @@ def db_ingestion(state: IngestionWorkflowState, db_conn: psycopg2.extensions.con
             logger.info(f"Ingested policy '{state.policy_current}' -> {len(inserted_ids)} row(s) inserted, IDs: {inserted_ids}")
             state.policy_queried.append(state.policy_current)  # type: ignore
             _persist_policy_success(state.policy_current, ROOT_PATH / Path(config["READ_PATH"]))  # type: ignore
+            _flag_extraction_quality(summary_dict, db_conn)
         else:
             logger.warning(f"No LLM response to ingest for policy '{state.policy_current}'")
             #append to policy_failed list

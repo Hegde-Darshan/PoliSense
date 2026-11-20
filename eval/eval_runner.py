@@ -74,6 +74,11 @@ def normalize_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
     if profile.get('business_size'):
         normalized['business_size'] = profile['business_size']
 
+    # enquiry_purpose: may be None or a list — matches production _FILTER_KEYS so the
+    # eval applies the same category boost the live discovery pipeline does.
+    if profile.get('enquiry_purpose'):
+        normalized['enquiry_purpose'] = profile['enquiry_purpose']
+
     return normalized
 
 
@@ -186,8 +191,8 @@ def main():
     print(f"Eval file: {eval_file}")
     print()
 
-    # Run eval
-    output = run_eval(eval_file, top_k=10)
+    # Run eval — top_k=20 to match the live discovery pipeline's retrieve_policies call.
+    output = run_eval(eval_file, top_k=20)
 
     # Generate output filename with UTC timestamp
     timestamp_str = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%d_%H%M%S')

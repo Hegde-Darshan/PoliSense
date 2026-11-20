@@ -1,170 +1,458 @@
 {
   "BRICS BIO LLP": {
-    "query": "Manufacturing, Agriculture and Agro-Processing in Karnataka Startup business government grants subsidies and incentives",
+    "query": "Manufacturing of chemical free natural cleaning products for home care and personal care products. government grants subsidies and incentives",
     "profile": {
-      "industry": ["Manufacturing", "Agriculture and Agro-Processing"],
+      "person_name": "Ravish Bhat",
+      "business_name": "BRICS BIO LLP",
+      "industry": [
+        "Manufacturing",
+        "Agriculture and Agro-Processing"
+      ],
       "geography": "Karnataka",
-      "business_size": "Startup"
+      "business_size": "Startup",
+      "enquiry_purpose": [
+        "Capital Subsidy",
+        "Capital Subsidy",
+        "R&D and Innovation Grant",
+        "Export Promotion",
+        "Capital Subsidy",
+        "Working Capital Assistance"
+      ],
+      "enterprise_type": "Expansion",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": null,
+      "entity_type": "Limited Liability Partnership (LLP)",
+      "udyam_number": "UDYAM-KR-03-0011164",
+      "project_cost_breakup": null
     }
   },
   "TRET": {
-    "query": "government grants subsidies and incentives",
+    "query": " government grants subsidies and incentives",
     "profile": {
+      "person_name": "TEST12",
+      "business_name": "TRET",
       "industry": null,
       "geography": null,
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": null,
+      "enterprise_type": null,
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": null,
+      "entity_type": null,
+      "udyam_number": null,
+      "project_cost_breakup": null
     }
   },
   "Nahar Enterprises": {
-    "query": "Manufacturing in Karnataka government grants subsidies and incentives",
+    "query": "We are into PP plastic recycled granules manufacturing since 3 years. Current capacity is 1 TPD and we want to establish a new 4 TPD plant and looking to avail loan for the same. We in future are aiming to get into other types of plastic recycling and also into e- waste recycling. government grants subsidies and incentives",
     "profile": {
-      "industry": ["Manufacturing"],
+      "person_name": "CS Chandrasekhar, Bengaluru",
+      "business_name": "Nahar Enterprises",
+      "industry": [
+        "Manufacturing"
+      ],
       "geography": "Karnataka",
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": [
+        "Capital Subsidy"
+      ],
+      "enterprise_type": "Expansion",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": null,
+      "entity_type": "Proprietorship",
+      "udyam_number": "UDYAM-KR-23-0009040",
+      "project_cost_breakup": "Plant and Machinery: 7000000\nWorking capital: 7000000\nCivil: 1000000"
     }
   },
   "No 99, 4th cross, sbm colony,near seetha circle": {
-    "query": "government grants subsidies and incentives",
+    "query": " government grants subsidies and incentives",
     "profile": {
+      "person_name": "Manjunath",
+      "business_name": "No 99, 4th cross, sbm colony,near seetha circle",
       "industry": null,
       "geography": null,
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": null,
+      "enterprise_type": null,
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": null,
+      "entity_type": null,
+      "udyam_number": null,
+      "project_cost_breakup": null
     }
   },
   "Sai Samarth Agro Foods LLP": {
     "query": "Manufacturing in Karnataka government grants subsidies and incentives",
     "profile": {
-      "industry": ["Manufacturing"],
+      "person_name": "C S Manjunath Hegde",
+      "business_name": "Sai Samarth Agro Foods LLP",
+      "industry": [
+        "Manufacturing"
+      ],
       "geography": "Karnataka",
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": null,
+      "enterprise_type": null,
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": null,
+      "entity_type": "Limited Liability Partnership (LLP)",
+      "udyam_number": null,
+      "project_cost_breakup": null
     }
   },
   "D K ANJAN ENTERPRISES (OPC) PRIVATE LIMITED": {
-    "query": "in Karnataka government grants subsidies and incentives",
+    "query": "1. To carry on the business of transportation of white oil petroleum products by road.\n2. To carry on the business of transportation of other classes of petroleum products and other transportation service by land.\n3. To carry on the business of Labour contract, Manpower services, housekeeping, Human Resource activities and other support services government grants subsidies and incentives",
     "profile": {
+      "person_name": "Cs Manjunatha Hegde",
+      "business_name": "D K ANJAN ENTERPRISES (OPC) PRIVATE LIMITED",
       "industry": null,
       "geography": "Karnataka",
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": [
+        "Export Promotion"
+      ],
+      "enterprise_type": "New",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": null,
+      "entity_type": "Private Limited (Pvt Ltd)",
+      "udyam_number": "UDYAM-KR-16-0064193",
+      "project_cost_breakup": "Land: NIL\nBuilding/Civil Works: 50 lakhs\nPlant & Machinery: 1 Crore\nOther (Furniture, Computers, etc.):50 lakhs\nWorking Capital Margin: 1 Crore"
     }
   },
   "sri maruthi bakers": {
-    "query": "Manufacturing in Karnataka government grants subsidies and incentives",
+    "query": "We are into manufacturers of Cookies, breads, buns, rusk, sweets, savouries and snacks. We have 6000 sq.ft of factory with 40+ employees government grants subsidies and incentives",
     "profile": {
-      "industry": ["Manufacturing"],
+      "person_name": "Getschemes",
+      "business_name": "sri maruthi bakers",
+      "industry": [
+        "Manufacturing"
+      ],
       "geography": "Karnataka",
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": [
+        "Capital Subsidy"
+      ],
+      "enterprise_type": "Existing",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": null,
+      "entity_type": "Proprietorship",
+      "udyam_number": "UDYAM-KR-03-0106404",
+      "project_cost_breakup": "Building 50lakhs, plant & machinery 3cr, working capital 1.5cr"
     }
   },
   "Virra": {
-    "query": "in Karnataka government grants subsidies and incentives",
+    "query": "We are a D2C silver jewellery brand called virra. We are operating through e-commerce from past 1 year. Now we are planning to expand it by coming up with a official store in bangalore. government grants subsidies and incentives",
     "profile": {
+      "person_name": "Mansi",
+      "business_name": "Virra",
       "industry": null,
       "geography": "Karnataka",
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": null,
+      "enterprise_type": "New",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": [
+        "Women-led"
+      ],
+      "entity_type": "Proprietorship",
+      "udyam_number": "UDYAM-KR-03-0528009",
+      "project_cost_breakup": "Stock 25 lakh\nFurniture 10 lakh \nOther( salary,rent,bills) 15 lakh"
     }
   },
   "Sankalp Studio (yet to be registered)": {
-    "query": "in Karnataka government grants subsidies and incentives",
+    "query": "MSME developing parenting child activity kids to help busy parents with certain specific problems government grants subsidies and incentives",
     "profile": {
+      "person_name": "Krishnamurthy",
+      "business_name": "Sankalp Studio (yet to be registered)",
       "industry": null,
       "geography": "Karnataka",
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": null,
+      "enterprise_type": "New",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": [
+        "Women-led"
+      ],
+      "entity_type": "Partnership",
+      "udyam_number": null,
+      "project_cost_breakup": "Expenses Per annum\nComputer 20000\nProduct Manufacturing 400000\nProduct Marketing 250000\nResource Salary (1) 180000\nRunning subscription expenses 150000"
     }
   },
   "DeepCircuit Technologies Private Limited": {
-    "query": "Manufacturing in Karnataka government grants subsidies and incentives",
+    "query": "Manufacture of bare printed circuit boards, loading of components on to printed circuit boards, manufacture of interface cards government grants subsidies and incentives",
     "profile": {
-      "industry": ["Manufacturing"],
+      "person_name": "Get Schemes",
+      "business_name": "DeepCircuit Technologies Private Limited",
+      "industry": [
+        "Manufacturing"
+      ],
       "geography": "Karnataka",
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": null,
+      "enterprise_type": "New",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": null,
+      "entity_type": "Private Limited (Pvt Ltd)",
+      "udyam_number": "UDYAM-KR-03-0657253",
+      "project_cost_breakup": null
     }
   },
   "Pebblewood Infrastructure Pvt Ltd": {
-    "query": "in Karnataka Startup business government grants subsidies and incentives",
+    "query": "Architectural and Interiors Services, Construction and Allied Services government grants subsidies and incentives",
     "profile": {
+      "person_name": "Guruprasad N S",
+      "business_name": "Pebblewood Infrastructure Pvt Ltd",
       "industry": null,
       "geography": "Karnataka",
-      "business_size": "Startup"
+      "business_size": "Startup",
+      "enquiry_purpose": [
+        "Working Capital Assistance"
+      ],
+      "enterprise_type": "Expansion",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": null,
+      "entity_type": "Private Limited (Pvt Ltd)",
+      "udyam_number": "KR-03-0021624",
+      "project_cost_breakup": "Working Capital - 2 Crores"
     }
   },
   "Cinemavens International Private Limited": {
-    "query": "Manufacturing in Tamil Nadu Startup business government grants subsidies and incentives",
+    "query": "Huemonk Media Productions Pvt. Ltd., a pioneering startup focused on indigenizing professional cameras and equipment. Our brand, Magic Wand, will be the first Indian brand to manufacture precision engineered cameras and Camera Equipment along with Deep-Tech Innovation. government grants subsidies and incentives",
     "profile": {
-      "industry": ["Manufacturing"],
+      "person_name": "Balajee Subramanian",
+      "business_name": "Cinemavens International Private Limited",
+      "industry": [
+        "Manufacturing"
+      ],
       "geography": "Tamil Nadu",
-      "business_size": "Startup"
+      "business_size": "Startup",
+      "enquiry_purpose": [
+        "R&D and Innovation Grant"
+      ],
+      "enterprise_type": "New",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": [
+        "Women-led"
+      ],
+      "entity_type": "Private Limited (Pvt Ltd)",
+      "udyam_number": "UDYAM-TN-34-0037774",
+      "project_cost_breakup": null
     }
   },
   "Sanchita Enterprises": {
-    "query": "in Karnataka government grants subsidies and incentives",
+    "query": "We are a F & B consulting company handholding Home Based Food Businesses and Food and Beverage companies with their Go To Market Strategy, Marketing and Supply Chain Management government grants subsidies and incentives",
     "profile": {
+      "person_name": "Soumya Shankar",
+      "business_name": "Sanchita Enterprises",
       "industry": null,
       "geography": "Karnataka",
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": [
+        "R&D and Innovation Grant"
+      ],
+      "enterprise_type": "Expansion",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": [
+        "Women-led"
+      ],
+      "entity_type": "Partnership",
+      "udyam_number": null,
+      "project_cost_breakup": "Not worked yet"
     }
   },
   "KPAPPWORX TECHNOLOGIES PRIVATE LIMITED": {
-    "query": "Information Technology in Karnataka government grants subsidies and incentives",
+    "query": "Developing and operating AI-powered SaaS platforms. Flagship product Quarterdeck AI is a read-only forecast-verification layer for HubSpot CRM that audits B2B pipelines and shows how much of a sales forecast is supported by evidence. Also builds iOS/macOS apps and AI tools (13 products shipped). government grants subsidies and incentives",
     "profile": {
-      "industry": ["Information Technology"],
+      "person_name": "Kanthipriya S Mahale",
+      "business_name": "KPAPPWORX TECHNOLOGIES PRIVATE LIMITED",
+      "industry": [
+        "Information Technology"
+      ],
       "geography": "Karnataka",
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": null,
+      "enterprise_type": "New",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": null,
+      "entity_type": "Private Limited (Pvt Ltd)",
+      "udyam_number": null,
+      "project_cost_breakup": null
     }
   },
   "SRI SAI POLYSACKS": {
-    "query": "Manufacturing in Karnataka government grants subsidies and incentives",
+    "query": "Manufacturers of PP woven bags and leno bags government grants subsidies and incentives",
     "profile": {
-      "industry": ["Manufacturing"],
+      "person_name": "Phani Datta",
+      "business_name": "SRI SAI POLYSACKS",
+      "industry": [
+        "Manufacturing"
+      ],
       "geography": "Karnataka",
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": [
+        "Capital Subsidy"
+      ],
+      "enterprise_type": "Expansion",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": [
+        "Women-led"
+      ],
+      "entity_type": "Proprietorship",
+      "udyam_number": null,
+      "project_cost_breakup": "Building/civil works: 1 Lakh\nPlant and Machinery: 22 Lakhs\nWorking capital margins: 5 Lakhs"
     }
   },
   "Bhoomisankalp Ventures Private Limited": {
-    "query": "Renewable Energy and Clean Tech in Karnataka government grants subsidies and incentives",
+    "query": "We have already invested in establishing TRISHAKTI EV Charging Station, including the development of charging infrastructure, installation of charging equipment, and supporting customer facilities. We are now seeking government subsidy support under the applicable EV infrastructure schemes to partially offset our investment costs and improve the financial sustainability of the project. The subsidy will help us recover a portion of our initial capital investment, strengthen our existing infrastructure, and support future expansion. Our objective is to establish TRISHAKTI as a reliable EV charging destination in Karnataka and contribute to India's transition towards cleaner and greener mobility. government grants subsidies and incentives",
     "profile": {
-      "industry": ["Renewable Energy and Clean Tech"],
+      "person_name": "Vinay",
+      "business_name": "Bhoomisankalp Ventures Private Limited",
+      "industry": [
+        "Renewable Energy and Clean Tech"
+      ],
       "geography": "Karnataka",
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": [
+        "Capital Subsidy"
+      ],
+      "enterprise_type": "New",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": null,
+      "entity_type": "Private Limited (Pvt Ltd)",
+      "udyam_number": null,
+      "project_cost_breakup": "Girinagar"
     }
   },
   "Knobly Consulting LLP": {
-    "query": "Information Technology, Electronics and Hardware in Karnataka Startup business government grants subsidies and incentives",
+    "query": "Knobly makes enterprise AI safe and provable: five security products built, C9AI runs AI locally with safe-guards against hallucination using action ledger technique which is based on our paper publised and wetted by experts in the field. government grants subsidies and incentives",
     "profile": {
-      "industry": ["Information Technology", "Electronics and Hardware"],
+      "person_name": "Abhijit Bangalore",
+      "business_name": "Knobly Consulting LLP",
+      "industry": [
+        "Information Technology",
+        "Electronics and Hardware"
+      ],
       "geography": "Karnataka",
-      "business_size": "Startup"
+      "business_size": "Startup",
+      "enquiry_purpose": [
+        "R&D and Innovation Grant",
+        "Export Promotion"
+      ],
+      "enterprise_type": "New",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": [
+        "Women-led"
+      ],
+      "entity_type": "Limited Liability Partnership (LLP)",
+      "udyam_number": "UDYAM-KR-03-0162485",
+      "project_cost_breakup": "- 60% GPU servers for local AI models; secure test lab and key-storage hardware; security tool licences; cloud quantum-computing access\n- 30% Specialists in mathematics, cryptography, AI and security engineering\n- 10% Office, compliance, certification fees, travel and partner outreach"
     }
   },
   "SHRI AMBIKA CEMENT INDUSTRIES": {
     "query": "we are a manufacturer & supplier of RCC HUME PIPES & POLES. we are hoping to be a No.1 company in our north Karnataka Region. government grants subsidies and incentives",
     "profile": {
-      "industry": ["Manufacturing"],
+      "person_name": "Dinesh Dayama",
+      "business_name": "SHRI AMBIKA CEMENT INDUSTRIES",
+      "industry": [
+        "Manufacturing"
+      ],
       "geography": null,
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": [
+        "Capital Subsidy"
+      ],
+      "enterprise_type": "Existing",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": null,
+      "entity_type": "Partnership firm",
+      "udyam_number": "UDYAM-KR-15-0001767",
+      "project_cost_breakup": "AC PURCHASE--17775/-, BORWEL A/C--114440/-, BUILDING A/C--1438365/-, CCTV CAMERA--28091/-, CRANE PURCHASE--2424294/-, LORRY PURCHASE--664372/-, MACHINERY PURCHASE A/C--3840657/-, MOBILE A/C--30661/-, SOLAR ENERGY PURCHASE--135050/-"
     }
   },
   "Sri Guru Raghavendra Pharmacy": {
-    "query": "Healthcare and Medical Devices in Karnataka government grants subsidies and incentives",
+    "query": "Sri Guru Raghavendra Pharmacy is a community-focused pharmacy located in Rajarajeshwari Nagar, Bengaluru. We are committed to making quality medicines and healthcare products accessible and affordable to everyone.\n\nWe offer a wide range of medicines, including speciality and multi-speciality medicines, vitamins, supplements, baby care, personal care, wellness products, and medical equipment. We also support bulk orders, healthcare institutions, clinics, and CSR initiatives.\n\nOur goal is to grow into a trusted one-stop healthcare destination by building strong relationships with doctors, hospitals, healthcare professionals, manufacturers, and business partners.\n\nWe hope to expand our business, improve customer service, strengthen our supply network, explore new collaborations, and create meaningful opportunities to serve the community while growing sustainably. government grants subsidies and incentives",
     "profile": {
-      "industry": ["Healthcare and Medical Devices"],
+      "person_name": "Ankitha",
+      "business_name": "Sri Guru Raghavendra Pharmacy",
+      "industry": [
+        "Healthcare and Medical Devices"
+      ],
       "geography": "Karnataka",
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": [
+        "R&D and Innovation Grant"
+      ],
+      "enterprise_type": "Existing",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": [
+        "Women-led"
+      ],
+      "entity_type": "One Person Company (OPC)",
+      "udyam_number": "UDYAM-KR-03-0329981",
+      "project_cost_breakup": null
     }
   },
   "Denmo Private Limited": {
-    "query": "Tourism and Hospitality in Rajasthan government grants subsidies and incentives",
+    "query": "DENMO PRIVATE LIMITED is an India-based travel technology company developing an AI-powered B2C online travel platform designed to transform how people discover, plan and book their journeys.\n\nOur platform aims to bring travel inspiration, intelligent trip planning and bookings together in one place. At the core of our business is an AI-powered Trip Planner that will help travellers create personalised itineraries based on their budgets, preferences, travel dates, interests and travel styles. We also plan to introduce influencer-curated travel itineraries, enabling customers to explore destinations, discover experiences recommended by their favourite travel creators and turn that inspiration into bookable trips.\n\nOur proposed services include domestic and international hotel and flight bookings, holiday packages, group travel, tours and activities, travel insurance through authorised partners, self-drive car rentals, airport transfers, car rentals, bus bookings, cruise holidays and corporate travel solutions.\n\nThrough technology integrations and partnerships with established travel suppliers, we aim to create a convenient and connected travel ecosystem that simplifies the entire booking journey.\n\nOur vision is to build a technology-driven travel platform that combines AI-powered personalisation, authentic creator-led experiences and comprehensive travel services. We aim to reduce the time and complexity involved in planning a trip while making travel more accessible, personalised and convenient for individuals, families and groups. government grants subsidies and incentives",
     "profile": {
-      "industry": ["Tourism and Hospitality"],
+      "person_name": "Ankita",
+      "business_name": "Denmo Private Limited",
+      "industry": [
+        "Tourism and Hospitality"
+      ],
       "geography": "Rajasthan",
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": [
+        "R&D and Innovation Grant"
+      ],
+      "enterprise_type": "New",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": [
+        "Women-led"
+      ],
+      "entity_type": "Private Limited (Pvt Ltd)",
+      "udyam_number": "NA",
+      "project_cost_breakup": "1. Website and Travel Platform Development – ₹15,00,000\n2. Company Registration and Business Setup – ₹40,000\n3. Hotel Integration – ₹30,00,000\n4. Hotel Integration – ₹12,80,000\n5. Bus Integration – ₹7,00,000\n6. Cab and Ground Transportation Integration – ₹50,000\n7. CRM Setup and Configuration – ₹20,000\n8. AWS Cloud Hosting and Infrastructure – ₹6,62,000\n9. Mobile Application Development – ₹6,00,000\n10. AI-Powered Trip Planner Development – ₹4,00,000\n11. Technical Testing, Cybersecurity and Maintenance – ₹2,00,000\n12. Marketing, Branding and Influencer Partnerships – ₹3,00,000\n13. Initial Staffing and Customer Support – ₹3,00,000\n14. Legal, Compliance and Vendor Onboarding – ₹1,17,600"
     }
   },
   "JDJ FOODS PRIVATE LIMITED": {
-    "query": "in Karnataka government grants subsidies and incentives",
+    "query": "We are Hole sale retail trader suplying organic food packed items like Instant oats, Mueslifruit and chocolate flavour, Ready to Eat Dal Makhani, Tandoori Tikka Marinade, rolled oats to our B2B and B2C Client and super markets. Our current sales revenue is 42.75 L on FY 25-26 and 54.97 L on FY 24-25. We wanted to expand our business to achive sales revenue of 2 Cr in coming years. government grants subsidies and incentives",
     "profile": {
+      "person_name": null,
+      "business_name": "JDJ FOODS PRIVATE LIMITED",
       "industry": null,
       "geography": "Karnataka",
-      "business_size": null
+      "business_size": null,
+      "enquiry_purpose": [
+        "Working Capital Assistance"
+      ],
+      "enterprise_type": "Expansion",
+      "investment_pm_lakhs": null,
+      "total_project_cost_lakhs": null,
+      "special_attributes": null,
+      "entity_type": "Private Limited (Pvt Ltd)",
+      "udyam_number": null,
+      "project_cost_breakup": null
     }
   }
 }
