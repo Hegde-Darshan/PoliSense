@@ -60,8 +60,8 @@ db-export:
 	@mkdir -p exports
 	docker compose exec -T postgres pg_dump -U $(PG_USER) -d $(PG_DB) \
 	    --no-owner --no-acl --clean --if-exists > $(DUMP_FILE)
-	cp documents/files_read.json    exports/files_read.json
-	cp documents/files_skipped.json exports/files_skipped.json
+	cp state/files_read.json    exports/files_read.json
+	cp state/files_skipped.json exports/files_skipped.json
 	@echo ""
 	@echo "  Export complete → exports/"
 	@echo "  Transfer the exports/ directory to the new machine,"
@@ -71,10 +71,11 @@ db-export:
 db-import:
 	@echo "Importing $(DUMP_FILE) into $(PG_DB)..."
 	docker compose exec -T postgres psql -U $(PG_USER) -d $(PG_DB) < $(DUMP_FILE)
-	@cp -f exports/files_read.json    documents/files_read.json    2>/dev/null || true
-	@cp -f exports/files_skipped.json documents/files_skipped.json 2>/dev/null || true
+	@mkdir -p state
+	@cp -f exports/files_read.json    state/files_read.json    2>/dev/null || true
+	@cp -f exports/files_skipped.json state/files_skipped.json 2>/dev/null || true
 	@echo ""
-	@echo "  Import complete. documents/ state files restored."
+	@echo "  Import complete. state/ state files restored."
 	@echo ""
 
 run-ingestion:

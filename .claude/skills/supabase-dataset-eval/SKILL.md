@@ -1,6 +1,6 @@
 ---
 name: supabase-dataset-eval
-description: Run the discovery retrieval evaluation against the Supabase policies DB using the golden profiles (evals/datasets/g1_profiles.jsonl) and the v2 relevance labels (evals/datasets/v2/g2_relevance_v2.jsonl), then write a summary report of what works, what fails, and how to improve it. Use when asked to "run the supabase eval", "evaluate retrieval on supabase", "run the golden dataset eval", or /supabase-dataset-eval. Read-only; no ingestion, no Gemini.
+description: Run the discovery retrieval evaluation against the Supabase policies DB using the golden LABELLED profiles (evals/datasets/g1_profiles.jsonl, 47 profiles P001-P047) and the v2 relevance labels (evals/datasets/v2/g2_relevance_v2.jsonl), producing SCORED metrics (recall / nDCG / MRR) plus a summary of what works, what fails, and how to improve it. Use when asked to "run the supabase eval", "evaluate retrieval on supabase", "run the golden dataset eval", or /supabase-dataset-eval. For the real unlabelled Zoho submissions (qualitative, no scored metrics), use the submission-retrieval-eval skill instead. Read-only; no ingestion, no Gemini.
 ---
 
 # Supabase dataset eval
@@ -29,9 +29,11 @@ Scores the **discovery retrieval** (`retrieve_policies` in `polisense_core/Retri
 4. **Run the eval.** Use `-u` so progress isn't buffered, and run it in the background, since a full run with ablations takes several minutes (the cross-encoder dominates, about 10–15s per profile, plus Supabase network latency):
    ```bash
    venv/Scripts/python.exe -u -m evals.retrieval_eval \
+     --profiles evals/datasets/g1_profiles.jsonl \
      --labels evals/datasets/v2/g2_relevance_v2.jsonl \
      > <scratchpad>/supabase_eval.log 2>&1
    ```
+   (`--profiles` is the default, but pass it explicitly — this skill is the **golden labelled** set. For the real **unlabelled** Zoho submissions, use the `submission-retrieval-eval` skill, which points `--profiles` at `evals/datasets/submissions.jsonl`.)
    - Add `--no-ablations` only if the user asks for a quick run (production config only).
    - Defaults are `--top-k 20 --rel-threshold 2` (relevant = grade ≥ 2). Keep them unless the user asks otherwise.
    - Wait for the completion notification instead of polling.

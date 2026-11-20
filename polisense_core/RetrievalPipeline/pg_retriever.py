@@ -248,6 +248,29 @@ _CATEGORY_BOOST     = 1.5   # enquiry_purpose ↔ category — strong intent sig
 _INDUSTRY_SPECIFICITY_PIVOT = 2   # policies listing <= this many industries earn full boost
 
 
+def _dedupe_incentives(results: list[dict]) -> list[dict]:
+    """Collapse duplicate ``(parent_policy_name, incentive_name)`` rows, keeping the first
+    (highest-scored, since ``results`` is pre-sorted).
+
+    The corpus stores some incentives multiple times — e.g. the EV policy repeats
+    "Investment Promotion Subsidy" and "Subsidy for Setting up ETPs" once per sub-sector.
+    Returning every copy wastes top-k slots on the same incentive and crowds out other
+    relevant incentives; the relevance labels collapse these to unique keys anyway. Rows
+    with no incentive_name (policy-only rows) are never deduped.
+    """
+    seen: set = set()
+    out: list[dict] = []
+    for r in results:
+        name = r.get("incentive_name")
+        if name:
+            key = (r.get("parent_policy_name"), name)
+            if key in seen:
+                continue
+            seen.add(key)
+        out.append(r)
+    return out
+
+
 def _industry_specificity_factor(industries: list[str]) -> float:
     """
     Scale the industry boost by how focused the policy is. A policy that lists many
@@ -454,6 +477,9 @@ def retrieve_policies(
         key=lambda r: r.get("incentive_score", r["similarity_score"]) + r.get("metadata_boost", 0.0),
         reverse=True,
     )
+
+    # ── Collapse exact-duplicate incentives so copies don't waste top-k slots ──
+    results = _dedupe_incentives(results)
 
     _trace("final", results[:top_k])
     if trace is not None:

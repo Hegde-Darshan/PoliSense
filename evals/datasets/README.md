@@ -10,8 +10,9 @@
 
 | File | Rows | What it holds |
 |---|---|---|
-| `g1_profiles.jsonl` | 47 | Business profiles shaped like the inputs to the discovery pipeline |
+| `g1_profiles.jsonl` | 47 | Synthetic/labelled golden profiles (`P001`–`P047`) shaped like the inputs to the discovery pipeline |
 | `g2_relevance.jsonl` | 836 | Graded relevance labels, one per (profile, incentive) |
+| `submissions.jsonl` | 21 | **Real Zoho submissions** (`S001`–`S021`, `source: "zoho_submission"`), **unlabelled**. Kept separate so the golden set stays pristine; run with `--profiles evals/datasets/submissions.jsonl` for qualitative / geography / duplicate-crowding checks |
 | `../validate_datasets.py` | n/a | Checks both files against the DB and the vocab (`python -m evals.validate_datasets`) |
 
 ### G1 schema (`g1_profiles.jsonl`)
@@ -20,9 +21,10 @@
 {"profile_id": "P001", "business_name": "str", "description": "str", "query": "str",
  "profile": {"industry": ["str"] | null, "geography": "str" | null, "business_size": "str" | null,
              "special_attributes": ["str"] | null, "enquiry_purpose": ["str"] | null},
- "difficulty": "easy|medium|hard", "tags": ["str"], "source": "business_profiles_json|synthetic"}
+ "difficulty": "easy|medium|hard" | null, "tags": ["str"], "source": "business_profiles_json|synthetic|zoho_submission"}
 ```
 
+- **Real submissions live in the separate `submissions.jsonl`** (same G1 schema, IDs `S001`–`S021`, `source: "zoho_submission"`). They are actual Zoho form submissions, built the same way production does (`discovery_runner.transform_rows_to_batch`) — real free-text `query`, full `profile` incl. `enquiry_purpose`, `difficulty: null`, tagged `real_submission`. They carry **no G2 labels** (never hand-graded against the corpus), so they are kept out of the golden `g1_profiles.jsonl` to keep the scored set pristine. Run them with `--profiles evals/datasets/submissions.jsonl`; they return `None` for recall/MRR and are useful only for the geography-violation, duplicate-crowding and qualitative top-k checks. Re-label via `v2/build_g2_v2.py` if scored metrics are wanted.
 - `query` is always `description + " government grants subsidies and incentives"`. This is the same string that `discovery_runner.transform_rows_to_batch` builds.
 - `industry` uses the `_INDUSTRY_TAG` values, `geography` uses `_INDIA_STATES`, and `business_size` is one of Micro, Small, Medium, Large, Mega or Startup. Turnover bands follow `_BUSINESS_SIZE_TAG`, and DPIIT registration becomes Startup.
 - `special_attributes` uses the `_SPECIAL_ATTRIBUTES_TAG` values and `enquiry_purpose` uses the `_CATEGORY_TAG` values. They are recorded for analysis only, because retrieval does not filter on them.

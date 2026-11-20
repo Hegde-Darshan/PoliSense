@@ -579,10 +579,11 @@ class InstallerApp:
             log("  ✓ Database data imported\n", "ok")
             for fname in ("files_read.json", "files_skipped.json"):
                 src = ROOT / "exports" / fname
-                dst = ROOT / "documents" / fname
+                dst = ROOT / "state" / fname
                 if src.exists():
+                    dst.parent.mkdir(parents=True, exist_ok=True)
                     shutil.copy2(src, dst)
-                    log(f"  ✓ Restored documents/{fname}\n", "ok")
+                    log(f"  ✓ Restored state/{fname}\n", "ok")
             self._data_imported = True
         else:
             log("  No exports/polisense_db.sql found — skipping.\n")
