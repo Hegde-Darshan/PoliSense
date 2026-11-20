@@ -1,4 +1,6 @@
+import base64
 import datetime
+import io
 import math
 import os
 
@@ -10,6 +12,7 @@ from reportlab.platypus import (
     BaseDocTemplate,
     Frame,
     HRFlowable,
+    Image,
     PageTemplate,
     Paragraph,
     Spacer,
@@ -21,6 +24,11 @@ from reportlab.graphics.shapes import Drawing, Wedge, Circle, String, Rect
 from reportlab.graphics import renderPDF
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+
+from ._logo_asset import LOGO_B64
+
+# Chosen logo asset: "GetSchemes Logo - 2 - Without CG.png", width/height ratio.
+_LOGO_RATIO = 400 / 270
 
 # Register Arial for Unicode support (₹ symbol is not in standard PDF fonts)
 try:
@@ -319,6 +327,18 @@ def _ph(html: str, style: str) -> Paragraph:
     return Paragraph(str(html or ""), STYLES[style])
 
 
+def _logo_flowable(width: float = 82) -> Image:
+    """Embedded GetSchemes logo, decoded from the base64 asset (no file on disk).
+
+    Sized to the header's right column while preserving aspect ratio; the
+    transparent PNG blends onto the white header background.
+    """
+    buf = io.BytesIO(base64.b64decode(LOGO_B64))
+    img = Image(buf, width=width, height=width / _LOGO_RATIO)
+    img.hAlign = "RIGHT"
+    return img
+
+
 # ── Scoring ────────────────────────────────────────────────────────────────────
 
 def _compute_overall_score(results: list, filters: dict) -> int:
@@ -476,19 +496,22 @@ def _header_section(profile: dict, report_id: str, generated: str) -> list:
     person_name   = profile.get("person_name") or business_name
     flowables = []
 
-    # Brand row: name + logo placeholder
-    logo_placeholder = Table(
-        [[_p("YOUR LOGO", "info_label")]],
-        colWidths=[80],
-        style=TableStyle([
-            ("BOX", (0, 0), (-1, -1), 1, colors.HexColor("#BBBBBB")),
-            ("LINEDASH", (0, 0), (-1, -1), 2, 2),
-            ("TOPPADDING", (0, 0), (-1, -1), 10),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
-            ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-            ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ]),
-    )
+    # Brand row: name + embedded logo (falls back to a dashed box if decode fails)
+    try:
+        logo_placeholder = _logo_flowable()
+    except Exception:
+        logo_placeholder = Table(
+            [[_p("YOUR LOGO", "info_label")]],
+            colWidths=[80],
+            style=TableStyle([
+                ("BOX", (0, 0), (-1, -1), 1, colors.HexColor("#BBBBBB")),
+                ("LINEDASH", (0, 0), (-1, -1), 2, 2),
+                ("TOPPADDING", (0, 0), (-1, -1), 10),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
+                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+            ]),
+        )
     brand_cell = [
         _p("GetSchemes", "brand"),
         _p("Subsidies · Schemes · Grants · Incentives", "tagline"),
