@@ -10,7 +10,7 @@
 
 | File | Rows | What it holds |
 |---|---|---|
-| `g1_profiles.jsonl` | 47 | Business profiles shaped like the inputs to the discovery pipeline |
+| `g1_profiles.jsonl` | 68 | Business profiles shaped like the inputs to the discovery pipeline. 47 synthetic/labelled (`P001`–`P047`) + 21 **real Zoho submissions** (`S001`–`S021`, `source: "zoho_submission"`, **unlabelled**) |
 | `g2_relevance.jsonl` | 836 | Graded relevance labels, one per (profile, incentive) |
 | `../validate_datasets.py` | n/a | Checks both files against the DB and the vocab (`python -m evals.validate_datasets`) |
 
@@ -20,9 +20,10 @@
 {"profile_id": "P001", "business_name": "str", "description": "str", "query": "str",
  "profile": {"industry": ["str"] | null, "geography": "str" | null, "business_size": "str" | null,
              "special_attributes": ["str"] | null, "enquiry_purpose": ["str"] | null},
- "difficulty": "easy|medium|hard", "tags": ["str"], "source": "business_profiles_json|synthetic"}
+ "difficulty": "easy|medium|hard" | null, "tags": ["str"], "source": "business_profiles_json|synthetic|zoho_submission"}
 ```
 
+- **Real submissions (`S001`–`S021`, `source: "zoho_submission"`):** actual Zoho form submissions, built the same way production does (`discovery_runner.transform_rows_to_batch`) — real free-text `query`, full `profile` incl. `enquiry_purpose`. They carry **no G2 labels** (never hand-graded against the corpus), so `retrieval_eval` runs them for the geography-violation, duplicate-crowding and qualitative top-k checks but they return `None` for recall/MRR and are skipped in those averages (same handling as the unlabelled synthetic profiles). `difficulty` is `null` and they are tagged `real_submission`. Re-label them via `v2/build_g2_v2.py` if scored metrics are wanted.
 - `query` is always `description + " government grants subsidies and incentives"`. This is the same string that `discovery_runner.transform_rows_to_batch` builds.
 - `industry` uses the `_INDUSTRY_TAG` values, `geography` uses `_INDIA_STATES`, and `business_size` is one of Micro, Small, Medium, Large, Mega or Startup. Turnover bands follow `_BUSINESS_SIZE_TAG`, and DPIIT registration becomes Startup.
 - `special_attributes` uses the `_SPECIAL_ATTRIBUTES_TAG` values and `enquiry_purpose` uses the `_CATEGORY_TAG` values. They are recorded for analysis only, because retrieval does not filter on them.
