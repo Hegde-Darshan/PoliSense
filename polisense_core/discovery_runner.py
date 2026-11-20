@@ -19,7 +19,7 @@ import requests
 from dotenv import load_dotenv
 
 from polisense_core.discovery_pipeline import process_batch
-from polisense_core.settings import BASE_DIR
+from polisense_core.settings import STATE_DIR
 from polisense_core.utils.logger import LOGGING_CONFIG
 
 load_dotenv()
@@ -64,7 +64,7 @@ _COL = {
 }
 
 # ── Persistent state ──────────────────────────────────────────────────────────
-_STATE_FILE = BASE_DIR / "documents" / "zoho_poll_state.json"
+_STATE_FILE = STATE_DIR / "zoho_poll_state.json"
 
 # ── Form option → internal tag mappings ──────────────────────────────────────
 # Keys are lower-cased form labels; None means "no filter for this dimension".

@@ -11,5 +11,6 @@ from pathlib import Path
 BASE_DIR = Path(os.getenv("RAG_BASE_DIR", os.getcwd()))
 
 DOCUMENTS_DIR = BASE_DIR / "documents"
+STATE_DIR = BASE_DIR / "state"
 CONFIG_PATH = BASE_DIR / "config.yml"
 

@@ -1,5 +1,5 @@
 DATA_PATH: "Subsidies Schemes Grants and Incentives"
-SKIPPED_PATH: "documents/files_skipped.json"
-READ_PATH: "documents/files_read.json"
+SKIPPED_PATH: "state/files_skipped.json"
+READ_PATH: "state/files_read.json"
 
 TEST_DATA_PATH: "TestDocuments"

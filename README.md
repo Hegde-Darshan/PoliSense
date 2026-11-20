@@ -244,7 +244,7 @@ On startup it runs one poll immediately, then repeats every 2 hours.
 - Filters to rows with `form_submission_timestamp` newer than the last successful poll
 - Builds a query + business profile from each row
 - Runs the retrieval pipeline and writes results to `Retrievals/{business_name}.txt`
-- Saves the poll timestamp to `documents/zoho_poll_state.json`
+- Saves the poll timestamp to `state/zoho_poll_state.json`
 
 If a poll cycle fails (network error, bad token, etc.) it logs the error and retries at the next scheduled interval without crashing.
 
@@ -252,5 +252,5 @@ If a poll cycle fails (network error, bad token, etc.) it logs the error and ret
 
 Press `Ctrl+C` in the terminal.
 
-To reset the poll state (re-process all rows on next start), delete `documents/zoho_poll_state.json`.
+To reset the poll state (re-process all rows on next start), delete `state/zoho_poll_state.json`.
 
