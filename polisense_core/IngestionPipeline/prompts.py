@@ -59,7 +59,7 @@ class PoliSensePrompts:
 
 ## Policy-level extraction
 
-4. Controlled vocabularies: Use only the allowed values for category, applicable_industries, applicable_business_sizes, and incentive_type. Do not invent new values — map to the closest allowed option; use "Other" only when nothing fits. Use ["All Sectors"] for applicable_industries when the policy explicitly covers all sectors. In free-text fields (description, policy_summary, raw_text), preserve the document's original terminology — do not replace it with controlled vocabulary terms.
+4. Controlled vocabularies: Use only the allowed values for category, applicable_industries, applicable_business_sizes, and incentive_type. Do not invent new values — map to the closest allowed option; use "Other" only when nothing fits. For applicable_industries, prefer the MOST SPECIFIC sector(s) a policy targets (e.g. "Leather and Footwear", "Space", "Waste Management, Recycling and Environmental Services") rather than the broad "Manufacturing" bucket; use "Manufacturing" only as a fallback when no specific manufacturing sub-sector fits, or alongside a specific sub-sector when the policy genuinely spans general manufacturing. Use ["All Sectors"] only when the policy explicitly covers all sectors. In free-text fields (description, policy_summary, raw_text), preserve the document's original terminology — do not replace it with controlled vocabulary terms.
 
 5. Geographies: Use full Indian state names (e.g. "Karnataka", "Maharashtra"), full Union Territory names (e.g. "Delhi", "Chandigarh", "Puducherry"), "National" for pan-India policies, or recognised regional labels like "North East India". Never abbreviate. If no geography restriction is stated, use ["National"].
 

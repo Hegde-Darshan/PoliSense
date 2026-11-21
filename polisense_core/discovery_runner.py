@@ -92,6 +92,21 @@ _INDUSTRY_TAG: dict[str, str | None] = {
     "chemicals and petrochemicals":           "Chemical and Petrochemical",
     "mining and minerals":                    "Mining and Minerals",
     "media and entertainment":                "Media and Entertainment",
+    # ── Added 2026-11 (expanded govt-sourced vocab). These map correctly once the live Zoho
+    #    "Primary Business Sector" dropdown is updated with the matching option labels. ──
+    "leather and footwear":                   "Leather and Footwear",
+    "rubber and plastics":                    "Rubber and Plastics",
+    "metals and metal products":              "Metals and Metal Products",
+    "capital goods and machinery":            "Capital Goods and Machinery",
+    "furniture and wood products":            "Furniture and Wood Products",
+    "paper and packaging":                    "Paper and Packaging",
+    "cement, ceramics and non-metallic minerals": "Cement, Ceramics and Non-metallic Minerals",
+    "gems and jewellery":                     "Gems and Jewellery",
+    "space":                                  "Space",
+    "animation, vfx, gaming and comics (avgc)": "Animation, VFX, Gaming and Comics (AVGC)",
+    "waste management, recycling and environmental services": "Waste Management, Recycling and Environmental Services",
+    "dairy and animal husbandry":             "Dairy and Animal Husbandry",
+    "fisheries and aquaculture":              "Fisheries and Aquaculture",
     "services":                               None,
     "my industry is not listed here":         None,
 }

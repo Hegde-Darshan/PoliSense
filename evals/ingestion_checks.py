@@ -31,7 +31,14 @@ INDUSTRIES = {
     "Tourism and Hospitality", "Healthcare and Medical Devices", "Education and Skill Development",
     "Logistics and Warehousing", "Financial Services and Fintech", "Defense and Aerospace",
     "Construction and Real Estate", "Retail and E-commerce", "Chemical and Petrochemical",
-    "Mining and Minerals", "Media and Entertainment", "All Sectors", "Other",
+    "Mining and Minerals", "Media and Entertainment",
+    # Expanded govt-sourced sub-sectors / cross-section gaps (keep in sync with llm_extractor.IndustryTag)
+    "Leather and Footwear", "Rubber and Plastics", "Metals and Metal Products",
+    "Capital Goods and Machinery", "Furniture and Wood Products", "Paper and Packaging",
+    "Cement, Ceramics and Non-metallic Minerals", "Gems and Jewellery", "Space",
+    "Animation, VFX, Gaming and Comics (AVGC)", "Waste Management, Recycling and Environmental Services",
+    "Dairy and Animal Husbandry", "Fisheries and Aquaculture",
+    "All Sectors", "Other",
 }
 SIZES = {"Micro", "Small", "Medium", "MSME", "Large", "Mega", "Startup", "All"}
 CATEGORIES = {

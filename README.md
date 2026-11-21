@@ -128,7 +128,7 @@ The ingestion pipeline sends each policy PDF to Gemini 2.5 Pro and extracts a st
 |---|---|---|---|
 | `policy_name` | `str` | ✓ | Name of this scheme or sub-policy |
 | `category` | `Literal` | ✓ | Capital Subsidy / Interest Subvention / Tax Incentive / Infrastructure Support / R&D and Innovation Grant / Skill Development / Export Promotion / Market Access and Marketing Support / Land and Building Concession / Power and Utility Concession / Employment Generation / Working Capital Assistance / Credit Guarantee / Other |
-| `applicable_industries` | `List[IndustryTag]` | ✓ | Controlled 21-value vocab. `['All Sectors']` if unrestricted. Stored as `TEXT[]` in DB. |
+| `applicable_industries` | `List[IndustryTag]` | ✓ | Controlled 35-value vocab (Make-in-India sector names grounded in NIC-2008 codes). `['All Sectors']` if unrestricted. Stored as `TEXT[]` in DB. |
 | `applicable_geographies` | `List[str]` | ✓ | Full state names or `'National'`. Stored as `TEXT[]` in DB. |
 | `applicable_business_sizes` | `List[BusinessSizeTag]` | ✓ | Micro / Small / Medium / MSME / Large / Mega / Startup / All. Stored as `TEXT[]` in DB. |
 | `validity` | `ValidityPeriod` | ✓ | Structured year range (see below) |
