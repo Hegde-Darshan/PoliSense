@@ -26,7 +26,13 @@ _ZOHO_SUFFIX = " government grants subsidies and incentives"  # appended to ever
 
 
 def _build_incentive_text(row: dict) -> str:
-    """Assemble a descriptive string for an incentive row from its JSONB fields."""
+    """Assemble a descriptive string for an incentive row from its JSONB fields.
+
+    Intentionally incentive-level only (no parent policy name / category). Prepending the
+    generic policy name and category was measured to dilute the cross-encoder's
+    discrimination between sibling incentives and regressed policy-level nDCG/MRR on the
+    golden eval, so it is deliberately excluded.
+    """
     inc = row["incentive_details"]
     parts = [row["incentive_name"]]
     for field in ("benefit_headline", "description", "incentive_specific_eligibility"):
@@ -244,8 +250,21 @@ _INDUSTRY_BOOST     = 1.5   # policy lists this exact industry
 _INDUSTRY_ALL_BOOST = 0.5   # policy is "All Sectors" — applies broadly, weak signal
 _SIZE_BOOST         = 0.5   # business-size match (specific or "All")
 _CATEGORY_BOOST     = 1.5   # enquiry_purpose ↔ category — strong intent signal
+# When the business industry is known and a policy names specific industries (not a
+# catch-all "All Sectors" entry) none of which match, that is positive evidence of *mis*fit
+# — not merely absence of evidence. A small penalty sinks clearly off-industry policies
+# below correct-industry ones without ever excluding them. Kept small vs the logit range so
+# a strongly semantic match can still win.
+_INDUSTRY_MISMATCH_PENALTY = -0.75
 
-_INDUSTRY_SPECIFICITY_PIVOT = 2   # policies listing <= this many industries earn full boost
+# Generic "bucket" tags: broad enough that sector-specialized policies (Space, Aerospace,
+# EV) attach them, so matching one is weak evidence of real sector fit. A match ONLY via a
+# bucket tag on a vertical policy is treated as a misfit, not a match — otherwise a chemical
+# manufacturer surfaces the Space Technology Policy because both carry "Manufacturing". The
+# explicit horizontal policies instead tag "All Sectors" (handled as its own branch).
+_BROAD_INDUSTRY_TAGS = {"Manufacturing", "Other"}
+
+_INDUSTRY_SPECIFICITY_PIVOT = 2   # policies listing <= this many specific sectors earn full boost
 
 
 def _dedupe_incentives(results: list[dict]) -> list[dict]:
@@ -271,14 +290,15 @@ def _dedupe_incentives(results: list[dict]) -> list[dict]:
     return out
 
 
-def _industry_specificity_factor(industries: list[str]) -> float:
+def _industry_specificity_factor(specific_tags: list[str]) -> float:
     """
     Scale the industry boost by how focused the policy is. A policy that lists many
-    industries is weak evidence of specific fit (e.g. a Biotech policy that also tags
-    Manufacturing/Food Processing), so its boost decays with the number of industries
-    claimed. 'All Sectors' is excluded from the count (handled as a separate branch).
+    specific sectors is weak evidence of fit (e.g. a Biotech policy that also tags
+    Healthcare/Food Processing), so its boost decays with the number of sectors claimed.
+    Expects the policy's *specific* sector tags (generic buckets and 'All Sectors' already
+    removed by the caller).
     """
-    n = len([i for i in industries if i != "All Sectors"])
+    n = len(specific_tags)
     if n <= _INDUSTRY_SPECIFICITY_PIVOT:
         return 1.0
     return max(0.33, _INDUSTRY_SPECIFICITY_PIVOT / n)
@@ -296,18 +316,33 @@ def _compute_metadata_boost(
     Applied twice: once before the cross-encoder to curate the candidate pool,
     and once after to produce the final ordering.
 
-    A specific industry-tag match earns the full boost scaled by the policy's
-    specificity (fewer claimed industries ⇒ stronger signal); a generic "All Sectors"
-    policy earns a reduced flat boost so catch-all policies don't float up for every query.
+    A match on a *specific* sector earns the full boost scaled by the policy's specificity
+    (fewer claimed sectors ⇒ stronger signal). An explicit "All Sectors" (horizontal) policy
+    earns a reduced flat boost. A match only via a generic bucket tag ("Manufacturing"/
+    "Other") on a sector-specialized policy — or no tag match at all when the policy names
+    specific sectors — is treated as a misfit and penalized.
     """
     boost = 0.0
     if industry:
         industries = row.get("applicable_industries") or []
         targets = industry if isinstance(industry, list) else [industry]
-        if any(t in industries for t in targets):
-            boost += _INDUSTRY_BOOST * _industry_specificity_factor(industries)
+        # The policy's specific (named-sector) tags, excluding generic buckets and the
+        # explicit "All Sectors" catch-all.
+        specific_policy_tags = [
+            i for i in industries if i not in _BROAD_INDUSTRY_TAGS and i != "All Sectors"
+        ]
+        # A "specific" match is on a named sector (not a generic bucket).
+        specific_match = any(
+            t in industries for t in targets if t not in _BROAD_INDUSTRY_TAGS
+        )
+        if specific_match:
+            boost += _INDUSTRY_BOOST * _industry_specificity_factor(specific_policy_tags)
         elif "All Sectors" in industries:
             boost += _INDUSTRY_ALL_BOOST
+        elif any(t in industries for t in targets) or specific_policy_tags:
+            # Matched at most a generic bucket on a sector-specialized policy, or matched no
+            # tag while the policy names specific sectors — a sector misfit either way.
+            boost += _INDUSTRY_MISMATCH_PENALTY
     if business_size:
         sizes = row.get("applicable_business_sizes") or []
         if business_size in sizes or "All" in sizes:
