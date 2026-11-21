@@ -4,27 +4,47 @@ from typing import Optional, List, Literal
 
 # ── Controlled vocabularies ────────────────────────────────────────────────────
 
+# Industry vocabulary. Human-readable sector names aligned to Make in India 2.0, each
+# grounded in a National Industrial Classification (NIC-2008, MoSPI) section/division so the
+# taxonomy is government-sourced rather than invented. Prefer the most specific sector; use
+# "Manufacturing" only as an umbrella fallback (it is treated as a generic bucket at retrieval
+# time), and "All Sectors" only for genuinely horizontal policies.
 IndustryTag = Literal[
-    "Manufacturing",
-    "Information Technology",
-    "Electronics and Hardware",
-    "Agriculture and Agro-Processing",
-    "Textile and Apparel",
-    "Food Processing",
-    "Pharmaceuticals and Biotech",
-    "Automotive and EV",
-    "Renewable Energy and Clean Tech",
-    "Tourism and Hospitality",
-    "Healthcare and Medical Devices",
-    "Education and Skill Development",
-    "Logistics and Warehousing",
-    "Financial Services and Fintech",
-    "Defense and Aerospace",
-    "Construction and Real Estate",
-    "Retail and E-commerce",
-    "Chemical and Petrochemical",
-    "Mining and Minerals",
-    "Media and Entertainment",
+    "Manufacturing",                          # NIC C (umbrella fallback for mfg not fitting a sub-sector below)
+    "Information Technology",                 # NIC J.62-63
+    "Electronics and Hardware",               # NIC C.26
+    "Agriculture and Agro-Processing",        # NIC A.01-02
+    "Textile and Apparel",                    # NIC C.13-14
+    "Food Processing",                        # NIC C.10-11
+    "Pharmaceuticals and Biotech",            # NIC C.21, M.72
+    "Automotive and EV",                      # NIC C.29
+    "Renewable Energy and Clean Tech",        # NIC D.35 (clean)
+    "Tourism and Hospitality",                # NIC I
+    "Healthcare and Medical Devices",         # NIC Q, C.325
+    "Education and Skill Development",         # NIC P
+    "Logistics and Warehousing",              # NIC H.52
+    "Financial Services and Fintech",         # NIC K
+    "Defense and Aerospace",                  # NIC C.30, O
+    "Construction and Real Estate",           # NIC F, L
+    "Retail and E-commerce",                  # NIC G
+    "Chemical and Petrochemical",             # NIC C.19-20
+    "Mining and Minerals",                    # NIC B
+    "Media and Entertainment",                # NIC J.59-60, R
+    # ── Manufacturing sub-sectors (NIC-2008 Section C split) ──
+    "Leather and Footwear",                   # NIC C.15; MII Leather
+    "Rubber and Plastics",                    # NIC C.22
+    "Metals and Metal Products",              # NIC C.24-25
+    "Capital Goods and Machinery",            # NIC C.28; MII Capital Goods / Electrical Machinery
+    "Furniture and Wood Products",            # NIC C.16, C.31
+    "Paper and Packaging",                    # NIC C.17
+    "Cement, Ceramics and Non-metallic Minerals",  # NIC C.23
+    "Gems and Jewellery",                     # NIC C.321; MII Gems & Jewellery
+    "Space",                                  # MII Space; NIC C.303, M.72
+    # ── Cross-section gaps ──
+    "Animation, VFX, Gaming and Comics (AVGC)",      # NIC J.59/62 (Karnataka AVGC policy)
+    "Waste Management, Recycling and Environmental Services",  # NIC Section E (37-39)
+    "Dairy and Animal Husbandry",             # NIC A.014
+    "Fisheries and Aquaculture",              # NIC A.03
     "All Sectors",
     "Other",
 ]

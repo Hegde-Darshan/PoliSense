@@ -26,6 +26,10 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
 from ._logo_asset import LOGO_B64
+# Single source of truth for which industry tags are generic "buckets" (e.g. "Manufacturing")
+# vs. specific named sectors — shared with the retriever so the preview's notion of a real
+# sector match matches how results were actually ranked.
+from polisense_core.RetrievalPipeline.pg_retriever import _BROAD_INDUSTRY_TAGS
 
 # Chosen logo asset: "GetSchemes Logo - 2 - Without CG.png", width/height ratio.
 _LOGO_RATIO = 400 / 270
@@ -664,28 +668,32 @@ def _score_section(overall_score: int, category_breakdown: list[dict]) -> list:
 
 
 def _preview_matches_profile(row: dict, filters: dict) -> bool:
-    """True if the result matches the business on a hard dimension (specific industry tag
-    or enquiry-purpose/category). These are the dimensions a prospect judges relevance on;
-    a generic "All Sectors" or size-only match does not qualify."""
+    """True only if the result matches the business on a SPECIFIC named sector.
+
+    Generic bucket tags (``_BROAD_INDUSTRY_TAGS`` — "Manufacturing"/"Other"), "All Sectors",
+    size and enquiry-purpose do NOT qualify. Enquiry-purpose is deliberately excluded: it is
+    too coarse (e.g. almost every incentive is a "Capital Subsidy"), so matching on it would
+    let the preview promote a worse-ranked scheme over a better one. A specific-sector match
+    is the one signal strong enough to override the retriever's ranking for the headline — and
+    it mirrors the retriever, so the preview never features a generic-bucket match (e.g. a
+    Space Technology Policy that merely tags "Manufacturing") over a better-ranked result.
+    """
     industry = filters.get("industry")
-    if industry:
-        targets = industry if isinstance(industry, list) else [industry]
-        row_inds = row.get("applicable_industries") or []
-        if any(t in row_inds for t in targets):
-            return True
-    enquiry_purpose = filters.get("enquiry_purpose")
-    if enquiry_purpose and row.get("category") in enquiry_purpose:
-        return True
-    return False
+    if not industry:
+        return False
+    targets = industry if isinstance(industry, list) else [industry]
+    specific_targets = [t for t in targets if t not in _BROAD_INDUSTRY_TAGS]
+    row_inds = row.get("applicable_industries") or []
+    return any(t in row_inds for t in specific_targets)
 
 
 def _top_match_section(results: list, filters: dict | None = None) -> list:
     """Show the top-matching scheme name + benefit headline; lock the rest.
 
-    Prefer the highest-ranked result that genuinely matches the business on industry or
-    enquiry-purpose; fall back to the #1 result when none in top-k qualify (or no hard
-    filters were supplied). This keeps the previewed scheme one the prospect recognises
-    as relevant whenever such a match exists in the retrieved set.
+    Prefer the highest-ranked result that matches the business on a specific named sector;
+    fall back to the #1 result when none qualify (or no industry filter was supplied). Because
+    the retriever is already sector-aware, this only overrides #1 when a lower-ranked scheme
+    explicitly names the prospect's sector — it never demotes a strong #1 for a generic match.
     """
     if not results:
         return []
