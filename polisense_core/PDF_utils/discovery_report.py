@@ -663,19 +663,49 @@ def _score_section(overall_score: int, category_breakdown: list[dict]) -> list:
     return [Spacer(1, 4), outer]
 
 
-def _top_match_section(results: list) -> list:
-    """Show the top-matching scheme name + benefit headline; lock the rest."""
+def _preview_matches_profile(row: dict, filters: dict) -> bool:
+    """True if the result matches the business on a hard dimension (specific industry tag
+    or enquiry-purpose/category). These are the dimensions a prospect judges relevance on;
+    a generic "All Sectors" or size-only match does not qualify."""
+    industry = filters.get("industry")
+    if industry:
+        targets = industry if isinstance(industry, list) else [industry]
+        row_inds = row.get("applicable_industries") or []
+        if any(t in row_inds for t in targets):
+            return True
+    enquiry_purpose = filters.get("enquiry_purpose")
+    if enquiry_purpose and row.get("category") in enquiry_purpose:
+        return True
+    return False
+
+
+def _top_match_section(results: list, filters: dict | None = None) -> list:
+    """Show the top-matching scheme name + benefit headline; lock the rest.
+
+    Prefer the highest-ranked result that genuinely matches the business on industry or
+    enquiry-purpose; fall back to the #1 result when none in top-k qualify (or no hard
+    filters were supplied). This keeps the previewed scheme one the prospect recognises
+    as relevant whenever such a match exists in the retrieved set.
+    """
     if not results:
         return []
 
-    top = results[0]
+    filters = filters or {}
+    top = next(
+        (r for r in results if _preview_matches_profile(r, filters)),
+        results[0],
+    )
     policy_name = top.get("parent_policy_name") or top.get("policy_name") or "—"
     benefit_headline = (
         (top.get("incentive_details") or {}).get("benefit_headline")
         or (top.get("policy_details") or {}).get("benefit_headline")
         or ""
     )
-    hidden_count = len(set(r.get("parent_policy_name") for r in results[1:] if r.get("parent_policy_name")))
+    shown_policy = top.get("parent_policy_name")
+    hidden_count = len(set(
+        r.get("parent_policy_name") for r in results
+        if r.get("parent_policy_name") and r.get("parent_policy_name") != shown_policy
+    ))
 
     rows = [
         [_p("TOP MATCH PREVIEW", "badge")],
@@ -789,6 +819,34 @@ def _no_coverage_section(state: str, covered_label: str) -> list:
         ]),
     )
     return [Spacer(1, 10), callout]
+
+
+def _low_signal_section() -> list:
+    """Honest notice shown when the submission carries no signal to personalise on
+    (empty description, no industry/size/purpose). Shown in place of the top-match
+    callout so we don't present a near-arbitrary #1 result as a confident match."""
+    header = _p("Tell us a bit more to see your top match", "gap_header")
+    body = _ph(
+        "We couldn't find enough detail about your business to pick your best-fit scheme "
+        "with confidence. Add your <b>industry</b> and a short line on <b>what your "
+        "business does</b>, and we'll surface the schemes you're most likely to qualify for.",
+        "gap_body",
+    )
+    callout = Table(
+        [[header], [body]],
+        colWidths=[TEXT_W - 22],
+        style=TableStyle([
+            ("BACKGROUND", (0, 0), (-1, -1), AMBER_LIGHT),
+            ("BOX", (0, 0), (-1, -1), 1.5, AMBER_BORDER),
+            ("LINEBEFORE", (0, 0), (0, -1), 4, AMBER_BORDER),
+            ("TOPPADDING", (0, 0), (-1, -1), 6),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+            ("LEFTPADDING", (0, 0), (-1, -1), 12),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 12),
+            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ]),
+    )
+    return [Spacer(1, 6), callout]
 
 
 def _unlock_section() -> list:
@@ -972,7 +1030,12 @@ def generate_discovery_pdf(query_name: str, entry: dict, output_path: str) -> No
 
     story.extend(_intro_text(profile, results))
     story.extend(_score_section(overall_score, category_breakdown))
-    story.extend(_top_match_section(results))
+    if entry.get("low_signal"):
+        # Nothing to personalise on — show an honest "add more details" notice instead of
+        # a near-arbitrary top match, but keep the rest of the report to drive conversion.
+        story.extend(_low_signal_section())
+    else:
+        story.extend(_top_match_section(results, filters))
     story.extend(_gap_section())
     story.extend(_unlock_section())
     story.extend(_cta_section(payment_link))

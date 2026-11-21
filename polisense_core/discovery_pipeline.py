@@ -11,6 +11,7 @@ from polisense_core.utils.postgres_utils import get_connection
 from polisense_core.RetrievalPipeline.pg_retriever import (
     retrieve_policies,
     geography_coverage_count,
+    _ZOHO_SUFFIX,
 )
 from polisense_core.PDF_utils.discovery_report import generate_discovery_pdf
 from polisense_core.retrieval_pipeline import _FILTER_KEYS, RETRIEVALS_DIR, _build_filename
@@ -52,6 +53,17 @@ def process_batch(
                 geography = profile.get("geography")
                 out_of_coverage = bool(geography) and geography_coverage_count(conn, geography) == 0
 
+                # Low-signal: nothing to personalise on (empty description after the Zoho
+                # suffix is stripped, and no industry/size/purpose). Retrieval would return
+                # a near-arbitrary #1, so we render an honest "add more details" notice
+                # instead of a confident top match. Geography-only is handled by coverage.
+                clean_query = query.replace(_ZOHO_SUFFIX, "").strip()
+                low_signal = not clean_query and not (
+                    filters.get("industry")
+                    or filters.get("business_size")
+                    or filters.get("enquiry_purpose")
+                )
+
                 if out_of_coverage:
                     results = []
                 else:
@@ -70,6 +82,7 @@ def process_batch(
                         "report_id":       None,
                         "payment_link":    None,
                         "out_of_coverage": out_of_coverage,
+                        "low_signal":      low_signal,
                     },
                     output_path=str(teaser_path),
                 )
