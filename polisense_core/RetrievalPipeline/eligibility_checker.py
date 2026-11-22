@@ -216,13 +216,18 @@ def _rule_based_checks(
         raw = min_emp.get("raw_text")
         # employee_count is never in the form — always UNCERTAIN
         desc = raw if raw else f"Minimum {int(min_count) if min_count else '?'} {unit}"
-        if min_count is not None:
+        if min_count is not None or raw:
             missing.append("employee_count")
+            rec = (
+                f"Employee count not collected in form; policy requires at least {int(min_count)} {unit}"
+                if min_count is not None
+                else f"Employee count not collected in form; policy has slab-based requirement: {raw}"
+            )
             checks.append(CriterionCheck(
                 field="minimum_employees",
                 criteria_description=desc,
                 status="UNCERTAIN",
-                recommendation=f"Employee count not collected in form; policy requires at least {int(min_count)} {unit}",
+                recommendation=rec,
             ))
 
     # ── maximum_turnover ───────────────────────────────────────────────────────

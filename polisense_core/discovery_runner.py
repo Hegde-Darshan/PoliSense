@@ -242,7 +242,9 @@ def _load_last_polled() -> Optional[datetime]:
 
 
 def _save_last_polled(ts: datetime) -> None:
-    _STATE_FILE.write_text(json.dumps({"last_polled_at": ts.isoformat()}))
+    tmp = _STATE_FILE.with_suffix(".tmp")
+    tmp.write_text(json.dumps({"last_polled_at": ts.isoformat()}))
+    os.replace(tmp, _STATE_FILE)
 
 
 # ── Zoho API helpers ──────────────────────────────────────────────────────────
