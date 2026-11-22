@@ -158,10 +158,13 @@ def update_status_files(state: IngestionWorkflowState) -> IngestionWorkflowState
     # Successes are already written per-policy in db_ingestion; just log the final tally.
     logger.info(f"Run complete — succeeded: {len(state.policy_queried)}, failed: {len(state.policy_failed)}")
 
-    # Merge this run's failures with any failures from prior runs (never discard old failures).
+    # Merge this run's failures with prior failures, removing anything that succeeded this run.
     skipped_path = ROOT_PATH / Path(config["SKIPPED_PATH"])
     prior_skipped: list = json.loads(skipped_path.read_text(encoding="utf-8")) if skipped_path.exists() else []
-    all_skipped = list(dict.fromkeys(prior_skipped + state.policy_failed))  # preserve order, deduplicate
+    healed = set(state.policy_queried)
+    all_skipped = list(dict.fromkeys(
+        [p for p in prior_skipped if p not in healed] + state.policy_failed
+    ))
     _write_json_atomic(skipped_path, all_skipped)
     return state
 

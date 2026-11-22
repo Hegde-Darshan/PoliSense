@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional, List, Literal
 
 
@@ -172,9 +172,15 @@ class EligibilityCriteria(BaseModel):
         default=None,
         description="Any other eligibility conditions not captured in the structured fields above"
     )
-    raw_text: str = Field(
+    raw_text: Optional[str] = Field(
+        default=None,
         description="Full verbatim eligibility section from the document. Required. This is the source of truth for Tier-2 LLM reasoning — copy it exactly."
     )
+
+    @field_validator("raw_text", mode="before")
+    @classmethod
+    def _empty_to_none(cls, v: object) -> object:
+        return None if v == "" else v
 
 
 # ── Incentive models ───────────────────────────────────────────────────────────
